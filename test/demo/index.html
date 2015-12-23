@@ -24,7 +24,7 @@
 	}
 
 </style>
-<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js"></script>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="dTree.js"></script>
 <body>
@@ -33,7 +33,7 @@
 
 		<script>
       treeJson = d3.json("data.json", function(error, treeData) {
-      	dTree.init("#tree-container", treeData, {});
+      	dTree.init(treeData, {target: "#graph"});
     	});
     </script>
 </body>

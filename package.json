@@ -21,6 +21,9 @@
     "url": "https://github.com/ErikGartner/dtree/issues"
   },
   "homepage": "https://github.com/ErikGartner/dtree",
+  "dependencies": {
+    "lodash": "^3.10"
+  },
   "devDependencies": {
     "babel-core": "^5.2.17",
     "babel-eslint": "^4.0.5",

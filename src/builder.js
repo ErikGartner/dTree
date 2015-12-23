@@ -1,11 +1,12 @@
 const treeBuilder = {
 
-  create(target, treeData, options = {}) {
+  create(root, siblings, opts) {
 
     /**
-    This defines teh line between siblings.
+    This draws the sibling line.
     **/
-    function sblingLine(d, i) {
+    function siblingLine(d, i) {
+
       //start point
       var start = allNodes.filter(function(v) {
         if (d.source.id == v.id) {
@@ -22,7 +23,8 @@ const treeBuilder = {
           return false;
         }
       });
-      //define teh start coordinate and end co-ordinate
+
+      //define the start coordinate and end co-ordinate
       var linedata = [{
         x: start[0].x,
         y: start[0].y
@@ -30,6 +32,7 @@ const treeBuilder = {
         x: end[0].x,
         y: end[0].y
       }];
+
       var fun = d3.svg.line().x(function(d) {
         return d.x;
       }).y(function(d) {
@@ -38,8 +41,10 @@ const treeBuilder = {
       return fun(linedata);
     }
 
-    /*To make the nodes in flat mode.
-    This gets all teh nodes in same level*/
+    /**
+      To make the nodes in flat mode.
+      This gets all the nodes in same level
+    **/
     function flatten(root) {
       var n = [];
       var i = 0;
@@ -58,7 +63,7 @@ const treeBuilder = {
     }
 
     /**
-    This draws the lines between nodes.
+      This draws the lines between nodes.
     **/
     function elbow(d, i) {
       if (d.target.no_parent) {
@@ -87,42 +92,33 @@ const treeBuilder = {
       return fun(linedata);
     }
 
-    var root = treeData.root;
-    var siblings = treeData.siblings;
-    var margin = {
-        top: 10,
-        right: 10,
-        bottom: 10,
-        left: 10
-      };
-    var width = 840;
-    var height = 600;
     var kx = function(d) {
       return d.x - 20;
     };
     var ky = function(d) {
       return d.y - 10;
     };
-    //thie place the text x axis adjust this to center align the text
+    //this place the text x axis adjust this to center align the text
     var tx = function(d) {
-      return d.x - 3;
+      return d.x + opts.textOffset.x;
     };
-    //thie place the text y axis adjust this to center align the text
+    //this place the text y axis adjust this to center align the text
     var ty = function(d) {
-      return d.y + 3;
+      return d.y + opts.textOffset.y;
     };
+
     //make an SVG
-    var svg = d3.select('#graph').append('svg')
-      .attr('width', width + margin.left + margin.right)
-      .attr('height', height + margin.top + margin.bottom)
+    var svg = d3.select(opts.target).append('svg')
+      .attr('width', opts.width + opts.margin.left + opts.margin.right)
+      .attr('height', opts.height + opts.margin.top + opts.margin.bottom)
       .append('g')
-      .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+      .attr('transform', 'translate(' + opts.margin.left + ',' + opts.margin.top + ')');
 
     var allNodes = flatten(root);
     //This maps the siblings together mapping uses the ID using the blue line
 
     // Compute the layout.
-    var tree = d3.layout.tree().size([width, height]);
+    var tree = d3.layout.tree().size([opts.width, opts.height]);
     var nodes = tree.nodes(root);
     var links = tree.links(nodes);
 
@@ -142,7 +138,7 @@ const treeBuilder = {
       .data(siblings)
       .enter().append('path')
       .attr('class', 'sibling')
-      .attr('d', sblingLine);
+      .attr('d', siblingLine);
 
     // Create the node rectangles.
     nodes.append('rect')
@@ -161,6 +157,7 @@ const treeBuilder = {
       })
       .attr('x', kx)
       .attr('y', ky);
+
     // Create the node text label.
     nodes.append('text')
       .text(function(d) {
