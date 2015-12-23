@@ -1,7 +1,13 @@
+import treeBuilder from './builder.js';
+
 const dtree = {
-  greet() {
-    return 'hello';
+
+  init(target, data, options = {}) {
+
+    treeBuilder.create(target, data, options);
+
   }
+
 };
 
 export default dtree;
