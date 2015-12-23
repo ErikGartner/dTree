@@ -3,6 +3,7 @@
 
 ## Requirements
 To use the library the follow dependencies must be loaded:
+
  - [D3](https://github.com/mbostock/d3) v3.
  - [lodash](https://github.com/lodash/lodash) v3.10
 
@@ -35,6 +36,7 @@ The options object has the following default values:
 
 ## Development
 To setup and build the library from scratch follow these steps:
+
 1. ```npm install --save-dev```
 2. ```npm run-script build```
 
