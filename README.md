@@ -17,7 +17,7 @@ To setup and build the library from scratch follow these steps:
 1. ```npm install --save-dev```
 2. ```npm run-script build```
 
-A demo is avaible by running:
+A demo is availble by running:
 ```
 npm run-script demo
 ```
