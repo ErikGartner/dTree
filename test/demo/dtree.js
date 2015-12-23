@@ -1,1 +1,1 @@
-../../dist/dtree.js
+../../dist/dTree.js

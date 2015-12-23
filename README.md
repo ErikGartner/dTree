@@ -1,9 +1,31 @@
-# dtree
+# dTree
+*A library for visualizing data trees with multiple parents built on top of D3.*
 
-A library for visualizing data trees built on top of D3.
+## Requirements
+To use the library the only dependency is that [D3](https://github.com/mbostock/d3) v3 is loaded first.
 
-[![Travis build status](http://img.shields.io/travis/ErikGartner/dtree.svg?style=flat)](https://travis-ci.org/ErikGartner/dtree)
-[![Code Climate](https://codeclimate.com/github/ErikGartner/dtree/badges/gpa.svg)](https://codeclimate.com/github/ErikGartner/dtree)
-[![Test Coverage](https://codeclimate.com/github/ErikGartner/dtree/badges/coverage.svg)](https://codeclimate.com/github/ErikGartner/dtree)
-[![Dependency Status](https://david-dm.org/ErikGartner/dtree.svg)](https://david-dm.org/ErikGartner/dtree)
-[![devDependency Status](https://david-dm.org/ErikGartner/dtree/dev-status.svg)](https://david-dm.org/ErikGartner/dtree#info=devDependencies)
+## Usage
+Just include the compiled file ```dTree.js```, it exposes a ```dTree``` variable.
+
+To create a graph from data use the following command:
+```
+dTree.init("#target-continer", treeData, options);
+```
+
+## Development
+To setup and build the library from scratch follow these steps:
+1. ```npm install --save-dev```
+2. ```npm run-script build```
+
+A demo is avaible by running:
+```
+npm run-script demo
+```
+
+## Contributions
+To make contributions please follow the contributions document.
+
+## License
+The MIT License (MIT)
+
+Copyright (c) 2015 Erik Gärtner

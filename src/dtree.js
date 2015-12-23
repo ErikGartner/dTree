@@ -1,6 +1,6 @@
 import treeBuilder from './builder.js';
 
-const dtree = {
+const dTree = {
 
   init(target, data, options = {}) {
 
@@ -10,4 +10,4 @@ const dtree = {
 
 };
 
-export default dtree;
+export default dTree;

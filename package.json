@@ -1,8 +1,8 @@
 {
-  "name": "dtree",
+  "name": "dTree",
   "version": "0.0.1",
   "description": "A library for visualizing data trees built on top of D3.",
-  "main": "dist/dtree.js",
+  "main": "dist/dTree.js",
   "scripts": {
     "test": "gulp",
     "test-browser": "gulp test-browser",
@@ -59,8 +59,8 @@
     "serve-static": "^1.0"
   },
   "babelBoilerplateOptions": {
-    "entryFileName": "dtree",
-    "mainVarName": "dtree",
+    "entryFileName": "dTree",
+    "mainVarName": "dTree",
     "mochaGlobals": [
       "stub",
       "spy",
