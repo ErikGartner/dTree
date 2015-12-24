@@ -22,9 +22,6 @@
   },
   "homepage": "https://github.com/ErikGartner/dtree",
   "dependencies": {
-    "lodash": "^3.10"
-  },
-  "dependencies": {
     "lodash": "^3.10.0",
     "d3": "^3.5.12"
   },
@@ -34,7 +31,6 @@
     "babelify": "^6.0.0",
     "browserify": "^11.0.1",
     "chai": "^3.2.0",
-    "d3": "^3.5.10",
     "del": "^1.1.1",
     "esperanto": "^0.7.4",
     "glob": "^5.0.14",
