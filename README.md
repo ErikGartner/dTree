@@ -1,6 +1,8 @@
 # dTree
 *A library for visualizing data trees with multiple parents built on top of D3.*
 
+[![Dependency Status](https://david-dm.org/ErikGartner/dtree.svg)](https://david-dm.org/ErikGartner/dtree) [![devDependency Status](https://david-dm.org/ErikGartner/dtree/dev-status.svg)](https://david-dm.org/ErikGartner/dtree#info=devDependencies)
+
 ## Requirements
 To use the library the follow dependencies must be loaded:
 
@@ -44,6 +46,7 @@ A demo is available by running:
 ```
 npm run-script demo
 ```
+It hosts a demo on localhost:3000 located in ```test/demo```. Note that the library must be built first.
 
 ## Contributions
 To make contributions please follow the contributions document.
