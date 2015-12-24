@@ -58,8 +58,8 @@
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.0.0",
     "watchify": "^3.3.1",
-    "connect": "^1.0",
-    "serve-static": "^1.0"
+    "connect": "^3.4.0",
+    "serve-static": "^1.10.0"
   },
   "babelBoilerplateOptions": {
     "entryFileName": "dTree",
