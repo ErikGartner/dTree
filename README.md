@@ -44,6 +44,7 @@ A demo is available by running:
 ```
 npm run-script demo
 ```
+It hosts a demo on localhost:3000 located in ```test/demo```. Note that the library must be built first.
 
 ## Contributions
 To make contributions please follow the contributions document.
