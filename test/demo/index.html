@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style type="text/css">
+
+	body {
+	    font: 10px sans-serif;
+	}
+	.link {
+	    fill: none;
+	    stroke: #000;
+	}
+	.sibling {
+	    fill: none;
+	    stroke: blue;
+	}
+	.border {
+	    fill: none;
+	    shape-rendering: crispEdges;
+	    stroke: #aaa;
+	}
+	.node {
+	    stroke: red;
+	    fill:white;
+	}
+
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="dTree.js"></script>
+<body>
+		<h1>Demo</h1>
+    <div id="graph"></div>
+
+		<script>
+      treeJson = d3.json("data.json", function(error, treeData) {
+      	dTree.init(treeData, {target: "#graph"});
+    	});
+    </script>
+</body>
+</html>
