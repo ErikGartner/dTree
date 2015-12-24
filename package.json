@@ -24,6 +24,10 @@
   "dependencies": {
     "lodash": "^3.10"
   },
+  "dependencies": {
+    "lodash": "^3.10.0",
+    "d3": "^3.5.12"
+  },
   "devDependencies": {
     "babel-core": "^5.2.17",
     "babel-eslint": "^4.0.5",
