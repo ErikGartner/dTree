@@ -42,31 +42,10 @@ const treeBuilder = {
     }
 
     /**
-      To make the nodes in flat mode.
-      This gets all the nodes in same level
-    **/
-    function flatten(root) {
-      var n = [];
-      var i = 0;
-
-      function recurse(node) {
-        if (node.children) {
-          node.children.forEach(recurse);
-        }
-        if (!node.id) {
-          node.id = ++i;
-        }
-        n.push(node);
-      }
-      recurse(root);
-      return n;
-    }
-
-    /**
       This draws the lines between nodes.
     **/
     function elbow(d, i) {
-      if (d.target.no_parent) {
+      if (d.target.noParent) {
         return 'M0,0L0,0';
       }
       var diff = d.source.y - d.target.y;
@@ -114,13 +93,16 @@ const treeBuilder = {
       .append('g')
       .attr('transform', 'translate(' + opts.margin.left + ',' + opts.margin.top + ')');
 
-    var allNodes = flatten(root);
+    console.log(root);
+    var allNodes = this._flatten(root);
     //This maps the siblings together mapping uses the ID using the blue line
 
     // Compute the layout.
     var tree = d3.layout.tree().size([opts.width, opts.height]);
     var nodes = tree.nodes(root);
+    console.log(nodes);
     var links = tree.links(nodes);
+    console.log(links);
 
     // Create the link lines.
     svg.selectAll('.link')
@@ -165,6 +147,27 @@ const treeBuilder = {
       })
       .attr('x', tx)
       .attr('y', ty);
+  },
+
+  /**
+    To make the nodes in flat mode.
+    This gets all the nodes in same level
+  **/
+  _flatten(root) {
+    var n = [];
+    var i = 0;
+
+    function recurse(node) {
+      if (node.children) {
+        node.children.forEach(recurse);
+      }
+      if (!node.id) {
+        node.id = ++i;
+      }
+      n.push(node);
+    }
+    recurse(root);
+    return n;
   }
 
 };
