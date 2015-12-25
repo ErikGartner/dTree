@@ -20,7 +20,7 @@ const dTree = {
       },
       styles: {
         node: 'node',
-        link: 'link',
+        linage: 'linage',
         marriage: 'marriage'
       }
     });

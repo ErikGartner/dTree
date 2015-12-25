@@ -51,6 +51,11 @@ The options object has the following default values:
   textOffset: {
     x: -3,
     y: 3
+  },
+  styles: {
+    node: 'node',
+    linage: 'linage',
+    marriage: 'marriage'
   }
 }
 ```
