@@ -25,12 +25,17 @@ const treeBuilder = {
         .append('g')
         .attr('transform', 'translate(' + opts.margin.left + ',' + opts.margin.top + ')');
 
-      //This maps the siblings together mapping uses the ID using the blue line
-
       // Compute the layout.
       var tree = d3.layout.tree()
         .size([opts.width, opts.height]);
       var nodes = tree.nodes(root);
+
+      // Since root node is hidden, readjust height.
+      var root_offset = nodes[1].y;
+      _.forEach(nodes, function(n) {
+        n.y = n.y - root_offset / 2;
+      });
+
       var links = tree.links(nodes);
 
       // Create the link lines.
@@ -53,12 +58,18 @@ const treeBuilder = {
         .data(siblings)
         .enter()
         .append('path')
-        .attr('class', 'sibling')
+        .attr('class', opts.styles.marriage)
         .attr('d', this._siblingLine);
 
       // Create the node rectangles.
       nodes.append('rect')
-        .attr('class', 'node')
+        .attr('class', function(d) {
+          if (d.class) {
+            return d.class;
+          } else {
+            return opts.styles.node;
+          }
+        })
         .attr('height', 20)
         .attr('width', 40)
         .attr('id', function(d) {
