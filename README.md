@@ -20,18 +20,19 @@ dTree.init(data, options);
 The data object should have the following structure:
 ```
 [{
-  "name": "Father",
-  "class": "overriding-css-class",
-  "marriage": {
-    "spouse": {
-      "name": "Mother",
-      "class": "overriding-css-class"
+  name: "Father",
+  class: "overriding-css-class",
+  marriage: {
+    spouse: {
+      name: "Mother",
+      class: "overriding-css-class"
     },
-    "children": [{
-      "name": "Child",
-      "class": "child-class"
+    children: [{
+      name: "Child",
+      class: "child-class"
     }]
-  }
+  },
+  extra: {}
 }]
 ```
 

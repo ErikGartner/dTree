@@ -21,7 +21,7 @@ const dTree = {
       styles: {
         node: 'node',
         link: 'link',
-        marriage: 'marriage',
+        marriage: 'marriage'
       }
     });
 
@@ -50,6 +50,8 @@ const dTree = {
         id: id++,
         hidden: false,
         children: [],
+        extra: person.extra,
+        class: person.class
       };
 
       // add to parent as child
@@ -63,7 +65,8 @@ const dTree = {
           id: id++,
           hidden: true,
           noParent: true,
-          children: []
+          children: [],
+          extra: person.marriage.extra
         };
 
         parent.children.push(m);
@@ -73,7 +76,9 @@ const dTree = {
           id: id++,
           hidden: false,
           noParent: true,
-          children: []
+          children: [],
+          class: person.marriage.spouse.class,
+          extra: person.marriage.spouse.extra
         };
 
         parent.children.push(spouse);
