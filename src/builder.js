@@ -3,18 +3,18 @@ const treeBuilder = {
   create: function(root, siblings, opts) {
 
     var kx = function(d) {
-      return d.x - 20;
+      return d.x - nodeSize[0]/4;
     };
     var ky = function(d) {
-      return d.y - 10;
+      return d.y - nodeSize[1] / 6;
     };
     //this place the text x axis adjust this to center align the text
     var tx = function(d) {
-      return d.x + opts.textOffset.x;
+      return d.x - nodeSize[0] / 5 ;
     };
     //this place the text y axis adjust this to center align the text
     var ty = function(d) {
-      return d.y + opts.textOffset.y;
+      return d.y;
     };
 
     var zoom = d3.behavior.zoom()
@@ -33,8 +33,12 @@ const treeBuilder = {
       .append('g')
       .attr('transform', 'translate(' + opts.margin.left + ',' + opts.margin.top + ')');
 
+    // flatten nodes
+    var allNodes = this._flatten(root);
+    var nodeSize = this._calculateNodeSize(allNodes);
+
     // Compute the layout.
-    var tree = d3.layout.tree().nodeSize([150, 100]);
+    var tree = d3.layout.tree().nodeSize(nodeSize);
     var nodes = tree.nodes(root);
 
     // Since root node is hidden, readjust height.
@@ -60,7 +64,6 @@ const treeBuilder = {
       .data(nodes)
       .enter();
 
-    var allNodes = this._flatten(root);
     this._linkSiblings(allNodes, siblings);
 
     //First draw sibling line with blue line
@@ -80,8 +83,8 @@ const treeBuilder = {
           return opts.styles.node;
         }
       })
-      .attr('width', 100)
-      .attr('height', 30)
+      .attr('width', nodeSize[0] / 2)
+      .attr('height', nodeSize[1] / 3)
       .attr('id', function(d) {
         return d.id;
       })
@@ -190,6 +193,17 @@ const treeBuilder = {
       })
       .interpolate('step-after');
     return fun(linedata);
+  },
+
+  _calculateNodeSize: function(allNodes) {
+    var longest = '';
+    _.forEach(allNodes, function(n) {
+      if(n.name.length > longest.length) {
+        longest = n.name;
+      }
+    });
+
+    return [longest.length * 10 + 5, longest.length * 5]
   }
 
 };
