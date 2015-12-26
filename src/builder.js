@@ -3,18 +3,18 @@ const treeBuilder = {
   create: function(root, siblings, opts) {
 
     var kx = function(d) {
-      return d.x - nodeSize[0]/4;
+      return d.x - nodeSize[0] / 4;
     };
     var ky = function(d) {
       return d.y - nodeSize[1] / 6;
     };
     //this place the text x axis adjust this to center align the text
     var tx = function(d) {
-      return d.x - nodeSize[0] / 5 ;
+      return d.x - nodeSize[0] / 4 + 5;
     };
     //this place the text y axis adjust this to center align the text
     var ty = function(d) {
-      return d.y;
+      return d.y + 4;
     };
 
     var zoom = d3.behavior.zoom()
@@ -38,7 +38,8 @@ const treeBuilder = {
     var nodeSize = this._calculateNodeSize(allNodes);
 
     // Compute the layout.
-    var tree = d3.layout.tree().nodeSize(nodeSize);
+    var tree = d3.layout.tree()
+      .nodeSize(nodeSize);
     var nodes = tree.nodes(root);
 
     // Since root node is hidden, readjust height.
@@ -103,6 +104,7 @@ const treeBuilder = {
       .text(function(d) {
         return d.name;
       })
+      .class('class', opts.styles.text)
       .attr('x', tx)
       .attr('y', ty);
   },
@@ -198,12 +200,12 @@ const treeBuilder = {
   _calculateNodeSize: function(allNodes) {
     var longest = '';
     _.forEach(allNodes, function(n) {
-      if(n.name.length > longest.length) {
+      if (n.name.length > longest.length) {
         longest = n.name;
       }
     });
 
-    return [longest.length * 10 + 5, longest.length * 5]
+    return [longest.length * 10 + 10, longest.length * 5];
   }
 
 };
