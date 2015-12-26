@@ -104,7 +104,7 @@ const treeBuilder = {
       .text(function(d) {
         return d.name;
       })
-      .class('class', opts.styles.text)
+      .attr('class', opts.styles.text)
       .attr('x', tx)
       .attr('y', ty);
   },
