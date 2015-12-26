@@ -3,9 +3,9 @@
 
 [![Dependency Status](https://david-dm.org/ErikGartner/dtree.svg)](https://david-dm.org/ErikGartner/dtree) [![devDependency Status](https://david-dm.org/ErikGartner/dtree/dev-status.svg)](https://david-dm.org/ErikGartner/dtree#info=devDependencies) [![npm](https://img.shields.io/npm/v/d3-dtree.svg)](https://www.npmjs.com/package/d3-dtree)
 
-If you want a CDN you can use this:
+You can find and use the release package as a poor-man's CDN:
 ```
-https://cdn.rawgit.com/ErikGartner/dTree/releases/download/0.1.1/dTree.min.js
+https://github.com/ErikGartner/dTree/releases/download/0.1.1/dTree.min.js
 ```
 
 ## Requirements
