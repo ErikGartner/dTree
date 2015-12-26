@@ -17,23 +17,33 @@ const treeBuilder = {
       return d.y + opts.textOffset.y;
     };
 
+    var zoom = d3.behavior.zoom()
+      .scaleExtent([0.1, 10])
+      .on('zoom', function() {
+        svg.attr('transform', 'translate(' + d3.event.translate + ')' +
+          ' scale(' + d3.event.scale + ')');
+      });
+
     //make an SVG
     var svg = d3.select(opts.target)
       .append('svg')
       .attr('width', opts.width + opts.margin.left + opts.margin.right)
       .attr('height', opts.height + opts.margin.top + opts.margin.bottom)
+      .call(zoom)
       .append('g')
       .attr('transform', 'translate(' + opts.margin.left + ',' + opts.margin.top + ')');
 
     // Compute the layout.
-    var tree = d3.layout.tree()
-      .size([opts.width, opts.height]);
+    var tree = d3.layout.tree().nodeSize([150, 100]);
     var nodes = tree.nodes(root);
 
     // Since root node is hidden, readjust height.
-    var root_offset = nodes[1].y;
+    var rootOffset = 0;
+    if (nodes.length > 1) {
+      rootOffset = nodes[1].y;
+    }
     _.forEach(nodes, function(n) {
-      n.y = n.y - root_offset / 2;
+      n.y = n.y - rootOffset / 2;
     });
 
     var links = tree.links(nodes);
@@ -70,8 +80,8 @@ const treeBuilder = {
           return opts.styles.node;
         }
       })
-      .attr('height', 20)
-      .attr('width', 40)
+      .attr('width', 100)
+      .attr('height', 30)
       .attr('id', function(d) {
         return d.id;
       })
