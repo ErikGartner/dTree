@@ -5,22 +5,26 @@
 	body {
 	    font: 10px sans-serif;
 	}
-	.link {
+	.linage {
 	    fill: none;
 	    stroke: #000;
 	}
-	.sibling {
+	.marriage {
 	    fill: none;
-	    stroke: blue;
+	    stroke: black;
 	}
 	.border {
 	    fill: none;
 	    shape-rendering: crispEdges;
 	    stroke: #aaa;
 	}
-	.node {
-	    stroke: red;
-	    fill:white;
+	.man {
+	    stroke: black;
+	    fill: lightblue;
+	}
+	.woman {
+		stroke: black;
+		fill: pink;
 	}
 
 </style>
@@ -33,7 +37,7 @@
 
 		<script>
       treeJson = d3.json("data.json", function(error, treeData) {
-      	dTree.init(treeData, {target: "#graph"});
+      	dTree.init(treeData, {target: "#graph", height:800, width: 1200});
     	});
     </script>
 </body>
