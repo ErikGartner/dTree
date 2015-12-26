@@ -10,10 +10,10 @@ const isparta = require('isparta');
 const babelify = require('babelify');
 const watchify = require('watchify');
 const buffer = require('vinyl-buffer');
-const esperanto = require('esperanto');
 const browserify = require('browserify');
 const runSequence = require('run-sequence');
 const source = require('vinyl-source-stream');
+const rollup = require( 'rollup' );
 
 // Gather the library data from `package.json`
 const manifest = require('./package.json');
@@ -59,15 +59,19 @@ createLintTask('lint-test', ['test/**/*.js']);
 
 // Build two versions of the library
 gulp.task('build', ['lint-src', 'clean'], function(done) {
-  esperanto.bundle({
-    base: 'src',
-    entry: config.entryFileName,
+  rollup.rollup({
+    entry: 'src/' + config.entryFileName,
   }).then(function(bundle) {
-    var res = bundle.toUmd({
-      // Don't worry about the fact that the source map is inlined at this step.
-      // `gulp-sourcemaps`, which comes next, will externalize them.
-      sourceMap: 'inline',
-      name: config.mainVarName
+    var res = bundle.generate({
+      // use this instead of `toUmd`
+      format: 'umd',
+
+      // this is equivalent to `strict: true` -
+      // optional, will be auto-detected
+      //exports: 'named',
+
+      // `name` -> `moduleName`
+      moduleName: config.mainVarName,
     });
 
     $.file(exportFileName + '.js', res.code, { src: true })
