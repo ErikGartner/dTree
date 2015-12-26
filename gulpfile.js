@@ -14,6 +14,8 @@ const browserify = require('browserify');
 const runSequence = require('run-sequence');
 const source = require('vinyl-source-stream');
 const rollup = require( 'rollup' );
+const argv = require('minimist')(process.argv.slice(2));
+const fs = require('fs');
 
 // Gather the library data from `package.json`
 const manifest = require('./package.json');
@@ -179,6 +181,56 @@ gulp.task('watch', function() {
 gulp.task('test-browser', ['build-in-sequence'], function() {
   $.livereload.listen({port: 35729, host: 'localhost', start: true});
   return gulp.watch(otherWatchFiles, ['build-in-sequence']);
+});
+
+gulp.task('bump', function() {
+  return gulp.src('./package.json')
+  .pipe($.bump({key: 'version', type: argv.bump}))
+  .pipe(gulp.dest('./'));
+});
+
+gulp.task('changelog', function () {
+  return gulp.src('./CHANGELOG.md')
+    .pipe($.conventionalChangelog({
+      preset: 'angular',
+    }))
+    .pipe(gulp.dest('./'));
+});
+
+gulp.task('tag-release', function (cb) {
+  var version = getPackageJsonVersion();
+  $.git.tag(version, 'Created Tag for version: ' + version, function (error) {
+    if (error) {
+      return cb(error);
+    }
+  });
+  function getPackageJsonVersion () {
+    // We parse the json file instead of using require because require caches
+    // multiple calls so the version number won't be updated
+    return JSON.parse(fs.readFileSync('./package.json', 'utf8')).version;
+  }
+});
+
+gulp.task('commit-changes', function () {
+  return gulp.src(['./package.json', './CHANGELOG.md'])
+    .pipe($.git.add())
+    .pipe($.git.commit('chore: Bump version number'));
+});
+
+gulp.task('prepare-release', function (callback) {
+  runSequence(
+    'bump',
+    'changelog',
+    'commit-changes',
+    'tag-release',
+    function (error) {
+      if (error) {
+        console.log(error.message);
+      } else {
+        console.log('Updated release state!');
+      }
+      callback(error);
+    });
 });
 
 // An alias of test
