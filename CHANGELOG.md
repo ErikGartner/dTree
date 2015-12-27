@@ -1,3 +1,13 @@
+<a name="0.1.2"></a>
+## [0.1.2](https://github.com/ErikGartner/dtree/compare/0.1.1...v0.1.2) (2015-12-27)
+
+
+### Features
+
+* Add css class override for node text ([21b8677](https://github.com/ErikGartner/dtree/commit/21b8677))
+
+
+
 <a name="0.1.1"></a>
 ## [0.1.1](https://github.com/ErikGartner/dtree/compare/0.1.0...v0.1.1) (2015-12-26)
 
