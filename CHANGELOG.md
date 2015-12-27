@@ -1,3 +1,9 @@
+<a name="0.2.0"></a>
+# [0.2.0](https://github.com/ErikGartner/dtree/compare/0.1.4...v0.2.0) (2015-12-27)
+
+
+
+
 <a name="0.1.4"></a>
 ## [0.1.4](https://github.com/ErikGartner/dtree/compare/0.1.3...v0.1.4) (2015-12-27)
 
