@@ -1,3 +1,13 @@
+<a name="0.1.3"></a>
+## [0.1.3](https://github.com/ErikGartner/dtree/compare/0.1.2...v0.1.3) (2015-12-27)
+
+
+### Bug Fixes
+
+* Bug affecting textClass ([bdfe318](https://github.com/ErikGartner/dtree/commit/bdfe318))
+
+
+
 <a name="0.1.2"></a>
 ## [0.1.2](https://github.com/ErikGartner/dtree/compare/0.1.1...v0.1.2) (2015-12-27)
 
