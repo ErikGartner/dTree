@@ -4,7 +4,7 @@ const dTree = {
 
   init: function(data, options = {}) {
 
-    var opts = _.defaults(options || {}, {
+    var opts = _.defaultsDeep(options || {}, {
       target: '#graph',
       width: 600,
       height: 600,
