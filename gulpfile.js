@@ -233,5 +233,9 @@ gulp.task('prepare-release', function (callback) {
     });
 });
 
+gulp.task('demo', ['build'], $.shell.task([
+  'node test/demo/demo.js'
+]))
+
 // An alias of test
 gulp.task('default', ['test']);

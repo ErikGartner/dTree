@@ -66,9 +66,9 @@ To setup and build the library from scratch follow these steps:
 
 A demo is available by running:
 ```
-npm run-script demo
+gulp demo
 ```
-It hosts a demo on localhost:3000 located in ```test/demo```. Note that the library must be built first.
+It hosts a demo on localhost:3000 by serving ```test/demo```.
 
 ## Contributions
 To make contributions please follow the contributions document.
