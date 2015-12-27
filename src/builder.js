@@ -40,6 +40,15 @@ const treeBuilder = {
     // Compute the layout.
     var tree = d3.layout.tree()
       .nodeSize(nodeSize);
+
+    tree.separation(function separation(a, b) {
+      if (a.hidden || b.hidden) {
+        return 0.5;
+      } else {
+        return 1;
+      }
+    });
+
     var nodes = tree.nodes(root);
 
     // Since root node is hidden, readjust height.
@@ -67,7 +76,7 @@ const treeBuilder = {
 
     this._linkSiblings(allNodes, siblings);
 
-    //First draw sibling line with blue line
+    // Draw siblings (marriage)
     svg.selectAll('.sibling')
       .data(siblings)
       .enter()
