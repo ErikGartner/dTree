@@ -8,11 +8,14 @@ const dTree = {
       target: '#graph',
       width: 600,
       height: 600,
+      callbacks: {
+        nodeClick: function(name, extra, id) {}
+      },
       margin: {
-        top: 10,
-        right: 10,
-        bottom: 10,
-        left: 10
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0
       },
       styles: {
         node: 'node',

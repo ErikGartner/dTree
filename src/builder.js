@@ -102,7 +102,10 @@ const treeBuilder = {
         };
       })
       .attr('x', kx)
-      .attr('y', ky);
+      .attr('y', ky)
+      .on('click', function(d) {
+        opts.callbacks.nodeClick(d.name, d.extra, d.id);
+      });
 
     // Create the node text label.
     nodes.append('text')
@@ -113,7 +116,11 @@ const treeBuilder = {
         return d.textClass ? d.textClass : opts.styles.text;
       })
       .attr('x', tx)
-      .attr('y', ty);
+      .attr('y', ty)
+      .on('click', function(d) {
+        opts.callbacks.nodeClick(d.name, d.extra, d.id);
+      });
+
   },
 
   _flatten: function(root) {
