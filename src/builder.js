@@ -43,9 +43,9 @@ const treeBuilder = {
 
     tree.separation(function separation(a, b) {
       if (a.hidden || b.hidden) {
-        return 0.5;
+        return 0.3;
       } else {
-        return 1;
+        return 0.6;
       }
     });
 
