@@ -48,6 +48,7 @@ const dTree = {
         hidden: false,
         children: [],
         extra: person.extra,
+        textClass: person.textClass,
         class: person.class
       };
 
@@ -74,6 +75,7 @@ const dTree = {
           hidden: false,
           noParent: true,
           children: [],
+          textClass: person.marriage.spouse.textClass,
           class: person.marriage.spouse.class,
           extra: person.marriage.spouse.extra
         };

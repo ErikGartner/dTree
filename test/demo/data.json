@@ -1,6 +1,7 @@
 [{
   "name": "Niclas",
   "class": "man",
+  "textClass": "emphasis",
   "marriage": {
     "spouse": {
       "name": "Iliana",
