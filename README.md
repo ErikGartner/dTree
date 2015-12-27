@@ -27,6 +27,7 @@ The data object should have the following structure:
 [{
   name: "Father",
   class: "overriding-css-class",
+  textClass: "overriding-css-class",
   marriage: {
     spouse: {
       name: "Mother",

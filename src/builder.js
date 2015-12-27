@@ -78,11 +78,7 @@ const treeBuilder = {
     // Create the node rectangles.
     nodes.append('rect')
       .attr('class', function(d) {
-        if (d.class) {
-          return d.class;
-        } else {
-          return opts.styles.node;
-        }
+        return d.class ? d.class : opts.styles.nodes;
       })
       .attr('width', nodeSize[0] / 2)
       .attr('height', nodeSize[1] / 3)
@@ -104,7 +100,9 @@ const treeBuilder = {
       .text(function(d) {
         return d.name;
       })
-      .attr('class', opts.styles.text)
+      .attr('class', function(d) {
+        return d.textClass ? d.textClass : opts.styles.text;
+      })
       .attr('x', tx)
       .attr('y', ty);
   },
