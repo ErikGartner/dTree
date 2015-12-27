@@ -1,3 +1,19 @@
+<a name="0.1.4"></a>
+## [0.1.4](https://github.com/ErikGartner/dtree/compare/0.1.3...v0.1.4) (2015-12-27)
+
+
+### Bug Fixes
+
+* Bug when setting opts defaults ([d06bc19](https://github.com/ErikGartner/dtree/commit/d06bc19))
+
+### Features
+
+* Add click handler support #8 ([6908bc9](https://github.com/ErikGartner/dtree/commit/6908bc9))
+* Add gulp demo command ([7b01f6d](https://github.com/ErikGartner/dtree/commit/7b01f6d))
+* Improved separation between nodes ([c001db3](https://github.com/ErikGartner/dtree/commit/c001db3))
+
+
+
 <a name="0.1.3"></a>
 ## [0.1.3](https://github.com/ErikGartner/dtree/compare/0.1.2...v0.1.3) (2015-12-27)
 
