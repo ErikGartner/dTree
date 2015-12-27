@@ -14,7 +14,7 @@
     "type": "git",
     "url": "https://github.com/ErikGartner/dtree.git"
   },
-  "keywords": [],
+  "keywords": ["d3", "graphing", "tree graph", "genealogy", "family tree"],
   "author": "Erik Gärtner",
   "license": "MIT",
   "bugs": {
