@@ -13,12 +13,12 @@ To use the library the follow dependencies must be loaded:
 Just include the compiled file ```dTree.js```, it exposes a ```dTree``` variable.
 
 To create a graph from data use the following command:
-```
+```javascript
 dTree.init(data, options);
 ```
 
 The data object should have the following structure:
-```
+```javascript
 [{
   name: "Father",
   class: "overriding-css-class",
@@ -38,7 +38,7 @@ The data object should have the following structure:
 ```
 
 The options object has the following default values:
-```
+```javascript
 {
   target: '#graph',
   width: 600,
@@ -62,7 +62,7 @@ The options object has the following default values:
 ```
 
 The following CSS sets some good defaults:
-```
+```css
 .linage {
     fill: none;
     stroke: black;
