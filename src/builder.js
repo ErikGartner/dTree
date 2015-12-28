@@ -18,13 +18,13 @@ class TreeBuilder {
 
     var zoom = d3.behavior.zoom()
       .scaleExtent([0.1, 10])
-      .on('zoom', function() {
+      .on('zoom', _.bind(function() {
         svg.attr('transform', 'translate(' + d3.event.translate + ')' +
           ' scale(' + d3.event.scale + ')');
-      });
+      }, this));
 
     //make an SVG
-    var svg = d3.select(opts.target)
+    var svg = this.svg = d3.select(opts.target)
       .append('svg')
       .attr('width', opts.width + opts.margin.left + opts.margin.right)
       .attr('height', opts.height + opts.margin.top + opts.margin.bottom)
@@ -33,10 +33,10 @@ class TreeBuilder {
       .attr('transform', 'translate(' + opts.margin.left + ',' + opts.margin.top + ')');
 
     // Compute the layout.
-    var tree = d3.layout.tree()
+    this.tree = d3.layout.tree()
       .nodeSize(nodeSize);
 
-    tree.separation(function separation(a, b) {
+    this.tree.separation(function separation(a, b) {
       if (a.hidden || b.hidden) {
         return 0.3;
       } else {
@@ -44,7 +44,17 @@ class TreeBuilder {
       }
     });
 
-    var nodes = tree.nodes(this.root);
+    this._update(this.root);
+
+  }
+
+  _update(source) {
+
+    var opts = this.opts;
+    var allNodes = this.allNodes;
+    var nodeSize = this.nodeSize;
+
+    var nodes = this.tree.nodes(source);
 
     // Since root node is hidden, readjust height.
     var rootOffset = 0;
@@ -55,24 +65,24 @@ class TreeBuilder {
       n.y = n.y - rootOffset / 2;
     });
 
-    var links = tree.links(nodes);
+    var links = this.tree.links(nodes);
 
     // Create the link lines.
-    svg.selectAll('.link')
+    this.svg.selectAll('.link')
       .data(links)
       .enter()
       .append('path')
       .attr('class', opts.styles.linage)
       .attr('d', this._elbow);
 
-    var nodes = svg.selectAll('.node')
+    var nodes = this.svg.selectAll('.node')
       .data(nodes)
       .enter();
 
     this._linkSiblings();
 
     // Draw siblings (marriage)
-    svg.selectAll('.sibling')
+    this.svg.selectAll('.sibling')
       .data(this.siblings)
       .enter()
       .append('path')
