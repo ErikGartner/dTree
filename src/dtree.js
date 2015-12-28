@@ -1,4 +1,4 @@
-import treeBuilder from './builder.js';
+import TreeBuilder from './builder.js';
 
 const dTree = {
 
@@ -26,6 +26,7 @@ const dTree = {
     });
 
     var data = this._preprocess(data);
+    var treeBuilder = new TreeBuilder();
     treeBuilder.create(data.root, data.siblings, opts);
 
   },

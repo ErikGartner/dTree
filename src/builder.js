@@ -1,6 +1,6 @@
-const treeBuilder = {
+class TreeBuilder {
 
-  create: function(root, siblings, opts) {
+  create(root, siblings, opts) {
 
     var kx = function(d) {
       return d.x - nodeSize[0] / 4;
@@ -121,9 +121,9 @@ const treeBuilder = {
         opts.callbacks.nodeClick(d.name, d.extra, d.id);
       });
 
-  },
+  }
 
-  _flatten: function(root) {
+  _flatten(root) {
     var n = [];
     var i = 0;
 
@@ -138,9 +138,9 @@ const treeBuilder = {
     }
     recurse(root);
     return n;
-  },
+  }
 
-  _elbow: function(d, i) {
+  _elbow(d, i) {
     if (d.target.noParent) {
       return 'M0,0L0,0';
     }
@@ -166,9 +166,9 @@ const treeBuilder = {
       })
       .interpolate('step-after');
     return fun(linedata);
-  },
+  }
 
-  _linkSiblings: function(allNodes, siblings) {
+  _linkSiblings(allNodes, siblings) {
 
     _.forEach(siblings, function(d)  {
       var start = allNodes.filter(function(v) {
@@ -183,9 +183,9 @@ const treeBuilder = {
       d.target.y = end[0].y;
     });
 
-  },
+  }
 
-  _siblingLine: function(d, i) {
+  _siblingLine(d, i) {
 
     var ny = d.target.y + (d.source.y - d.target.y) * 0.50;
 
@@ -209,9 +209,9 @@ const treeBuilder = {
       })
       .interpolate('step-after');
     return fun(linedata);
-  },
+  }
 
-  _calculateNodeSize: function(allNodes) {
+  _calculateNodeSize(allNodes) {
     var longest = '';
     _.forEach(allNodes, function(n) {
       if (n.name.length > longest.length) {
@@ -222,6 +222,6 @@ const treeBuilder = {
     return [longest.length * 10 + 10, longest.length * 5];
   }
 
-};
+}
 
-export default treeBuilder;
+export default TreeBuilder;
