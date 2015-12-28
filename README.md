@@ -61,6 +61,25 @@ The options object has the following default values:
 }
 ```
 
+The following CSS sets some good defaults:
+```
+.linage {
+    fill: none;
+    stroke: black;
+}
+.marriage {
+    fill: none;
+    stroke: black;
+}
+.node {
+    stroke: black;
+    fill: lightblue;
+}
+.nodeText{
+    font: 10px sans-serif;
+}
+```
+
 ## Development
 To setup and build the library from scratch follow these steps:
 
