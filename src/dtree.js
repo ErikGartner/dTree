@@ -26,8 +26,8 @@ const dTree = {
     });
 
     var data = this._preprocess(data);
-    var treeBuilder = new TreeBuilder();
-    treeBuilder.create(data.root, data.siblings, opts);
+    var treeBuilder = new TreeBuilder(data.root, data.siblings, opts);
+    treeBuilder.create();
 
   },
 

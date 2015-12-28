@@ -1,21 +1,20 @@
 class TreeBuilder {
 
-  create(root, siblings, opts) {
+  constructor(root, siblings, opts) {
+    this.root = root;
+    this.siblings = siblings;
+    this.opts = opts;
 
-    var kx = function(d) {
-      return d.x - nodeSize[0] / 4;
-    };
-    var ky = function(d) {
-      return d.y - nodeSize[1] / 6;
-    };
-    //this place the text x axis adjust this to center align the text
-    var tx = function(d) {
-      return d.x - nodeSize[0] / 4 + 5;
-    };
-    //this place the text y axis adjust this to center align the text
-    var ty = function(d) {
-      return d.y + 4;
-    };
+    // flatten nodes
+    this.allNodes = this._flatten(this.root);
+    this.nodeSize = this._calculateNodeSize();
+  }
+
+  create() {
+
+    var opts = this.opts;
+    var allNodes = this.allNodes;
+    var nodeSize = this.nodeSize;
 
     var zoom = d3.behavior.zoom()
       .scaleExtent([0.1, 10])
@@ -33,10 +32,6 @@ class TreeBuilder {
       .append('g')
       .attr('transform', 'translate(' + opts.margin.left + ',' + opts.margin.top + ')');
 
-    // flatten nodes
-    var allNodes = this._flatten(root);
-    var nodeSize = this._calculateNodeSize(allNodes);
-
     // Compute the layout.
     var tree = d3.layout.tree()
       .nodeSize(nodeSize);
@@ -49,7 +44,7 @@ class TreeBuilder {
       }
     });
 
-    var nodes = tree.nodes(root);
+    var nodes = tree.nodes(this.root);
 
     // Since root node is hidden, readjust height.
     var rootOffset = 0;
@@ -74,11 +69,11 @@ class TreeBuilder {
       .data(nodes)
       .enter();
 
-    this._linkSiblings(allNodes, siblings);
+    this._linkSiblings();
 
     // Draw siblings (marriage)
     svg.selectAll('.sibling')
-      .data(siblings)
+      .data(this.siblings)
       .enter()
       .append('path')
       .attr('class', opts.styles.marriage)
@@ -101,8 +96,12 @@ class TreeBuilder {
           return '';
         };
       })
-      .attr('x', kx)
-      .attr('y', ky)
+      .attr('x', function(d) {
+        return d.x - nodeSize[0] / 4;
+      })
+      .attr('y', function(d) {
+        return d.y - nodeSize[1] / 6;
+      })
       .on('click', function(d) {
         opts.callbacks.nodeClick(d.name, d.extra, d.id);
       });
@@ -115,12 +114,15 @@ class TreeBuilder {
       .attr('class', function(d) {
         return d.textClass ? d.textClass : opts.styles.text;
       })
-      .attr('x', tx)
-      .attr('y', ty)
+      .attr('x', function(d) {
+        return d.x - nodeSize[0] / 4 + 5;
+      })
+      .attr('y', function(d) {
+        return d.y + 4;
+      })
       .on('click', function(d) {
         opts.callbacks.nodeClick(d.name, d.extra, d.id);
       });
-
   }
 
   _flatten(root) {
@@ -168,9 +170,11 @@ class TreeBuilder {
     return fun(linedata);
   }
 
-  _linkSiblings(allNodes, siblings) {
+  _linkSiblings() {
 
-    _.forEach(siblings, function(d)  {
+    var allNodes = this.allNodes;
+
+    _.forEach(this.siblings, function(d)  {
       var start = allNodes.filter(function(v) {
         return d.source.id == v.id;
       });
@@ -211,9 +215,9 @@ class TreeBuilder {
     return fun(linedata);
   }
 
-  _calculateNodeSize(allNodes) {
+  _calculateNodeSize() {
     var longest = '';
-    _.forEach(allNodes, function(n) {
+    _.forEach(this.allNodes, function(n) {
       if (n.name.length > longest.length) {
         longest = n.name;
       }
