@@ -10,7 +10,7 @@ https://cdn.rawgit.com/ErikGartner/dTree/master/dist/dTree.min.js
 
 For a specific version use:
 ```
-https://rawgit.com/ErikGartner/dTree/0.2.4/dist/dTree.min.js
+https://cdn.rawgit.com/ErikGartner/dTree/0.2.4/dist/dTree.min.js
 ```
 
 ## Requirements
