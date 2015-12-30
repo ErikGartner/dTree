@@ -8,6 +8,11 @@ If you want the latest build use the following CDN:
 https://cdn.rawgit.com/ErikGartner/dTree/master/dist/dTree.min.js
 ```
 
+For a specific version use:
+```
+https://rawgit.com/ErikGartner/dTree/0.2.4/dist/dTree.min.js
+```
+
 ## Requirements
 To use the library the follow dependencies must be loaded:
 
