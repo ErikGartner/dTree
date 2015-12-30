@@ -1,3 +1,13 @@
+<a name="0.2.5"></a>
+## [0.2.5](https://github.com/ErikGartner/dtree/compare/0.2.4...v0.2.5) (2015-12-30)
+
+
+### Bug Fixes
+
+* Invalid buildstep ([f593bce](https://github.com/ErikGartner/dtree/commit/f593bce))
+
+
+
 <a name="0.2.4"></a>
 ## [0.2.4](https://github.com/ErikGartner/dtree/compare/0.2.3...v0.2.4) (2015-12-30)
 
