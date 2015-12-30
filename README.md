@@ -44,7 +44,8 @@ The options object has the following default values:
   width: 600,
   height: 600,
   callbacks: {
-    nodeClick: function(name, extra, id) {}
+    nodeClick: function(name, extra, id) {},
+    text: function(name, extra, id) {return name;}
   },
   margin: {
     top: 0,

@@ -119,7 +119,7 @@ class TreeBuilder {
     // Create the node text label.
     nodes.append('text')
       .text(function(d) {
-        return d.name;
+        return opts.callbacks.text(d.name, d.extra, d.id);
       })
       .attr('class', function(d) {
         return d.textClass ? d.textClass : opts.styles.text;
