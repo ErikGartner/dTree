@@ -1,3 +1,14 @@
+<a name="0.2.2"></a>
+## [0.2.2](https://github.com/ErikGartner/dtree/compare/0.2.1...v0.2.2) (2015-12-30)
+
+
+### Features
+
+* Add custom text function #6 ([2384b01](https://github.com/ErikGartner/dtree/commit/2384b01))
+* Add version to dTree #14 ([ffd9737](https://github.com/ErikGartner/dtree/commit/ffd9737))
+
+
+
 <a name="0.2.1"></a>
 ## [0.2.1](https://github.com/ErikGartner/dtree/compare/0.2.0...v0.2.1) (2015-12-29)
 

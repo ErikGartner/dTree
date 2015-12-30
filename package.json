@@ -1,6 +1,6 @@
 {
   "name": "d3-dtree",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "A library for visualizing data trees built on top of D3.",
   "main": "dist/dTree.js",
   "scripts": {
@@ -60,6 +60,7 @@
     "gulp-conventional-changelog": "^0.7.0",
     "gulp-git": "^1.5.0",
     "gulp-preprocess": "^2.0.0",
+    "gulp-github-release": "^1.1.0",
     "minimist": "^1.2.0",
     "isparta": "~3.0.3",
     "jquery": "^2.1.4",
