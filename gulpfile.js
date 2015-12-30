@@ -228,9 +228,9 @@ gulp.task('prepare-release', function (callback) {
   runSequence(
     'bump',
     'changelog',
+    'build',
     'commit-changes',
     'tag-release',
-    'build',
     function (error) {
       if (error) {
         console.log(error.message);
