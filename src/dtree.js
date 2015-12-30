@@ -2,6 +2,8 @@ import TreeBuilder from './builder.js';
 
 const dTree = {
 
+  version: '/* @echo DTREE_VERSION */',
+
   init: function(data, options = {}) {
 
     var opts = _.defaultsDeep(options || {}, {

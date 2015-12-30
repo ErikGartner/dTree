@@ -77,6 +77,7 @@ gulp.task('build', ['lint-src', 'clean'], function(done) {
     });
 
     $.file(exportFileName + '.js', res.code, { src: true })
+      .pipe($.preprocess({context: {DTREE_VERSION: manifest.version}}))
       .pipe($.plumber())
       .pipe($.sourcemaps.init({ loadMaps: true }))
       .pipe($.babel())
