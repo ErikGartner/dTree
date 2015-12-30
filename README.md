@@ -3,6 +3,11 @@
 
 [![Dependency Status](https://david-dm.org/ErikGartner/dtree.svg)](https://david-dm.org/ErikGartner/dtree) [![devDependency Status](https://david-dm.org/ErikGartner/dtree/dev-status.svg)](https://david-dm.org/ErikGartner/dtree#info=devDependencies) [![npm](https://img.shields.io/npm/v/d3-dtree.svg)](https://www.npmjs.com/package/d3-dtree)
 
+If you want the latest build use the following CDN:
+```
+https://cdn.rawgit.com/ErikGartner/dTree/master/dist/dTree.min.js
+```
+
 ## Requirements
 To use the library the follow dependencies must be loaded:
 
