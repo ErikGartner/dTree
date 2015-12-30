@@ -61,6 +61,7 @@ createLintTask('lint-test', ['test/**/*.js']);
 
 // Build two versions of the library
 gulp.task('build', ['lint-src', 'clean'], function(done) {
+  var version = getPackageJsonVersion();
   rollup.rollup({
     entry: 'src/' + config.entryFileName,
   }).then(function(bundle) {
@@ -77,7 +78,7 @@ gulp.task('build', ['lint-src', 'clean'], function(done) {
     });
 
     $.file(exportFileName + '.js', res.code, { src: true })
-      .pipe($.preprocess({context: {DTREE_VERSION: manifest.version}}))
+      .pipe($.preprocess({context: {DTREE_VERSION: version}}))
       .pipe($.plumber())
       .pipe($.sourcemaps.init({ loadMaps: true }))
       .pipe($.babel())
@@ -92,6 +93,11 @@ gulp.task('build', ['lint-src', 'clean'], function(done) {
       .on('end', done);
   })
   .catch(done);
+  function getPackageJsonVersion () {
+    // We parse the json file instead of using require because require caches
+    // multiple calls so the version number won't be updated
+    return JSON.parse(fs.readFileSync('./package.json', 'utf8')).version;
+  }
 });
 
 function bundle(bundler) {
@@ -224,6 +230,7 @@ gulp.task('prepare-release', function (callback) {
     'changelog',
     'commit-changes',
     'tag-release',
+    'build',
     function (error) {
       if (error) {
         console.log(error.message);
