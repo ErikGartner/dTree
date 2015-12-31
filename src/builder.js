@@ -37,6 +37,8 @@ class TreeBuilder {
       .append('g')
       .attr('transform', 'translate(' + width / 2 + ',' + opts.margin.top + ')');
 
+    zoom.translate([width / 2, opts.margin.top]);
+
     // Compute the layout.
     this.tree = d3.layout.tree()
       .nodeSize(nodeSize);
