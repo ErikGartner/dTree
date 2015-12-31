@@ -16,6 +16,9 @@ class TreeBuilder {
     var allNodes = this.allNodes;
     var nodeSize = this.nodeSize;
 
+    var width = opts.width + opts.margin.left + opts.margin.right;
+    var height = opts.height + opts.margin.top + opts.margin.bottom;
+
     var zoom = d3.behavior.zoom()
       .scaleExtent([0.1, 10])
       .on('zoom', _.bind(function() {
@@ -26,11 +29,11 @@ class TreeBuilder {
     //make an SVG
     var svg = this.svg = d3.select(opts.target)
       .append('svg')
-      .attr('width', opts.width + opts.margin.left + opts.margin.right)
-      .attr('height', opts.height + opts.margin.top + opts.margin.bottom)
+      .attr('width', width)
+      .attr('height', height)
       .call(zoom)
       .append('g')
-      .attr('transform', 'translate(' + opts.margin.left + ',' + opts.margin.top + ')');
+      .attr('transform', 'translate(' + width / 2 + ',' + opts.margin.top + ')');
 
     // Compute the layout.
     this.tree = d3.layout.tree()
