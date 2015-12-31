@@ -1,3 +1,19 @@
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/ErikGartner/dtree/compare/0.2.5...v0.3.0) (2015-12-31)
+
+
+### Bug Fixes
+
+* Center graph on load #11 ([1d5e71c](https://github.com/ErikGartner/dtree/commit/1d5e71c))
+* Jerky zoom start ([ea184b5](https://github.com/ErikGartner/dtree/commit/ea184b5))
+
+### Features
+
+* Add custom html renderers and wrapping #16 #5 #3 ([5f71c8c](https://github.com/ErikGartner/dtree/commit/5f71c8c))
+* Add debug variable ([51ec554](https://github.com/ErikGartner/dtree/commit/51ec554))
+
+
+
 <a name="0.2.5"></a>
 ## [0.2.5](https://github.com/ErikGartner/dtree/compare/0.2.4...v0.2.5) (2015-12-30)
 
