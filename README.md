@@ -50,7 +50,13 @@ The options object has the following default values:
   height: 600,
   callbacks: {
     nodeClick: function(name, extra, id) {},
-    text: function(name, extra, id) {return name;}
+    nodeRenderer: function(name, x, y, height, width, extra, id, nodeClass, textClass, textRenderer) {
+      return TreeBuilder._nodeRenderer(name, x, y, height, width, extra,
+        id,nodeClass, textClass, textRenderer);
+    },
+    textRenderer: function(name, extra, textClass) {
+      return TreeBuilder._textRenderer(name, extra, textClass);
+    }
   },
   margin: {
     top: 0,
@@ -78,8 +84,9 @@ The following CSS sets some good defaults:
     stroke: black;
 }
 .node {
-    stroke: black;
-    fill: lightblue;
+    background-color: lightblue;
+    border-style: solid;
+    border-width: 1px;
 }
 .nodeText{
     font: 10px sans-serif;

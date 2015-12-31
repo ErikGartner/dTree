@@ -90,15 +90,7 @@ class TreeBuilder {
       .attr('d', this._siblingLine);
 
     // Create the node rectangles.
-    nodes.append('rect')
-      .attr('class', function(d) {
-        return d.class ? d.class : opts.styles.nodes;
-      })
-      .attr('width', nodeSize[0] / 2)
-      .attr('height', nodeSize[1] / 3)
-      .attr('id', function(d) {
-        return d.id;
-      })
+    nodes.append('foreignObject')
       .attr('display', function(d) {
         if (d.hidden) {
           return 'none';
@@ -112,25 +104,31 @@ class TreeBuilder {
       .attr('y', function(d) {
         return d.y - nodeSize[1] / 6;
       })
+      .attr('width', nodeSize[0] / 2)
+      .attr('height', nodeSize[1] / 3)
+      .attr('id', function(d) {
+        return d.id;
+      })
+      .html(function(d) {
+        if (d.hidden) {
+          return null;
+        }
+        return opts.callbacks.nodeRenderer(
+          d.name,
+          d.x,
+          d.y,
+          nodeSize[0] / 2,
+          nodeSize[1] / 3,
+          d.extra,
+          d.id,
+          d.class ? d.class : opts.styles.nodes,
+          d.textClass ? d.textClass : opts.styles.text,
+          opts.callbacks.textRenderer);
+      })
       .on('click', function(d) {
-        opts.callbacks.nodeClick(d.name, d.extra, d.id);
-      });
-
-    // Create the node text label.
-    nodes.append('text')
-      .text(function(d) {
-        return opts.callbacks.text(d.name, d.extra, d.id);
-      })
-      .attr('class', function(d) {
-        return d.textClass ? d.textClass : opts.styles.text;
-      })
-      .attr('x', function(d) {
-        return d.x - nodeSize[0] / 4 + 5;
-      })
-      .attr('y', function(d) {
-        return d.y + 4;
-      })
-      .on('click', function(d) {
+        if (d.hidden) {
+          return;
+        }
         opts.callbacks.nodeClick(d.name, d.extra, d.id);
       });
   }
@@ -226,6 +224,8 @@ class TreeBuilder {
   }
 
   _calculateNodeSize() {
+
+    // Not used at the moment
     var longest = '';
     _.forEach(this.allNodes, function(n) {
       if (n.name.length > longest.length) {
@@ -233,7 +233,31 @@ class TreeBuilder {
       }
     });
 
-    return [longest.length * 10 + 10, longest.length * 5];
+    return [200, 100];
+  }
+
+  static _nodeRenderer(name, x, y, height, width, extra, id, nodeClass, textClass, textRenderer) {
+
+    var node = '';
+    node += '<div ';
+    node += 'style="height:' + '100%' + ';width:' + '100%' + ';" ';
+    node += 'class="' + nodeClass + '" ';
+    node += 'id="node' + id + '">\n';
+    node += textRenderer(name, extra, textClass);
+    node += '</div>';
+
+    return node;
+  }
+
+  static _textRenderer(name, extra, textClass) {
+    var node = '';
+    node += '<p ';
+    node += 'style="vertical-align: middle;" ';
+    node += 'align="center" ';
+    node += 'class="' + textClass + '">\n';
+    node += name;
+    node += '</p>\n';
+    return node;
   }
 
 }
