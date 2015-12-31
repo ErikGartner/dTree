@@ -46,7 +46,7 @@ class TreeBuilder {
     this.tree.separation(function separation(a, b) {
       if (a.hidden || b.hidden) {
         return 0.3;
-      } else {
+      } else {
         return 0.6;
       }
     });
@@ -132,7 +132,7 @@ class TreeBuilder {
           d.textClass ? d.textClass : opts.styles.text,
           opts.callbacks.textRenderer);
       })
-      .on('click', function(d) {
+      .on('click', function(d)  {
         if (d.hidden) {
           return;
         }
@@ -244,7 +244,6 @@ class TreeBuilder {
   }
 
   static _nodeRenderer(name, x, y, height, width, extra, id, nodeClass, textClass, textRenderer) {
-
     var node = '';
     node += '<div ';
     node += 'style="height:' + '100%' + ';width:' + '100%' + ';" ';
@@ -252,7 +251,6 @@ class TreeBuilder {
     node += 'id="node' + id + '">\n';
     node += textRenderer(name, extra, textClass);
     node += '</div>';
-
     return node;
   }
 
@@ -268,7 +266,7 @@ class TreeBuilder {
   }
 
   static _debug(msg) {
-    if (TreeBuilder.debugLevel > 0) {
+    if (TreeBuilder.debugLevel > 0)  {
       console.log(msg);
     }
   }
