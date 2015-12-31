@@ -8,6 +8,8 @@ class TreeBuilder {
     // flatten nodes
     this.allNodes = this._flatten(this.root);
     this.nodeSize = this._calculateNodeSize();
+
+    TreeBuilder.debugLevel = opts.debug ? 1 : 0;
   }
 
   create() {
@@ -261,6 +263,12 @@ class TreeBuilder {
     node += name;
     node += '</p>\n';
     return node;
+  }
+
+  static _debug(msg) {
+    if (TreeBuilder.debugLevel > 0) {
+      console.log(msg);
+    }
   }
 
 }

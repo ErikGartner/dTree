@@ -40,6 +40,7 @@
       treeJson = d3.json("data.json", function(error, treeData) {
       	dTree.init(treeData, {
 																target: "#graph",
+																debug: true,
 																height:800,
 																width: 1200,
 																handlers: {

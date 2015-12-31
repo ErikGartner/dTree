@@ -46,6 +46,7 @@ The options object has the following default values:
 ```javascript
 {
   target: '#graph',
+  debug: false,
   width: 600,
   height: 600,
   callbacks: {

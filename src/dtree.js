@@ -8,6 +8,7 @@ const dTree = {
 
     var opts = _.defaultsDeep(options || {}, {
       target: '#graph',
+      debug: false,
       width: 600,
       height: 600,
       callbacks: {
