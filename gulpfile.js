@@ -219,7 +219,7 @@ gulp.task('tag-release', function (cb) {
 });
 
 gulp.task('commit-changes', function () {
-  return gulp.src(['./package.json', './CHANGELOG.md'])
+  return gulp.src(['./package.json', './CHANGELOG.md', './dist/*', './README.md'])
     .pipe($.git.add())
     .pipe($.git.commit('chore: Bump version number'));
 });
