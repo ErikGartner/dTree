@@ -246,7 +246,7 @@ class TreeBuilder {
   static _nodeRenderer(name, x, y, height, width, extra, id, nodeClass, textClass, textRenderer) {
     var node = '';
     node += '<div ';
-    node += 'style="height:' + '100%' + ';width:' + '100%' + ';" ';
+    node += 'style="height:100%;width:100%;" ';
     node += 'class="' + nodeClass + '" ';
     node += 'id="node' + id + '">\n';
     node += textRenderer(name, extra, textClass);
@@ -257,7 +257,6 @@ class TreeBuilder {
   static _textRenderer(name, extra, textClass) {
     var node = '';
     node += '<p ';
-    node += 'style="vertical-align: middle;" ';
     node += 'align="center" ';
     node += 'class="' + textClass + '">\n';
     node += name;
