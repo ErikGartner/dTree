@@ -1,3 +1,13 @@
+<a name="0.3.1"></a>
+## [0.3.1](https://github.com/ErikGartner/dtree/compare/0.3.0...v0.3.1) (2015-12-31)
+
+
+### Bug Fixes
+
+* Build including old dist ([5ca3f2a](https://github.com/ErikGartner/dtree/commit/5ca3f2a))
+
+
+
 <a name="0.3.0"></a>
 # [0.3.0](https://github.com/ErikGartner/dtree/compare/0.2.5...v0.3.0) (2015-12-31)
 
