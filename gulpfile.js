@@ -16,6 +16,7 @@ const source = require('vinyl-source-stream');
 const rollup = require( 'rollup' );
 const argv = require('minimist')(process.argv.slice(2));
 const fs = require('fs');
+const conventionalGithubReleaser = require('conventional-github-releaser');
 
 // Gather the library data from `package.json`
 const manifest = require('./package.json');
@@ -239,7 +240,44 @@ gulp.task('prepare-release', function (callback) {
       if (error) {
         console.log(error.message);
       } else {
-        console.log('Updated release state!');
+        console.log('Prepared for release state!');
+      }
+      callback(error);
+    });
+});
+
+gulp.task('push-changes', function (cb) {
+  $.git.push('origin', 'master', cb);
+});
+
+gulp.task('push-tags', function (cb) {
+  git.push('origin', 'master', {args: '--tags'}, cb);
+});
+
+gulp.task('github-release', function(done) {
+  conventionalGithubReleaser({
+    type: 'oauth',
+    token: process.env.GITHUB_TOKEN
+  }, {
+    preset: 'angular'
+  }, done);
+});
+
+gulp.task('npm-publish', ['build'], $.shell.task([
+  'npm publish'
+]))
+
+gulp.task('release', ['prepare-release'], function (callback) {
+  runSequence(
+    'push-changes',
+    'push-tags',
+    'github-release',
+    'npm-publish',
+    function (error) {
+      if (error) {
+        console.log(error.message);
+      } else {
+        console.log('Release complete!');
       }
       callback(error);
     });

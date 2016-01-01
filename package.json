@@ -38,6 +38,7 @@
     "browserify": "^11.0.1",
     "chai": "^3.2.0",
     "conventional-changelog": "^0.5.3",
+    "conventional-github-releaser": "^0.5.1",
     "del": "^1.1.1",
     "glob": "^5.0.14",
     "gulp": "^3.8.10",
