@@ -259,7 +259,7 @@ gulp.task('github-release', function(done) {
   }, done);
 });
 
-gulp.task('npm-publish', ['build'], $.shell.task([
+gulp.task('npm-publish', $.shell.task([
   'npm publish'
 ]))
 
