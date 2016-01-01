@@ -2,7 +2,7 @@ import TreeBuilder from './builder.js';
 
 const dTree = {
 
-  version: '/* @echo DTREE_VERSION */',
+  VERSION: '/* @echo DTREE_VERSION */',
 
   init: function(data, options = {}) {
 
@@ -17,9 +17,10 @@ const dTree = {
           return TreeBuilder._nodeRenderer(name, x, y, height, width, extra,
             id,nodeClass, textClass, textRenderer);
         },
+        nodeSorter: function(aName, aExtra, bName, bExtra) {return 0;},
         textRenderer: function(name, extra, textClass) {
           return TreeBuilder._textRenderer(name, extra, textClass);
-        }
+        },
       },
       margin: {
         top: 0,
@@ -35,13 +36,13 @@ const dTree = {
       }
     });
 
-    var data = this._preprocess(data);
+    var data = this._preprocess(data, opts);
     var treeBuilder = new TreeBuilder(data.root, data.siblings, opts);
     treeBuilder.create();
 
   },
 
-  _preprocess: function(data) {
+  _preprocess: function(data, opts) {
 
     var siblings = [];
     var id = 0;
@@ -66,8 +67,8 @@ const dTree = {
         class: person.class
       };
 
-      // add to parent as child
-      parent.children.push(node);
+      // sort children
+      dTree._sortPersons(person.children, opts);
 
       // add "direct" children
       _.forEach(person.children, function(child) {
@@ -86,8 +87,6 @@ const dTree = {
           extra: person.marriage.extra
         };
 
-        parent.children.push(m);
-
         var spouse = {
           name: person.marriage.spouse.name,
           id: id++,
@@ -99,8 +98,10 @@ const dTree = {
           extra: person.marriage.spouse.extra
         };
 
-        parent.children.push(spouse);
+        var marriedCouple = dTree._sortPersons([node, spouse], opts);
+        parent.children.push(marriedCouple[0], m, marriedCouple[1]);
 
+        dTree._sortPersons(person.marriage.children, opts);
         _.forEach(person.marriage.children, function(child) {
           reconstructTree(child, m);
         });
@@ -114,6 +115,8 @@ const dTree = {
           }
         });
 
+      } else {
+        parent.children.push(node);
       }
 
     };
@@ -131,6 +134,15 @@ const dTree = {
       siblings: siblings
     };
 
+  },
+
+  _sortPersons: function(persons, opts) {
+    if (persons != undefined) {
+      persons.sort(function(a, b) {
+        return opts.callbacks.nodeSorter(a.name, a.extra, b.name, b.extra);
+      });
+    }
+    return persons;
   }
 
 };
