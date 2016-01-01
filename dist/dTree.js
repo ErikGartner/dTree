@@ -19,7 +19,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       this.allNodes = this._flatten(this.root);
       this.nodeSize = this._calculateNodeSize();
 
-      TreeBuilder.debugLevel = opts.debug ? 1 : 0;
+      TreeBuilder.DEBUG_LEVEL = opts.debug ? 1 : 0;
     }
 
     _createClass(TreeBuilder, [{
@@ -238,7 +238,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }, {
       key: '_debug',
       value: function _debug(msg) {
-        if (TreeBuilder.debugLevel > 0) {
+        if (TreeBuilder.DEBUG_LEVEL > 0) {
           console.log(msg);
         }
       }
@@ -249,7 +249,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
   var dTree = {
 
-    version: '0.4.0',
+    VERSION: '0.5.0',
 
     init: function init(data) {
       var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
@@ -263,6 +263,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           nodeClick: function nodeClick(name, extra, id) {},
           nodeRenderer: function nodeRenderer(name, x, y, height, width, extra, id, nodeClass, textClass, textRenderer) {
             return TreeBuilder._nodeRenderer(name, x, y, height, width, extra, id, nodeClass, textClass, textRenderer);
+          },
+          nodeSorter: function nodeSorter(aName, aExtra, bName, bExtra) {
+            return 0;
           },
           textRenderer: function textRenderer(name, extra, textClass) {
             return TreeBuilder._textRenderer(name, extra, textClass);
@@ -282,12 +285,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }
       });
 
-      var data = this._preprocess(data);
+      var data = this._preprocess(data, opts);
       var treeBuilder = new TreeBuilder(data.root, data.siblings, opts);
       treeBuilder.create();
     },
 
-    _preprocess: function _preprocess(data) {
+    _preprocess: function _preprocess(data, opts) {
 
       var siblings = [];
       var id = 0;
@@ -312,8 +315,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           'class': person['class']
         };
 
-        // add to parent as child
-        parent.children.push(node);
+        // sort children
+        dTree._sortPersons(person.children, opts);
 
         // add "direct" children
         _.forEach(person.children, function (child) {
@@ -332,8 +335,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             extra: person.marriage.extra
           };
 
-          parent.children.push(m);
-
           var spouse = {
             name: person.marriage.spouse.name,
             id: id++,
@@ -345,8 +346,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             extra: person.marriage.spouse.extra
           };
 
-          parent.children.push(spouse);
+          var marriedCouple = dTree._sortPersons([node, spouse], opts);
+          parent.children.push(marriedCouple[0], m, marriedCouple[1]);
 
+          dTree._sortPersons(person.marriage.children, opts);
           _.forEach(person.marriage.children, function (child) {
             reconstructTree(child, m);
           });
@@ -359,6 +362,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               id: spouse.id
             }
           });
+        } else {
+          parent.children.push(node);
         }
       };
 
@@ -374,6 +379,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         root: root,
         siblings: siblings
       };
+    },
+
+    _sortPersons: function _sortPersons(persons, opts) {
+      if (persons != undefined) {
+        persons.sort(function (a, b) {
+          return opts.callbacks.nodeSorter(a.name, a.extra, b.name, b.extra);
+        });
+      }
+      return persons;
     }
 
   };

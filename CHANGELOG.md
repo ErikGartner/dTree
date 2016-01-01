@@ -1,3 +1,13 @@
+<a name="0.5.0"></a>
+# [0.5.0](https://github.com/ErikGartner/dtree/compare/0.4.0...v0.5.0) (2016-01-01)
+
+
+### Features
+
+* Add custom sorting #7 ([9923c66](https://github.com/ErikGartner/dtree/commit/9923c66))
+
+
+
 <a name="0.4.0"></a>
 # [0.4.0](https://github.com/ErikGartner/dtree/compare/0.3.4...v0.4.0) (2016-01-01)
 
