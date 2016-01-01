@@ -53,7 +53,7 @@ The options object has the following default values:
     nodeClick: function(name, extra, id) {},
     nodeRenderer: function(name, x, y, height, width, extra, id, nodeClass, textClass, textRenderer) {
       return TreeBuilder._nodeRenderer(name, x, y, height, width, extra,
-        id,nodeClass, textClass, textRenderer);
+        id, nodeClass, textClass, textRenderer);
     },
     textRenderer: function(name, extra, textClass) {
       return TreeBuilder._textRenderer(name, extra, textClass);
