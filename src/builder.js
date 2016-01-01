@@ -9,7 +9,7 @@ class TreeBuilder {
     this.allNodes = this._flatten(this.root);
     this.nodeSize = this._calculateNodeSize();
 
-    TreeBuilder.debugLevel = opts.debug ? 1 : 0;
+    TreeBuilder.DEBUG_LEVEL = opts.debug ? 1 : 0;
   }
 
   create() {
@@ -265,7 +265,7 @@ class TreeBuilder {
   }
 
   static _debug(msg) {
-    if (TreeBuilder.debugLevel > 0)  {
+    if (TreeBuilder.DEBUG_LEVEL > 0)  {
       console.log(msg);
     }
   }
