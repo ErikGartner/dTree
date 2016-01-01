@@ -1,3 +1,13 @@
+<a name="0.4.0"></a>
+# [0.4.0](https://github.com/ErikGartner/dtree/compare/0.3.4...v0.4.0) (2016-01-01)
+
+
+### Features
+
+* Add direct children nodes #19 ([2a37451](https://github.com/ErikGartner/dtree/commit/2a37451))
+
+
+
 <a name="0.3.4"></a>
 ## [0.3.4](https://github.com/ErikGartner/dtree/compare/0.3.3...v0.3.4) (2016-01-01)
 

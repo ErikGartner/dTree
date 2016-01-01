@@ -249,7 +249,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
   var dTree = {
 
-    version: '0.3.4',
+    version: '0.4.0',
 
     init: function init(data) {
       var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
@@ -314,6 +314,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         // add to parent as child
         parent.children.push(node);
+
+        // add "direct" children
+        _.forEach(person.children, function (child) {
+          reconstructTree(child, node);
+        });
 
         // go through marriage
         if (person.marriage) {

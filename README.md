@@ -5,7 +5,7 @@
 
 dTree is available through the RawGit CDN:
 ```
-https://cdn.rawgit.com/ErikGartner/dTree/0.3.4/dist/dTree.min.js
+https://cdn.rawgit.com/ErikGartner/dTree/0.4.0/dist/dTree.min.js
 ```
 
 ## Requirements
