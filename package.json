@@ -8,7 +8,8 @@
     "test-browser": "gulp test-browser",
     "build": "gulp build",
     "coverage": "gulp coverage",
-    "demo": "gulp demo"
+    "demo": "gulp demo",
+    "release": "gulp release"
   },
   "repository": {
     "type": "git",
