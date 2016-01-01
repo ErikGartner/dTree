@@ -1,3 +1,13 @@
+<a name="0.3.2"></a>
+## [0.3.2](https://github.com/ErikGartner/dtree/compare/0.3.1...v0.3.2) (2016-01-01)
+
+
+### Features
+
+* Add automatic releasing #10 ([1e3f4b8](https://github.com/ErikGartner/dtree/commit/1e3f4b8))
+
+
+
 <a name="0.3.1"></a>
 ## [0.3.1](https://github.com/ErikGartner/dtree/compare/0.3.0...v0.3.1) (2015-12-31)
 

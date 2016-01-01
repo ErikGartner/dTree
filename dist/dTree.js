@@ -215,15 +215,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }], [{
       key: '_nodeRenderer',
       value: function _nodeRenderer(name, x, y, height, width, extra, id, nodeClass, textClass, textRenderer) {
-
         var node = '';
         node += '<div ';
-        node += 'style="height:' + '100%' + ';width:' + '100%' + ';" ';
+        node += 'style="height:100%;width:100%;" ';
         node += 'class="' + nodeClass + '" ';
         node += 'id="node' + id + '">\n';
         node += textRenderer(name, extra, textClass);
         node += '</div>';
-
         return node;
       }
     }, {
@@ -231,7 +229,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       value: function _textRenderer(name, extra, textClass) {
         var node = '';
         node += '<p ';
-        node += 'style="vertical-align: middle;" ';
         node += 'align="center" ';
         node += 'class="' + textClass + '">\n';
         node += name;
@@ -252,7 +249,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
   var dTree = {
 
-    version: '0.3.1',
+    version: '0.3.2',
 
     init: function init(data) {
       var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
