@@ -59,6 +59,12 @@ createLintTask('lint-src', ['src/**/*.js']);
 // Lint our test code
 createLintTask('lint-test', ['test/**/*.js']);
 
+function getPackageJsonVersion () {
+  // We parse the json file instead of using require because require caches
+  // multiple calls so the version number won't be updated
+  return JSON.parse(fs.readFileSync('./package.json', 'utf8')).version;
+}
+
 // Build two versions of the library
 gulp.task('build', ['lint-src', 'clean'], function(done) {
   var version = getPackageJsonVersion();
@@ -93,11 +99,6 @@ gulp.task('build', ['lint-src', 'clean'], function(done) {
       .on('end', done);
   })
   .catch(done);
-  function getPackageJsonVersion () {
-    // We parse the json file instead of using require because require caches
-    // multiple calls so the version number won't be updated
-    return JSON.parse(fs.readFileSync('./package.json', 'utf8')).version;
-  }
 });
 
 function bundle(bundler) {
@@ -204,6 +205,13 @@ gulp.task('changelog', function () {
     .pipe(gulp.dest('./'));
 });
 
+gulp.task('update-cdn', function() {
+  gulp.src(['./README.md'])
+    .pipe($.replace(/dTree\/(\d\.\d\.\d)\/dist\/dTree.min.js/g, 'dTree/'+
+      getPackageJsonVersion() + '/dist/dTree.min.js'))
+    .pipe(gulp.dest('./'));
+});
+
 gulp.task('tag-release', function (cb) {
   var version = getPackageJsonVersion();
   $.git.tag(version, 'Created Tag for version: ' + version, function (error) {
@@ -211,11 +219,6 @@ gulp.task('tag-release', function (cb) {
       return cb(error);
     }
   });
-  function getPackageJsonVersion () {
-    // We parse the json file instead of using require because require caches
-    // multiple calls so the version number won't be updated
-    return JSON.parse(fs.readFileSync('./package.json', 'utf8')).version;
-  }
 });
 
 gulp.task('commit-changes', function () {
@@ -229,6 +232,7 @@ gulp.task('prepare-release', function (callback) {
     'bump',
     'changelog',
     'build',
+    'update-cdn',
     'commit-changes',
     'tag-release',
     function (error) {
