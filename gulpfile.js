@@ -247,7 +247,7 @@ gulp.task('push-changes', function (cb) {
 });
 
 gulp.task('push-tags', function (cb) {
-  git.push('origin', 'master', {args: '--tags'}, cb);
+  $.git.push('origin', 'master', {args: '--tags'}, cb);
 });
 
 gulp.task('github-release', function(done) {
