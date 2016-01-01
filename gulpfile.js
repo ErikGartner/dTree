@@ -215,11 +215,7 @@ gulp.task('update-cdn', function() {
 
 gulp.task('tag-release', function (cb) {
   var version = getPackageJsonVersion();
-  $.git.tag(version, 'Created Tag for version: ' + version, function (error) {
-    if (error) {
-      return cb(error);
-    }
-  });
+  $.git.tag(version, 'Created Tag for version: ' + version, cb);
 });
 
 gulp.task('commit-changes', function () {
