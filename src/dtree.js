@@ -69,6 +69,11 @@ const dTree = {
       // add to parent as child
       parent.children.push(node);
 
+      // add "direct" children
+      _.forEach(person.children, function(child) {
+        reconstructTree(child, node);
+      });
+
       // go through marriage
       if (person.marriage) {
 
