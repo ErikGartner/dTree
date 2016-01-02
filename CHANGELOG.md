@@ -1,3 +1,17 @@
+<a name="0.6.0"></a>
+# [0.6.0](https://github.com/ErikGartner/dtree/compare/0.5.0...v0.6.0) (2016-01-02)
+
+
+### Bug Fixes
+
+* Bug in demo ([b1092a4](https://github.com/ErikGartner/dtree/commit/b1092a4))
+
+### Features
+
+* Add depthOffset attribute ([7037257](https://github.com/ErikGartner/dtree/commit/7037257))
+
+
+
 <a name="0.5.0"></a>
 # [0.5.0](https://github.com/ErikGartner/dtree/compare/0.4.0...v0.5.0) (2016-01-01)
 

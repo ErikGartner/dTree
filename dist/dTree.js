@@ -249,7 +249,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
   var dTree = {
 
-    VERSION: '0.5.0',
+    VERSION: '0.6.0',
 
     init: function init(data) {
       var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
@@ -315,6 +315,24 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           'class': person['class']
         };
 
+        // hide linages to the hidden root node
+        if (parent == root) {
+          node.noParent = true;
+        }
+
+        // apply depth offset
+        for (var i = 0; i < person.depthOffset; i++) {
+          var pushNode = {
+            name: '',
+            id: id++,
+            hidden: true,
+            children: [],
+            noParent: node.noParent
+          };
+          parent.children.push(pushNode);
+          parent = pushNode;
+        }
+
         // sort children
         dTree._sortPersons(person.children, opts);
 
@@ -369,10 +387,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
       _.forEach(data, function (person) {
         reconstructTree(person, root);
-      });
-
-      _.forEach(root.children, function (child) {
-        child.noParent = true;
       });
 
       return {
