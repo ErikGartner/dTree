@@ -67,6 +67,24 @@ const dTree = {
         class: person.class
       };
 
+      // hide linages to the hidden root node
+      if (parent == root) {
+        node.noParent = true;
+      }
+
+      // apply depth offset
+      for (var i = 0; i < person.depthOffset; i++) {
+        var pushNode = {
+          name: '',
+          id: id++,
+          hidden: true,
+          children: [],
+          noParent: node.noParent
+        };
+        parent.children.push(pushNode);
+        parent = pushNode;
+      }
+
       // sort children
       dTree._sortPersons(person.children, opts);
 
@@ -123,10 +141,6 @@ const dTree = {
 
     _.forEach(data, function(person) {
       reconstructTree(person, root);
-    });
-
-    _.forEach(root.children, function(child) {
-      child.noParent = true;
     });
 
     return {
