@@ -1,0 +1,35 @@
+{
+  "name": "d3-dtree",
+  "description": "A library for visualizing data trees built on top of D3.",
+  "main": "dist/dTree.js",
+  "authors": [
+    "Erik Gärtner"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "d3",
+    "graphing",
+    "tree",
+    "graph",
+    "genealogy",
+    "family",
+    "tree"
+  ],
+  "homepage": "https://github.com/ErikGartner/dTree",
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "dependencies": {
+    "lodash": "^3.10.0",
+    "d3": "^3.5.12"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

@@ -1,9 +1,12 @@
 # dTree
 *A library for visualizing data trees with multiple parents built on top of D3.*
 
-[![Dependency Status](https://david-dm.org/ErikGartner/dtree.svg)](https://david-dm.org/ErikGartner/dtree) [![devDependency Status](https://david-dm.org/ErikGartner/dtree/dev-status.svg)](https://david-dm.org/ErikGartner/dtree#info=devDependencies) [![npm](https://img.shields.io/npm/v/d3-dtree.svg)](https://www.npmjs.com/package/d3-dtree)
+[![npm](https://img.shields.io/npm/v/d3-dtree.svg)](https://www.npmjs.com/package/d3-dtree) [![Bower](https://img.shields.io/bower/v/d3-dtree.svg)]() [![Dependency Status](https://david-dm.org/ErikGartner/dtree.svg)](https://david-dm.org/ErikGartner/dtree) [![devDependency Status](https://david-dm.org/ErikGartner/dtree/dev-status.svg)](https://david-dm.org/ErikGartner/dtree#info=devDependencies)
 
-dTree is available through the RawGit CDN:
+## Installation
+There are several ways to use dTree. One way is to simply include the compiled file ```dTree.js``` that then exposes a ```dTree``` variable. dTree is available on both NPM and Bower as *d3-dtree*.
+
+Lastly dTree is also available through the RawGit CDN:
 ```
 https://cdn.rawgit.com/ErikGartner/dTree/0.6.0/dist/dTree.min.js
 ```
@@ -15,8 +18,6 @@ To use the library the follow dependencies must be loaded:
  - [lodash](https://github.com/lodash/lodash) v3.10
 
 ## Usage
-Just include the compiled file ```dTree.js```, it exposes a ```dTree``` variable.
-
 To create a graph from data use the following command:
 ```javascript
 dTree.init(data, options);
