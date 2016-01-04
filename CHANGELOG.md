@@ -1,3 +1,13 @@
+<a name="0.7.0"></a>
+# [0.7.0](https://github.com/ErikGartner/dtree/compare/0.6.1...v0.7.0) (2016-01-04)
+
+
+### Features
+
+* Resizing nodes ([2454086](https://github.com/ErikGartner/dtree/commit/2454086))
+
+
+
 <a name="0.6.1"></a>
 ## [0.6.1](https://github.com/ErikGartner/dtree/compare/0.6.0...v0.6.1) (2016-01-02)
 

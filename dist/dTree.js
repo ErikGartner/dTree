@@ -11,15 +11,20 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     function TreeBuilder(root, siblings, opts) {
       _classCallCheck(this, TreeBuilder);
 
+      TreeBuilder.DEBUG_LEVEL = opts.debug ? 1 : 0;
+
       this.root = root;
       this.siblings = siblings;
       this.opts = opts;
 
       // flatten nodes
       this.allNodes = this._flatten(this.root);
-      this.nodeSize = this._calculateNodeSize();
 
-      TreeBuilder.DEBUG_LEVEL = opts.debug ? 1 : 0;
+      // Calculate node size
+      var visibleNodes = _.filter(this.allNodes, function (n) {
+        return !n.hidden;
+      });
+      this.nodeSize = opts.callbacks.nodeSize(visibleNodes, opts.nodeWidth, opts.callbacks.textRenderer);
     }
 
     _createClass(TreeBuilder, [{
@@ -43,7 +48,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         zoom.translate([width / 2, opts.margin.top]);
 
         // Compute the layout.
-        this.tree = d3.layout.tree().nodeSize(nodeSize);
+        this.tree = d3.layout.tree().nodeSize([nodeSize[0] * 2, nodeSize[1] * 2]);
 
         this.tree.separation(function separation(a, b) {
           if (a.hidden || b.hidden) {
@@ -94,16 +99,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             return '';
           };
         }).attr('x', function (d) {
-          return d.x - nodeSize[0] / 4;
+          return d.x - nodeSize[0] / 2 + 'px';
         }).attr('y', function (d) {
-          return d.y - nodeSize[1] / 6;
-        }).attr('width', nodeSize[0] / 2).attr('height', nodeSize[1] / 3).attr('id', function (d) {
+          return d.y - nodeSize[1] / 2 + 'px';
+        }).attr('width', nodeSize[0] + 'px').attr('height', nodeSize[1] + 'px').attr('id', function (d) {
           return d.id;
         }).html(function (d) {
           if (d.hidden) {
             return null;
           }
-          return opts.callbacks.nodeRenderer(d.name, d.x, d.y, nodeSize[0] / 2, nodeSize[1] / 3, d.extra, d.id, d['class'] ? d['class'] : opts.styles.nodes, d.textClass ? d.textClass : opts.styles.text, opts.callbacks.textRenderer);
+          return opts.callbacks.nodeRenderer(d.name, d.x, d.y, nodeSize[0], nodeSize[1], d.extra, d.id, d['class'], d.textClass, opts.callbacks.textRenderer);
         }).on('click', function (d) {
           if (d.hidden) {
             return;
@@ -198,21 +203,29 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }).interpolate('step-after');
         return fun(linedata);
       }
-    }, {
-      key: '_calculateNodeSize',
-      value: function _calculateNodeSize() {
-
-        // Not used at the moment
-        var longest = '';
-        _.forEach(this.allNodes, function (n) {
-          if (n.name.length > longest.length) {
-            longest = n.name;
-          }
-        });
-
-        return [200, 100];
-      }
     }], [{
+      key: '_nodeSize',
+      value: function _nodeSize(nodes, width, textRenderer) {
+        var maxWidth = 0;
+        var maxHeight = 0;
+        _.forEach(nodes, function (n) {
+          var container = document.createElement('div');
+          container.style.marginLeft = '5px';
+          container.style.paddingTop = '5px';
+          container.style.visibility = 'hidden';
+          container.style.maxWidth = width + 'px';
+
+          var text = textRenderer(n.name, n.extra, n.textClass);
+          container.innerHTML = text;
+          document.body.appendChild(container);
+
+          maxHeight = Math.max(maxHeight, container.offsetHeight);
+          maxWidth = Math.max(maxWidth, container.clientWidth);
+          document.body.removeChild(container);
+        });
+        return [width, maxHeight];
+      }
+    }, {
       key: '_nodeRenderer',
       value: function _nodeRenderer(name, x, y, height, width, extra, id, nodeClass, textClass, textRenderer) {
         var node = '';
@@ -249,7 +262,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
   var dTree = {
 
-    VERSION: '0.6.1',
+    VERSION: '0.7.0',
 
     init: function init(data) {
       var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
@@ -264,6 +277,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           nodeRenderer: function nodeRenderer(name, x, y, height, width, extra, id, nodeClass, textClass, textRenderer) {
             return TreeBuilder._nodeRenderer(name, x, y, height, width, extra, id, nodeClass, textClass, textRenderer);
           },
+          nodeSize: function nodeSize(nodes, width, textRenderer) {
+            return TreeBuilder._nodeSize(nodes, width, textRenderer);
+          },
           nodeSorter: function nodeSorter(aName, aExtra, bName, bExtra) {
             return 0;
           },
@@ -277,6 +293,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           bottom: 0,
           left: 0
         },
+        nodeWidth: 100,
         styles: {
           node: 'node',
           linage: 'linage',
@@ -311,8 +328,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           hidden: false,
           children: [],
           extra: person.extra,
-          textClass: person.textClass,
-          'class': person['class']
+          textClass: person.textClass ? person.textClass : opts.styles.text,
+          'class': person['class'] ? person['class'] : opts.styles.node
         };
 
         // hide linages to the hidden root node
@@ -353,15 +370,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             extra: person.marriage.extra
           };
 
+          var sp = person.marriage.spouse;
+
           var spouse = {
-            name: person.marriage.spouse.name,
+            name: sp.name,
             id: id++,
             hidden: false,
             noParent: true,
             children: [],
-            textClass: person.marriage.spouse.textClass,
-            'class': person.marriage.spouse['class'],
-            extra: person.marriage.spouse.extra
+            textClass: sp.textClass ? sp.textClass : opts.styles.text,
+            'class': sp['class'] ? sp['class'] : opts.styles.node,
+            extra: sp.extra
           };
 
           var marriedCouple = dTree._sortPersons([node, spouse], opts);
