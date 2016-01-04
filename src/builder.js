@@ -1,15 +1,21 @@
 class TreeBuilder {
 
   constructor(root, siblings, opts) {
+    TreeBuilder.DEBUG_LEVEL = opts.debug ? 1 : 0;
+
     this.root = root;
     this.siblings = siblings;
     this.opts = opts;
 
     // flatten nodes
     this.allNodes = this._flatten(this.root);
-    this.nodeSize = this._calculateNodeSize();
 
-    TreeBuilder.DEBUG_LEVEL = opts.debug ? 1 : 0;
+    // Calculate node size
+    var visibleNodes = _.filter(this.allNodes, function(n) {
+      return !n.hidden;
+    });
+    this.nodeSize = opts.callbacks.nodeSize(visibleNodes,
+      opts.nodeWidth, opts.callbacks.textRenderer);
   }
 
   create() {
@@ -41,7 +47,7 @@ class TreeBuilder {
 
     // Compute the layout.
     this.tree = d3.layout.tree()
-      .nodeSize(nodeSize);
+      .nodeSize([nodeSize[0] * 2, nodeSize[1] * 2]);
 
     this.tree.separation(function separation(a, b) {
       if (a.hidden || b.hidden) {
@@ -106,13 +112,13 @@ class TreeBuilder {
         };
       })
       .attr('x', function(d) {
-        return d.x - nodeSize[0] / 4;
+        return d.x - nodeSize[0] / 2 + 'px';
       })
       .attr('y', function(d) {
-        return d.y - nodeSize[1] / 6;
+        return d.y - nodeSize[1] / 2 + 'px';
       })
-      .attr('width', nodeSize[0] / 2)
-      .attr('height', nodeSize[1] / 3)
+      .attr('width', nodeSize[0] + 'px')
+      .attr('height', nodeSize[1] + 'px')
       .attr('id', function(d) {
         return d.id;
       })
@@ -124,12 +130,12 @@ class TreeBuilder {
           d.name,
           d.x,
           d.y,
-          nodeSize[0] / 2,
-          nodeSize[1] / 3,
+          nodeSize[0],
+          nodeSize[1],
           d.extra,
           d.id,
-          d.class ? d.class : opts.styles.nodes,
-          d.textClass ? d.textClass : opts.styles.text,
+          d.class,
+          d.textClass,
           opts.callbacks.textRenderer);
       })
       .on('click', function(d)  {
@@ -230,17 +236,25 @@ class TreeBuilder {
     return fun(linedata);
   }
 
-  _calculateNodeSize() {
+  static _nodeSize(nodes, width, textRenderer) {
+    var maxWidth = 0;
+    var maxHeight = 0;
+    _.forEach(nodes, function(n) {
+      var container = document.createElement('div');
+      container.style.marginLeft = '5px';
+      container.style.paddingTop = '5px';
+      container.style.visibility = 'hidden';
+      container.style.maxWidth = width + 'px';
 
-    // Not used at the moment
-    var longest = '';
-    _.forEach(this.allNodes, function(n) {
-      if (n.name.length > longest.length) {
-        longest = n.name;
-      }
+      var text = textRenderer(n.name, n.extra, n.textClass);
+      container.innerHTML = text;
+      document.body.appendChild(container);
+
+      maxHeight = Math.max(maxHeight, container.offsetHeight);
+      maxWidth = Math.max(maxWidth, container.clientWidth);
+      document.body.removeChild(container);
     });
-
-    return [200, 100];
+    return [width, maxHeight];
   }
 
   static _nodeRenderer(name, x, y, height, width, extra, id, nodeClass, textClass, textRenderer) {

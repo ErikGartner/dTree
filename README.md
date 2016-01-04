@@ -57,6 +57,9 @@ The options object has the following default values:
       return TreeBuilder._nodeRenderer(name, x, y, height, width, extra,
         id, nodeClass, textClass, textRenderer);
     },
+    nodeSize: function(nodes, width, textRenderer) {
+      return TreeBuilder._nodeSize(nodes, width, textRenderer);
+    },
     nodeSorter: function(aName, aExtra, bName, bExtra) {return 0;},
     textRenderer: function(name, extra, textClass) {
       return TreeBuilder._textRenderer(name, extra, textClass);
@@ -68,6 +71,7 @@ The options object has the following default values:
     bottom: 0,
     left: 0
   },
+  nodeWidth: 100,
   styles: {
     node: 'node',
     linage: 'linage',

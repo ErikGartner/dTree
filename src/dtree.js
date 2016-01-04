@@ -17,6 +17,9 @@ const dTree = {
           return TreeBuilder._nodeRenderer(name, x, y, height, width, extra,
             id,nodeClass, textClass, textRenderer);
         },
+        nodeSize: function(nodes, width, textRenderer) {
+          return TreeBuilder._nodeSize(nodes, width, textRenderer);
+        },
         nodeSorter: function(aName, aExtra, bName, bExtra) {return 0;},
         textRenderer: function(name, extra, textClass) {
           return TreeBuilder._textRenderer(name, extra, textClass);
@@ -28,6 +31,7 @@ const dTree = {
         bottom: 0,
         left: 0
       },
+      nodeWidth: 100,
       styles: {
         node: 'node',
         linage: 'linage',
@@ -63,8 +67,8 @@ const dTree = {
         hidden: false,
         children: [],
         extra: person.extra,
-        textClass: person.textClass,
-        class: person.class
+        textClass: person.textClass ? person.textClass : opts.styles.text,
+        class: person.class ? person.class : opts.styles.node
       };
 
       // hide linages to the hidden root node
@@ -105,15 +109,17 @@ const dTree = {
           extra: person.marriage.extra
         };
 
+        var sp = person.marriage.spouse;
+
         var spouse = {
-          name: person.marriage.spouse.name,
+          name: sp.name,
           id: id++,
           hidden: false,
           noParent: true,
           children: [],
-          textClass: person.marriage.spouse.textClass,
-          class: person.marriage.spouse.class,
-          extra: person.marriage.spouse.extra
+          textClass: sp.textClass ? sp.textClass : opts.styles.text,
+          class: sp.class ? sp.class : opts.styles.node,
+          extra: sp.extra
         };
 
         var marriedCouple = dTree._sortPersons([node, spouse], opts);
