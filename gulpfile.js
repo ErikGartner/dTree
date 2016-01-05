@@ -236,7 +236,7 @@ gulp.task('prepare-release', function (callback) {
       if (error) {
         console.log(error.message);
       } else {
-        console.log('Prepared for release state!');
+        console.log('Updated workspace for release!');
       }
       callback(error);
     });
@@ -250,7 +250,7 @@ gulp.task('push-tags', function (cb) {
   $.git.push('origin', 'master', {args: '--tags'}, cb);
 });
 
-gulp.task('github-release', function(done) {
+gulp.task('github-release', function (done) {
   conventionalGithubReleaser({
     type: 'oauth',
     token: process.env.GITHUB_TOKEN
@@ -263,12 +263,26 @@ gulp.task('npm-publish', $.shell.task([
   'npm publish'
 ]))
 
-gulp.task('release', ['prepare-release'], function (callback) {
+gulp.task('push-release', function (callback) {
   runSequence(
     'push-changes',
     'push-tags',
     'github-release',
     'npm-publish',
+    function (error) {
+      if (error) {
+        console.log(error.message);
+      } else {
+        console.log('Release Uploaded!');
+      }
+      callback(error);
+    });
+});
+
+gulp.task('release', function (callback) {
+  runSequence(
+    'prepare-release',
+    'push-release',
     function (error) {
       if (error) {
         console.log(error.message);
