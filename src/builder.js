@@ -69,7 +69,7 @@ class TreeBuilder {
 
     var nodes = this.tree.nodes(source);
 
-    // Since root node is hidden, readjust height.
+    // Since root node is hidden, read adjust height.
     var rootOffset = 0;
     if (nodes.length > 1) {
       rootOffset = nodes[1].y;
@@ -104,12 +104,8 @@ class TreeBuilder {
 
     // Create the node rectangles.
     nodes.append('foreignObject')
-      .attr('display', function(d) {
-        if (d.hidden) {
-          return 'none';
-        } else {
-          return '';
-        };
+      .filter(function(d) {
+        return d.hidden ? false : true;
       })
       .attr('x', function(d) {
         return d.x - d.cWidth / 2 + 'px';
@@ -127,9 +123,6 @@ class TreeBuilder {
         return d.id;
       })
       .html(function(d) {
-        if (d.hidden) {
-          return null;
-        }
         return opts.callbacks.nodeRenderer(
           d.name,
           d.x,
@@ -252,7 +245,7 @@ class TreeBuilder {
 
       var text = textRenderer(n.name, n.extra, n.textClass);
       container.innerHTML = text;
-      
+
       document.body.appendChild(container);
       var height = container.offsetHeight;
       document.body.removeChild(container);
