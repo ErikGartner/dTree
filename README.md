@@ -58,6 +58,7 @@ The options object has the following default values:
         id, nodeClass, textClass, textRenderer);
     },
     nodeSize: function(nodes, width, textRenderer) {
+      // Should set cHeight and cWidth for each node and return the maxima.
       return TreeBuilder._nodeSize(nodes, width, textRenderer);
     },
     nodeSorter: function(aName, aExtra, bName, bExtra) {return 0;},
