@@ -1,3 +1,13 @@
+<a name="0.8.1"></a>
+## [0.8.1](https://github.com/ErikGartner/dtree/compare/0.8.0...v0.8.1) (2016-01-05)
+
+
+### Bug Fixes
+
+* Bug due improper skipping of hidden nodes ([9739472](https://github.com/ErikGartner/dtree/commit/9739472))
+
+
+
 <a name="0.8.0"></a>
 # [0.8.0](https://github.com/ErikGartner/dtree/compare/0.7.6...v0.8.0) (2016-01-05)
 

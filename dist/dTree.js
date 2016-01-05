@@ -70,7 +70,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         var nodes = this.tree.nodes(source);
 
-        // Since root node is hidden, readjust height.
+        // Since root node is hidden, read adjust height.
         var rootOffset = 0;
         if (nodes.length > 1) {
           rootOffset = nodes[1].y;
@@ -92,12 +92,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         this.svg.selectAll('.sibling').data(this.siblings).enter().append('path').attr('class', opts.styles.marriage).attr('d', this._siblingLine);
 
         // Create the node rectangles.
-        nodes.append('foreignObject').attr('display', function (d) {
-          if (d.hidden) {
-            return 'none';
-          } else {
-            return '';
-          };
+        nodes.append('foreignObject').filter(function (d) {
+          return d.hidden ? false : true;
         }).attr('x', function (d) {
           return d.x - d.cWidth / 2 + 'px';
         }).attr('y', function (d) {
@@ -109,9 +105,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }).attr('id', function (d) {
           return d.id;
         }).html(function (d) {
-          if (d.hidden) {
-            return null;
-          }
           return opts.callbacks.nodeRenderer(d.name, d.x, d.y, nodeSize[0], nodeSize[1], d.extra, d.id, d['class'], d.textClass, opts.callbacks.textRenderer);
         }).on('click', function (d) {
           if (d.hidden) {
@@ -269,7 +262,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
   var dTree = {
 
-    VERSION: '0.8.0',
+    VERSION: '0.8.1',
 
     init: function init(data) {
       var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
