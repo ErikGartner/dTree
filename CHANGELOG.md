@@ -1,3 +1,13 @@
+<a name="0.8.0"></a>
+# [0.8.0](https://github.com/ErikGartner/dtree/compare/0.7.6...v0.8.0) (2016-01-05)
+
+
+### Features
+
+* Individual height of nodes depending of content ([6d9aa8a](https://github.com/ErikGartner/dtree/commit/6d9aa8a))
+
+
+
 <a name="0.7.6"></a>
 ## [0.7.6](https://github.com/ErikGartner/dtree/compare/0.7.5...v0.7.6) (2016-01-04)
 

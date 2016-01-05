@@ -99,10 +99,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             return '';
           };
         }).attr('x', function (d) {
-          return d.x - nodeSize[0] / 2 + 'px';
+          return d.x - d.cWidth / 2 + 'px';
         }).attr('y', function (d) {
-          return d.y - nodeSize[1] / 2 + 'px';
-        }).attr('width', nodeSize[0] + 'px').attr('height', nodeSize[1] + 'px').attr('id', function (d) {
+          return d.y - d.cHeight / 2 + 'px';
+        }).attr('width', function (d) {
+          return d.cWidth + 'px';
+        }).attr('height', function (d) {
+          return d.cHeight + 'px';
+        }).attr('id', function (d) {
           return d.id;
         }).html(function (d) {
           if (d.hidden) {
@@ -208,7 +212,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       value: function _nodeSize(nodes, width, textRenderer) {
         var maxWidth = 0;
         var maxHeight = 0;
-        _.forEach(nodes, function (n) {
+        _.map(nodes, function (n) {
           var container = document.createElement('div');
           container.style.marginLeft = '5px';
           container.style.paddingTop = '5px';
@@ -217,11 +221,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
           var text = textRenderer(n.name, n.extra, n.textClass);
           container.innerHTML = text;
-          document.body.appendChild(container);
 
-          maxHeight = Math.max(maxHeight, container.offsetHeight);
-          maxWidth = Math.max(maxWidth, container.clientWidth);
+          document.body.appendChild(container);
+          var height = container.offsetHeight;
           document.body.removeChild(container);
+
+          maxHeight = Math.max(maxHeight, height);
+          n.cHeight = height;
+          n.cWidth = width;
         });
         return [width, maxHeight];
       }
@@ -262,7 +269,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
   var dTree = {
 
-    VERSION: '0.7.6',
+    VERSION: '0.8.0',
 
     init: function init(data) {
       var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
