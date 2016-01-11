@@ -8,7 +8,7 @@ There are several ways to use dTree. One way is to simply include the compiled f
 
 Lastly dTree is also available through the RawGit CDN:
 ```
-https://cdn.rawgit.com/ErikGartner/dTree/1.0.0/dist/dTree.min.js
+https://cdn.rawgit.com/ErikGartner/dTree/1.1.0/dist/dTree.min.js
 ```
 
 ## Requirements

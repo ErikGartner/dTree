@@ -1,3 +1,13 @@
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/ErikGartner/dtree/compare/1.0.0...v1.1.0) (2016-01-11)
+
+
+### Features
+
+* Add support for multiple marriages #25 ([8795a5e](https://github.com/ErikGartner/dtree/commit/8795a5e))
+
+
+
 <a name="1.0.0"></a>
 # [1.0.0](https://github.com/ErikGartner/dtree/compare/0.8.1...v1.0.0) (2016-01-10)
 

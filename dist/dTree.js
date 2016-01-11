@@ -48,7 +48,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         zoom.translate([width / 2, opts.margin.top]);
 
         // Compute the layout.
-        this.tree = d3.layout.tree().nodeSize([nodeSize[0] * 2, nodeSize[1] * 2]);
+        this.tree = d3.layout.tree().nodeSize([nodeSize[0] * 2, nodeSize[1] * 2.5]);
 
         this.tree.separation(function separation(a, b) {
           if (a.hidden || b.hidden) {
@@ -70,15 +70,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         var nodes = this.tree.nodes(source);
 
-        // Since root node is hidden, read adjust height.
-        var rootOffset = 0;
-        if (nodes.length > 1) {
-          rootOffset = nodes[1].y;
-        }
-        _.forEach(nodes, function (n) {
-          n.y = n.y - rootOffset / 2;
-        });
-
         var links = this.tree.links(nodes);
 
         // Create the link lines.
@@ -89,7 +80,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         this._linkSiblings();
 
         // Draw siblings (marriage)
-        this.svg.selectAll('.sibling').data(this.siblings).enter().append('path').attr('class', opts.styles.marriage).attr('d', this._siblingLine);
+        this.svg.selectAll('.sibling').data(this.siblings).enter().append('path').attr('class', opts.styles.marriage).attr('d', _.bind(this._siblingLine, this));
 
         // Create the node rectangles.
         nodes.append('foreignObject').filter(function (d) {
@@ -181,13 +172,29 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       value: function _siblingLine(d, i) {
 
         var ny = d.target.y + (d.source.y - d.target.y) * 0.50;
+        var nodeWidth = this.nodeSize[0];
+        var nodeHeight = this.nodeSize[1];
+
+        // Not first marriage
+        if (d.number > 0) {
+          ny -= nodeHeight * 8 / 10;
+        }
 
         var linedata = [{
           x: d.source.x,
           y: d.source.y
         }, {
-          x: d.target.x,
+          x: d.source.x + nodeWidth * 6 / 10,
+          y: d.source.y
+        }, {
+          x: d.source.x + nodeWidth * 6 / 10,
           y: ny
+        }, {
+          x: d.target.x - nodeWidth * 6 / 10,
+          y: ny
+        }, {
+          x: d.target.x - nodeWidth * 6 / 10,
+          y: d.target.y
         }, {
           x: d.target.x,
           y: d.target.y
@@ -197,7 +204,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           return d.x;
         }).y(function (d) {
           return d.y;
-        }).interpolate('step-after');
+        }).interpolate('linear');
         return fun(linedata);
       }
     }], [{
@@ -262,7 +269,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
   var dTree = {
 
-    VERSION: '1.0.0',
+    VERSION: '1.1.0',
 
     init: function init(data) {
       var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
@@ -358,8 +365,19 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           reconstructTree(child, node);
         });
 
-        // go through marriage
+        parent.children.push(node);
+
+        // DEPRECATED: Backwards-compatability for v1.x syntax, remove for 2.0
         if (person.marriage) {
+          console.log('DEPRECATED: The data attribute "marriage" is deprecated in favor of "marriages" that takes an array. It will be removed in 2.0.');
+          person.marriages = [person.marriage];
+        }
+
+        //sort marriages
+        dTree._sortMarriages(person.marriages, opts);
+
+        // go through marriage
+        _.forEach(person.marriages, function (marriage, index) {
 
           var m = {
             name: '',
@@ -367,10 +385,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             hidden: true,
             noParent: true,
             children: [],
-            extra: person.marriage.extra
+            extra: marriage.extra
           };
 
-          var sp = person.marriage.spouse;
+          var sp = marriage.spouse;
 
           var spouse = {
             name: sp.name,
@@ -383,11 +401,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             extra: sp.extra
           };
 
-          var marriedCouple = dTree._sortPersons([node, spouse], opts);
-          parent.children.push(marriedCouple[0], m, marriedCouple[1]);
+          parent.children.push(m, spouse);
 
-          dTree._sortPersons(person.marriage.children, opts);
-          _.forEach(person.marriage.children, function (child) {
+          dTree._sortPersons(marriage.children, opts);
+          _.forEach(marriage.children, function (child) {
             reconstructTree(child, m);
           });
 
@@ -397,11 +414,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             },
             target: {
               id: spouse.id
-            }
+            },
+            number: index
           });
-        } else {
-          parent.children.push(node);
-        }
+        });
       };
 
       _.forEach(data, function (person) {
@@ -421,6 +437,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         });
       }
       return persons;
+    },
+
+    _sortMarriages: function _sortMarriages(marriages, opts) {
+      if (marriages != undefined && Array.isArray(marriages)) {
+        marriages.sort(function (marriageA, marriageB) {
+          var a = marriageA.spouse;
+          var b = marriageB.spouse;
+          return opts.callbacks.nodeSorter(a.name, a.extra, b.name, b.extra);
+        });
+      }
+      return marriages;
     }
 
   };
