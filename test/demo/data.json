@@ -2,7 +2,7 @@
   "name": "Niclas Superlongsurname",
   "class": "man",
   "textClass": "emphasis",
-  "marriage": {
+  "marriages": [{
     "spouse": {
       "name": "Iliana",
       "class": "woman"
@@ -10,7 +10,7 @@
     "children": [{
       "name": "James",
       "class": "man",
-      "marriage": {
+      "marriages": [{
         "spouse": {
           "name": "Alexandra",
           "class": "woman"
@@ -18,12 +18,12 @@
         "children": [{
           "name": "Eric",
           "class": "man",
-          "marriage": {
+          "marriages": [{
             "spouse": {
               "name": "Eva",
               "class": "woman"
             }
-          }
+          }]
         }, {
           "name": "Jane",
           "class": "woman"
@@ -40,7 +40,7 @@
           "name": "Jessica",
           "class": "woman"
         }]
-      }
+      }]
     }]
-  }
+  }]
 }]

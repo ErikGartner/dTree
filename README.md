@@ -30,7 +30,7 @@ The data object should have the following structure:
   class: "overriding-css-class",
   textClass: "overriding-css-class",
   depthOffset: 1,
-  marriage: {
+  marriages: [{
     spouse: {
       name: "Mother",
       class: "overriding-css-class"
@@ -39,7 +39,7 @@ The data object should have the following structure:
       name: "Child",
       class: "child-class"
     }]
-  },
+  }],
   extra: {}
 }]
 ```

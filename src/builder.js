@@ -47,7 +47,7 @@ class TreeBuilder {
 
     // Compute the layout.
     this.tree = d3.layout.tree()
-      .nodeSize([nodeSize[0] * 2, nodeSize[1] * 2]);
+      .nodeSize([nodeSize[0] * 2, nodeSize[1] * 2.5]);
 
     this.tree.separation(function separation(a, b) {
       if (a.hidden || b.hidden) {
@@ -68,15 +68,6 @@ class TreeBuilder {
     var nodeSize = this.nodeSize;
 
     var nodes = this.tree.nodes(source);
-
-    // Since root node is hidden, read adjust height.
-    var rootOffset = 0;
-    if (nodes.length > 1) {
-      rootOffset = nodes[1].y;
-    }
-    _.forEach(nodes, function(n) {
-      n.y = n.y - rootOffset / 2;
-    });
 
     var links = this.tree.links(nodes);
 
@@ -100,7 +91,7 @@ class TreeBuilder {
       .enter()
       .append('path')
       .attr('class', opts.styles.marriage)
-      .attr('d', this._siblingLine);
+      .attr('d', _.bind(this._siblingLine, this));
 
     // Create the node rectangles.
     nodes.append('foreignObject')
@@ -210,13 +201,29 @@ class TreeBuilder {
   _siblingLine(d, i) {
 
     var ny = d.target.y + (d.source.y - d.target.y) * 0.50;
+    var nodeWidth = this.nodeSize[0];
+    var nodeHeight = this.nodeSize[1];
+
+    // Not first marriage
+    if (d.number > 0) {
+      ny -= nodeHeight * 8 / 10;
+    }
 
     var linedata = [{
       x: d.source.x,
       y: d.source.y
     }, {
-      x: d.target.x,
+      x: d.source.x + nodeWidth * 6 / 10,
+      y: d.source.y
+    }, {
+      x: d.source.x + nodeWidth * 6 / 10,
       y: ny
+    }, {
+      x: d.target.x - nodeWidth * 6 / 10,
+      y: ny
+    }, {
+      x: d.target.x - nodeWidth * 6 / 10,
+      y: d.target.y
     }, {
       x: d.target.x,
       y: d.target.y
@@ -229,7 +236,7 @@ class TreeBuilder {
       .y(function(d) {
         return d.y;
       })
-      .interpolate('step-after');
+      .interpolate('linear');
     return fun(linedata);
   }
 

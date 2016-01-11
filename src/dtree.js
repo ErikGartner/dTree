@@ -97,8 +97,19 @@ const dTree = {
         reconstructTree(child, node);
       });
 
-      // go through marriage
+      parent.children.push(node);
+
+      // DEPRECATED: Backwards-compatability for v1.x syntax, remove for 2.0
       if (person.marriage) {
+        console.log('DEPRECATED: The data attribute "marriage" is deprecated in favor of "marriages" that takes an array. It will be removed in 2.0.');
+        person.marriages = [person.marriage];
+      }
+
+      //sort marriages
+      dTree._sortMarriages(person.marriages, opts);
+
+      // go through marriage
+      _.forEach(person.marriages, function(marriage, index) {
 
         var m = {
           name: '',
@@ -106,10 +117,10 @@ const dTree = {
           hidden: true,
           noParent: true,
           children: [],
-          extra: person.marriage.extra
+          extra: marriage.extra
         };
 
-        var sp = person.marriage.spouse;
+        var sp = marriage.spouse;
 
         var spouse = {
           name: sp.name,
@@ -122,11 +133,10 @@ const dTree = {
           extra: sp.extra
         };
 
-        var marriedCouple = dTree._sortPersons([node, spouse], opts);
-        parent.children.push(marriedCouple[0], m, marriedCouple[1]);
+        parent.children.push(m, spouse);
 
-        dTree._sortPersons(person.marriage.children, opts);
-        _.forEach(person.marriage.children, function(child) {
+        dTree._sortPersons(marriage.children, opts);
+        _.forEach(marriage.children, function(child) {
           reconstructTree(child, m);
         });
 
@@ -136,12 +146,10 @@ const dTree = {
           },
           target: {
             id: spouse.id
-          }
+          },
+          number: index
         });
-
-      } else {
-        parent.children.push(node);
-      }
+      });
 
     };
 
@@ -163,6 +171,17 @@ const dTree = {
       });
     }
     return persons;
+  },
+
+  _sortMarriages: function(marriages, opts) {
+    if (marriages != undefined && Array.isArray(marriages)) {
+      marriages.sort(function(marriageA, marriageB) {
+        var a = marriageA.spouse;
+        var b = marriageB.spouse;
+        return opts.callbacks.nodeSorter(a.name, a.extra, b.name, b.extra);
+      });
+    }
+    return marriages;
   }
 
 };
