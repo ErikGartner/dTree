@@ -14,8 +14,8 @@ https://cdn.rawgit.com/ErikGartner/dTree/1.1.0/dist/dTree.min.js
 ## Requirements
 To use the library the follow dependencies must be loaded:
 
- - [D3](https://github.com/mbostock/d3) v3.
- - [lodash](https://github.com/lodash/lodash) v3.10
+ - [D3](https://github.com/mbostock/d3) v3.x
+ - [lodash](https://github.com/lodash/lodash) v4.x
 
 ## Usage
 To create a graph from data use the following command:

@@ -22,7 +22,7 @@
     "node"
   ],
   "dependencies": {
-    "lodash": "^3.10.0",
+    "lodash": "^4.0.0",
     "d3": "^3.5.12"
   },
   "ignore": [
