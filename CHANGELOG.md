@@ -1,3 +1,13 @@
+<a name="1.2.0"></a>
+# [1.2.0](https://github.com/ErikGartner/dtree/compare/1.1.0...v1.2.0) (2016-01-14)
+
+
+### Features
+
+* Update to lodash 4.0.0 ([bd8451d](https://github.com/ErikGartner/dtree/commit/bd8451d))
+
+
+
 <a name="1.1.0"></a>
 # [1.1.0](https://github.com/ErikGartner/dtree/compare/1.0.0...v1.1.0) (2016-01-11)
 
