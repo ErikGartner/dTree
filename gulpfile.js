@@ -267,8 +267,8 @@ gulp.task('push-release', function (callback) {
   runSequence(
     'push-changes',
     'push-tags',
-    'github-release',
     'npm-publish',
+    'github-release',
     function (error) {
       if (error) {
         console.log(error.message);
