@@ -1,3 +1,13 @@
+<a name="1.2.1"></a>
+## [1.2.1](https://github.com/ErikGartner/dtree/compare/1.2.0...v1.2.1) (2016-03-08)
+
+
+### Bug Fixes
+
+* Proper height calculation #29 ([282fae5](https://github.com/ErikGartner/dtree/commit/282fae5))
+
+
+
 <a name="1.2.0"></a>
 # [1.2.0](https://github.com/ErikGartner/dtree/compare/1.1.0...v1.2.0) (2016-01-14)
 

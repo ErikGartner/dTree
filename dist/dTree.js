@@ -214,6 +214,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         var maxHeight = 0;
         _.map(nodes, function (n) {
           var container = document.createElement('div');
+          container.setAttribute('class', n['class']);
           container.style.marginLeft = '5px';
           container.style.paddingTop = '5px';
           container.style.visibility = 'hidden';
@@ -269,7 +270,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
   var dTree = {
 
-    VERSION: '1.2.0',
+    VERSION: '1.2.1',
 
     init: function init(data) {
       var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
