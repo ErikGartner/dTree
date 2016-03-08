@@ -245,6 +245,7 @@ class TreeBuilder {
     var maxHeight = 0;
     _.map(nodes, function(n) {
       var container = document.createElement('div');
+      container.setAttribute('class', n.class);
       container.style.marginLeft = '5px';
       container.style.paddingTop = '5px';
       container.style.visibility = 'hidden';
