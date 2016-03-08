@@ -212,25 +212,28 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       value: function _nodeSize(nodes, width, textRenderer) {
         var maxWidth = 0;
         var maxHeight = 0;
+        var tmpSvg = document.createElement('svg');
+        document.body.appendChild(tmpSvg);
+
         _.map(nodes, function (n) {
           var container = document.createElement('div');
           container.setAttribute('class', n['class']);
-          container.style.marginLeft = '5px';
-          container.style.paddingTop = '5px';
           container.style.visibility = 'hidden';
           container.style.maxWidth = width + 'px';
 
           var text = textRenderer(n.name, n.extra, n.textClass);
           container.innerHTML = text;
 
-          document.body.appendChild(container);
+          tmpSvg.appendChild(container);
           var height = container.offsetHeight;
-          document.body.removeChild(container);
+          tmpSvg.removeChild(container);
 
           maxHeight = Math.max(maxHeight, height);
           n.cHeight = height;
           n.cWidth = width;
         });
+        document.body.removeChild(tmpSvg);
+
         return [width, maxHeight];
       }
     }, {
@@ -270,7 +273,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
   var dTree = {
 
-    VERSION: '1.2.1',
+    VERSION: '1.3.0',
 
     init: function init(data) {
       var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
