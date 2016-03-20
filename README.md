@@ -7,7 +7,7 @@
 There exists a playground/open repository for dTree graphs called [Treehouse](https://treehouse.gartner.io). There anyone can host a dTree graph without having to create a website or interact directly with the library.
 
 Checkout **the demo graph** for dTree:
-https://treehouse.gartner.io/t/dtree-demo
+https://treehouse.gartner.io/g/58e58be650453b6d49d7
 
 ## Installation
 There are several ways to use dTree. One way is to simply include the compiled file ```dTree.js``` that then exposes a ```dTree``` variable. dTree is available on both NPM and Bower as *d3-dtree*.
