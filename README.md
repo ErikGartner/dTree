@@ -114,7 +114,7 @@ A demo is available by running:
 ```
 gulp demo
 ```
-It hosts a demo on localhost:3000 by serving ```test/demo```.
+It hosts a demo on localhost:3000 by serving [test/demo](test/demo).
 
 ## Contributions
 To make contributions please follow the contributions document.
