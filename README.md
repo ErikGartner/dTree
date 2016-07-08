@@ -7,7 +7,7 @@
 There exists a playground/open repository for dTree graphs called [Treehouse](https://treehouse.gartner.io). There anyone can host a dTree graph without having to create a website or interact directly with the library.
 
 Checkout **the demo graph** for dTree:
-https://treehouse.gartner.io/g/58e58be650453b6d49d7
+https://treehouse.gartner.io/g/ErikGartner/58e58be650453b6d49d7
 
 ## Installation
 There are several ways to use dTree. One way is to simply include the compiled file ```dTree.js``` that then exposes a ```dTree``` variable. dTree is available on both NPM and Bower as *d3-dtree*.
@@ -32,21 +32,19 @@ dTree.init(data, options);
 The data object should have the following structure:
 ```javascript
 [{
-  name: "Father",
-  class: "overriding-css-class",
-  textClass: "overriding-css-class",
-  depthOffset: 1,
-  marriages: [{
-    spouse: {
+  name: "Father",                         // The name of the node
+  class: "node",                          // The CSS class of the node
+  textClass: "nodeText",                  // The CSS class of the text in the node
+  depthOffset: 1,                         // Generational height offset
+  marriages: [{                           // Marriages is a list of nodes
+    spouse: {                             // Each marriage has one spouse
       name: "Mother",
-      class: "overriding-css-class"
     },
-    children: [{
+    children: [{                          // List of children nodes
       name: "Child",
-      class: "child-class"
     }]
   }],
-  extra: {}
+  extra: {}                               // Custom data passed to renderers
 }]
 ```
 
@@ -58,19 +56,17 @@ The options object has the following default values:
   width: 600,
   height: 600,
   callbacks: {
-    nodeClick: function(name, extra, id) {},
-    nodeRenderer: function(name, x, y, height, width, extra, id, nodeClass, textClass, textRenderer) {
-      return TreeBuilder._nodeRenderer(name, x, y, height, width, extra,
-        id, nodeClass, textClass, textRenderer);
-    },
-    nodeSize: function(nodes, width, textRenderer) {
-      // Should set cHeight and cWidth for each node and return the maxima.
-      return TreeBuilder._nodeSize(nodes, width, textRenderer);
-    },
-    nodeSorter: function(aName, aExtra, bName, bExtra) {return 0;},
-    textRenderer: function(name, extra, textClass) {
-      return TreeBuilder._textRenderer(name, extra, textClass);
-    }
+    /*
+      Callbacks should only be overwritten on a need to basis.
+      See the section about callbacks in the documentation.
+
+      Function signatures:
+        nodeClick: function(name, extra, id) {},
+        nodeRenderer: function(name, x, y, height, width, extra, id, nodeClass, textClass, textRenderer) {},
+        nodeSize: function(nodes, width, textRenderer) {},
+        nodeSorter: function(aName, aExtra, bName, bExtra) { return 0},
+        textRenderer: function(name, extra, textClass) {}
+    */
   },
   margin: {
     top: 0,
