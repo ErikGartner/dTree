@@ -48,42 +48,6 @@ The data object should have the following structure:
 }]
 ```
 
-The options object has the following default values:
-```javascript
-{
-  target: '#graph',
-  debug: false,
-  width: 600,
-  height: 600,
-  callbacks: {
-    /*
-      Callbacks should only be overwritten on a need to basis.
-      See the section about callbacks in the documentation.
-
-      Function signatures:
-        nodeClick: function(name, extra, id) {},
-        nodeRenderer: function(name, x, y, height, width, extra, id, nodeClass, textClass, textRenderer) {},
-        nodeSize: function(nodes, width, textRenderer) {},
-        nodeSorter: function(aName, aExtra, bName, bExtra) { return 0},
-        textRenderer: function(name, extra, textClass) {}
-    */
-  },
-  margin: {
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0
-  },
-  nodeWidth: 100,
-  styles: {
-    node: 'node',
-    linage: 'linage',
-    marriage: 'marriage',
-    text: 'nodeText'
-  }
-}
-```
-
 The following CSS sets some good defaults:
 ```css
 .linage {
@@ -103,6 +67,68 @@ The following CSS sets some good defaults:
     font: 10px sans-serif;
 }
 ```
+
+The options object has the following default values:
+```javascript
+{
+  target: '#graph',
+  debug: false,
+  width: 600,
+  height: 600,
+  callbacks: {
+    /*
+      Callbacks should only be overwritten on a need to basis.
+      See the section about callbacks below.
+    */
+  },
+  margin: {
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0
+  },
+  nodeWidth: 100,
+  styles: {
+    node: 'node',
+    linage: 'linage',
+    marriage: 'marriage',
+    text: 'nodeText'
+  }
+}
+```
+
+### Callbacks
+Below follows a short descriptions of the available callback functions that may be passed to dTree. See [builder.js](https://github.com/ErikGartner/dTree/blob/master/src/builder.js) for the default implementations.
+
+#### nodeClick
+```javascript
+function(name, x, y, height, width, extra, id, nodeClass, textClass, textRenderer)
+```
+The nodeClick function is called by dTree when the node or text is clicked by the user. It shouldn't return any value.
+
+#### nodeRenderer
+```javascript
+function(name, x, y, height, width, extra, id, nodeClass, textClass, textRenderer)
+```
+The nodeRenderer is called once for each node and is expected to return a string containing the node. By default the node is rendered using a div containing the text returned from the default textRendeder.
+
+#### nodeSize
+```javascript
+function(nodes, width, textRenderer)
+```
+This nodeSize function takes all nodes and a preferred width set by the user. It is then expected to return an array containing the width and height for all nodes (they all share the same width and height during layout though nodes may be rendered as smaller by the nodeRenderer).
+
+#### nodeSorter
+```javascript
+function(aName, aExtra, bName, bExtra)
+```
+The nodeSorterer takes two nodes names and extra data, it then expected to return -1, 0 or 1 depending if A is less, equal or greater than B. This is used for sorting the nodes in the tree during layout.
+
+#### textRenderer
+```javascript
+function(name, extra, textClass)
+```
+The textRenderer function returns the formatted text to the nodeRenderer. This way the user may chose to overwrite only what text is shown but may opt to keep the default nodeRenderer.
 
 ## Development
 To setup and build the library from scratch follow these steps:
