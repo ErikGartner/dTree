@@ -7,7 +7,7 @@
 There exists a playground/open repository for dTree graphs called [Treehouse](https://treehouse.gartner.io). There anyone can host a dTree graph without having to create a website or interact directly with the library.
 
 Checkout **the demo graph** for dTree:
-https://treehouse.gartner.io/g/ErikGartner/58e58be650453b6d49d7
+https://treehouse.gartner.io/ErikGartner/58e58be650453b6d49d7
 
 ## Installation
 There are several ways to use dTree. One way is to simply include the compiled file ```dTree.js``` that then exposes a ```dTree``` variable. dTree is available on both NPM and Bower as *d3-dtree*.
@@ -142,10 +142,11 @@ gulp demo
 ```
 It hosts a demo on localhost:3000 by serving [test/demo](test/demo).
 
-## Contributions
-To make contributions please follow the contributions document.
+## Contributing
+Contributions are very welcomed! Checkout the [CONTRIBUTING](CONTRIBUTING.md) document for style information.
+A good place to start is to make a pull request to solve an open issue. Feel free to ask questions regarding the issue since most have a sparse description.
 
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2015 Erik Gärtner
+Copyright (c) 2015-2016 Erik Gärtner
