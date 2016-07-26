@@ -4,7 +4,7 @@
 Please follow these guidelines.
 
 ### Versioning
-dTree uses SemVer 2.0.0. That is the versioning is <MAJOR>.<MINOR>.<PATCH>.
+dTree uses [SemVer 2.0.0](http://semver.org/spec/v2.0.0.html). That is the versioning is \<MAJOR\>.\<MINOR\>.\<PATCH\>.
 
 ### Commit Message Format
 Each commit message consists of a **header**, a **body** and a **footer**.  The header has a special
