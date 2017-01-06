@@ -140,7 +140,7 @@ A demo is available by running:
 ```
 gulp demo
 ```
-It hosts a demo on localhost:3000 by serving [test/demo](test/demo).
+It hosts a demo on localhost:3000 by serving [test/demo](test/demo). The same demo is also available on [JSFiddle](https://jsfiddle.net/tpde0cer/1/).
 
 ## Contributing
 Contributions are very welcomed! Checkout the [CONTRIBUTING](CONTRIBUTING.md) document for style information.
