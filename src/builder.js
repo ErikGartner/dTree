@@ -11,7 +11,7 @@ class TreeBuilder {
     this.allNodes = this._flatten(this.root);
 
     // Calculate node size
-    var visibleNodes = _.filter(this.allNodes, function(n) {
+    let visibleNodes = _.filter(this.allNodes, function(n) {
       return !n.hidden;
     });
     this.nodeSize = opts.callbacks.nodeSize(visibleNodes,
@@ -20,22 +20,21 @@ class TreeBuilder {
 
   create() {
 
-    var opts = this.opts;
-    var allNodes = this.allNodes;
-    var nodeSize = this.nodeSize;
+    let opts = this.opts;
+    let allNodes = this.allNodes;
+    let nodeSize = this.nodeSize;
 
-    var width = opts.width + opts.margin.left + opts.margin.right;
-    var height = opts.height + opts.margin.top + opts.margin.bottom;
+    let width = opts.width + opts.margin.left + opts.margin.right;
+    let height = opts.height + opts.margin.top + opts.margin.bottom;
 
-    var zoom = d3.behavior.zoom()
+    let zoom = d3.zoom()
       .scaleExtent([0.1, 10])
-      .on('zoom', _.bind(function() {
-        svg.attr('transform', 'translate(' + d3.event.translate + ')' +
-          ' scale(' + d3.event.scale + ')');
-      }, this));
+      .on('zoom', function() {
+        svg.attr('transform', d3.event.transform.translate(width / 2, opts.margin.top));
+      });
 
     //make an SVG
-    var svg = this.svg = d3.select(opts.target)
+    let svg = this.svg = d3.select(opts.target)
       .append('svg')
       .attr('width', width)
       .attr('height', height)
@@ -43,14 +42,12 @@ class TreeBuilder {
       .append('g')
       .attr('transform', 'translate(' + width / 2 + ',' + opts.margin.top + ')');
 
-    zoom.translate([width / 2, opts.margin.top]);
-
     // Compute the layout.
-    this.tree = d3.layout.tree()
+    this.tree = d3.tree()
       .nodeSize([nodeSize[0] * 2, nodeSize[1] * 2.5]);
 
     this.tree.separation(function separation(a, b) {
-      if (a.hidden || b.hidden) {
+      if (a.data.hidden || b.data.hidden) {
         return 0.3;
       } else {
         return 0.6;
@@ -63,24 +60,27 @@ class TreeBuilder {
 
   _update(source) {
 
-    var opts = this.opts;
-    var allNodes = this.allNodes;
-    var nodeSize = this.nodeSize;
+    let opts = this.opts;
+    let allNodes = this.allNodes;
+    let nodeSize = this.nodeSize;
 
-    var nodes = this.tree.nodes(source);
-
-    var links = this.tree.links(nodes);
+    let treenodes = this.tree(source);
+    let links = treenodes.links();
 
     // Create the link lines.
     this.svg.selectAll('.link')
       .data(links)
       .enter()
+      // filter links with no parents to prevent empty nodes
+      .filter(function(l) {
+        return !l.target.data.noParent;
+      })
       .append('path')
       .attr('class', opts.styles.linage)
       .attr('d', this._elbow);
 
-    var nodes = this.svg.selectAll('.node')
-      .data(nodes)
+    let nodes = this.svg.selectAll('.node')
+      .data(treenodes.descendants())
       .enter();
 
     this._linkSiblings();
@@ -96,7 +96,7 @@ class TreeBuilder {
     // Create the node rectangles.
     nodes.append('foreignObject')
       .filter(function(d) {
-        return d.hidden ? false : true;
+        return d.data.hidden ? false : true;
       })
       .attr('x', function(d) {
         return d.x - d.cWidth / 2 + 'px';
@@ -115,19 +115,19 @@ class TreeBuilder {
       })
       .html(function(d) {
         return opts.callbacks.nodeRenderer(
-          d.name,
+          d.data.name,
           d.x,
           d.y,
           nodeSize[0],
           nodeSize[1],
-          d.extra,
-          d.id,
-          d.class,
-          d.textClass,
+          d.data.extra,
+          d.data.id,
+          d.data.class,
+          d.data.textClass,
           opts.callbacks.textRenderer);
       })
       .on('click', function(d)  {
-        if (d.hidden) {
+        if (d.data.hidden) {
           return;
         }
         opts.callbacks.nodeClick(d.name, d.extra, d.id);
@@ -135,8 +135,8 @@ class TreeBuilder {
   }
 
   _flatten(root) {
-    var n = [];
-    var i = 0;
+    let n = [];
+    let i = 0;
 
     function recurse(node) {
       if (node.children) {
@@ -152,12 +152,12 @@ class TreeBuilder {
   }
 
   _elbow(d, i) {
-    if (d.target.noParent) {
+    if (d.target.data.noParent) {
       return 'M0,0L0,0';
     }
-    var ny = d.target.y + (d.source.y - d.target.y) * 0.50;
+    let ny = d.target.y + (d.source.y - d.target.y) * 0.50;
 
-    var linedata = [{
+    let linedata = [{
       x: d.target.x,
       y: d.target.y
     }, {
@@ -168,27 +168,26 @@ class TreeBuilder {
       y: d.source.y
     }];
 
-    var fun = d3.svg.line()
+    let fun = d3.line().curve(d3.curveStepAfter)
       .x(function(d) {
         return d.x;
       })
       .y(function(d) {
         return d.y;
-      })
-      .interpolate('step-after');
+      });
     return fun(linedata);
   }
 
   _linkSiblings() {
 
-    var allNodes = this.allNodes;
+    let allNodes = this.allNodes;
 
-    _.forEach(this.siblings, function(d)  {
-      var start = allNodes.filter(function(v) {
-        return d.source.id == v.id;
+    _.forEach(this.siblings, function(d) {
+      let start = allNodes.filter(function(v) {
+        return d.source.id == v.data.id;
       });
-      var end = allNodes.filter(function(v) {
-        return d.target.id == v.id;
+      let end = allNodes.filter(function(v) {
+        return d.target.id == v.data.id;
       });
       d.source.x = start[0].x;
       d.source.y = start[0].y;
@@ -200,16 +199,16 @@ class TreeBuilder {
 
   _siblingLine(d, i) {
 
-    var ny = d.target.y + (d.source.y - d.target.y) * 0.50;
-    var nodeWidth = this.nodeSize[0];
-    var nodeHeight = this.nodeSize[1];
+    let ny = d.target.y + (d.source.y - d.target.y) * 0.50;
+    let nodeWidth = this.nodeSize[0];
+    let nodeHeight = this.nodeSize[1];
 
     // Not first marriage
-    if (d.number > 0) {
+    if (d.number > 0) {
       ny -= nodeHeight * 8 / 10;
     }
 
-    var linedata = [{
+    let linedata = [{
       x: d.source.x,
       y: d.source.y
     }, {
@@ -229,34 +228,33 @@ class TreeBuilder {
       y: d.target.y
     }];
 
-    var fun = d3.svg.line()
+    let fun = d3.line().curve(d3.curveStepAfter)
       .x(function(d) {
         return d.x;
       })
       .y(function(d) {
         return d.y;
-      })
-      .interpolate('linear');
+      });
     return fun(linedata);
   }
 
   static _nodeSize(nodes, width, textRenderer) {
-    var maxWidth = 0;
-    var maxHeight = 0;
-    var tmpSvg = document.createElement('svg');
+    let maxWidth = 0;
+    let maxHeight = 0;
+    let tmpSvg = document.createElement('svg');
     document.body.appendChild(tmpSvg);
 
     _.map(nodes, function(n) {
-      var container = document.createElement('div');
-      container.setAttribute('class', n.class);
+      let container = document.createElement('div');
+      container.setAttribute('class', n.data.class);
       container.style.visibility = 'hidden';
       container.style.maxWidth = width + 'px';
 
-      var text = textRenderer(n.name, n.extra, n.textClass);
+      let text = textRenderer(n.data.name, n.data.extra, n.data.textClass);
       container.innerHTML = text;
 
       tmpSvg.appendChild(container);
-      var height = container.offsetHeight;
+      let height = container.offsetHeight;
       tmpSvg.removeChild(container);
 
       maxHeight = Math.max(maxHeight, height);
@@ -269,7 +267,7 @@ class TreeBuilder {
   }
 
   static _nodeRenderer(name, x, y, height, width, extra, id, nodeClass, textClass, textRenderer) {
-    var node = '';
+    let node = '';
     node += '<div ';
     node += 'style="height:100%;width:100%;" ';
     node += 'class="' + nodeClass + '" ';
@@ -280,7 +278,7 @@ class TreeBuilder {
   }
 
   static _textRenderer(name, extra, textClass) {
-    var node = '';
+    let node = '';
     node += '<p ';
     node += 'align="center" ';
     node += 'class="' + textClass + '">\n';

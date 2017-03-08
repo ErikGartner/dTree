@@ -20,7 +20,7 @@ https://cdn.rawgit.com/ErikGartner/dTree/1.3.2/dist/dTree.min.js
 ## Requirements
 To use the library the follow dependencies must be loaded:
 
- - [D3](https://github.com/mbostock/d3) v3.x
+ - [D3](https://github.com/mbostock/d3) v4.x
  - [lodash](https://github.com/lodash/lodash) v4.x
 
 ## Usage
