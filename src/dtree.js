@@ -158,7 +158,7 @@ const dTree = {
     });
 
     return {
-      root: root,
+      root: d3.hierarchy(root),
       siblings: siblings
     };
 
