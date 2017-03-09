@@ -38,20 +38,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         var width = opts.width + opts.margin.left + opts.margin.right;
         var height = opts.height + opts.margin.top + opts.margin.bottom;
 
-        var zoom = d3.behavior.zoom().scaleExtent([0.1, 10]).on('zoom', _.bind(function () {
-          svg.attr('transform', 'translate(' + d3.event.translate + ')' + ' scale(' + d3.event.scale + ')');
-        }, this));
+        var zoom = d3.zoom().scaleExtent([0.1, 10]).on('zoom', function () {
+          svg.attr('transform', d3.event.transform.translate(width / 2, opts.margin.top));
+        });
 
         //make an SVG
         var svg = this.svg = d3.select(opts.target).append('svg').attr('width', width).attr('height', height).call(zoom).append('g').attr('transform', 'translate(' + width / 2 + ',' + opts.margin.top + ')');
 
-        zoom.translate([width / 2, opts.margin.top]);
-
         // Compute the layout.
-        this.tree = d3.layout.tree().nodeSize([nodeSize[0] * 2, nodeSize[1] * 2.5]);
+        this.tree = d3.tree().nodeSize([nodeSize[0] * 2, nodeSize[1] * 2.5]);
 
         this.tree.separation(function separation(a, b) {
-          if (a.hidden || b.hidden) {
+          if (a.data.hidden || b.data.hidden) {
             return 0.3;
           } else {
             return 0.6;
@@ -68,14 +66,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         var allNodes = this.allNodes;
         var nodeSize = this.nodeSize;
 
-        var nodes = this.tree.nodes(source);
-
-        var links = this.tree.links(nodes);
+        var treenodes = this.tree(source);
+        var links = treenodes.links();
 
         // Create the link lines.
-        this.svg.selectAll('.link').data(links).enter().append('path').attr('class', opts.styles.linage).attr('d', this._elbow);
+        this.svg.selectAll('.link').data(links).enter()
+        // filter links with no parents to prevent empty nodes
+        .filter(function (l) {
+          return !l.target.data.noParent;
+        }).append('path').attr('class', opts.styles.linage).attr('d', this._elbow);
 
-        var nodes = this.svg.selectAll('.node').data(nodes).enter();
+        var nodes = this.svg.selectAll('.node').data(treenodes.descendants()).enter();
 
         this._linkSiblings();
 
@@ -84,7 +85,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         // Create the node rectangles.
         nodes.append('foreignObject').filter(function (d) {
-          return d.hidden ? false : true;
+          return d.data.hidden ? false : true;
         }).attr('x', function (d) {
           return d.x - d.cWidth / 2 + 'px';
         }).attr('y', function (d) {
@@ -96,9 +97,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }).attr('id', function (d) {
           return d.id;
         }).html(function (d) {
-          return opts.callbacks.nodeRenderer(d.name, d.x, d.y, nodeSize[0], nodeSize[1], d.extra, d.id, d['class'], d.textClass, opts.callbacks.textRenderer);
+          return opts.callbacks.nodeRenderer(d.data.name, d.x, d.y, nodeSize[0], nodeSize[1], d.data.extra, d.data.id, d.data['class'], d.data.textClass, opts.callbacks.textRenderer);
         }).on('click', function (d) {
-          if (d.hidden) {
+          if (d.data.hidden) {
             return;
           }
           opts.callbacks.nodeClick(d.name, d.extra, d.id);
@@ -125,7 +126,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }, {
       key: '_elbow',
       value: function _elbow(d, i) {
-        if (d.target.noParent) {
+        if (d.target.data.noParent) {
           return 'M0,0L0,0';
         }
         var ny = d.target.y + (d.source.y - d.target.y) * 0.50;
@@ -141,11 +142,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           y: d.source.y
         }];
 
-        var fun = d3.svg.line().x(function (d) {
+        var fun = d3.line().curve(d3.curveStepAfter).x(function (d) {
           return d.x;
         }).y(function (d) {
           return d.y;
-        }).interpolate('step-after');
+        });
         return fun(linedata);
       }
     }, {
@@ -156,10 +157,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         _.forEach(this.siblings, function (d) {
           var start = allNodes.filter(function (v) {
-            return d.source.id == v.id;
+            return d.source.id == v.data.id;
           });
           var end = allNodes.filter(function (v) {
-            return d.target.id == v.id;
+            return d.target.id == v.data.id;
           });
           d.source.x = start[0].x;
           d.source.y = start[0].y;
@@ -200,11 +201,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           y: d.target.y
         }];
 
-        var fun = d3.svg.line().x(function (d) {
+        var fun = d3.line().curve(d3.curveStepAfter).x(function (d) {
           return d.x;
         }).y(function (d) {
           return d.y;
-        }).interpolate('linear');
+        });
         return fun(linedata);
       }
     }], [{
@@ -217,11 +218,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         _.map(nodes, function (n) {
           var container = document.createElement('div');
-          container.setAttribute('class', n['class']);
+          container.setAttribute('class', n.data['class']);
           container.style.visibility = 'hidden';
           container.style.maxWidth = width + 'px';
 
-          var text = textRenderer(n.name, n.extra, n.textClass);
+          var text = textRenderer(n.data.name, n.data.extra, n.data.textClass);
           container.innerHTML = text;
 
           tmpSvg.appendChild(container);
@@ -273,7 +274,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
   var dTree = {
 
-    VERSION: '1.3.2',
+    VERSION: '2.0.0',
 
     init: function init(data) {
       var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
@@ -371,12 +372,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         parent.children.push(node);
 
-        // DEPRECATED: Backwards-compatability for v1.x syntax, remove for 2.0
-        if (person.marriage) {
-          console.log('DEPRECATED: The data attribute "marriage" is deprecated in favor of "marriages" that takes an array. It will be removed in 2.0.');
-          person.marriages = [person.marriage];
-        }
-
         //sort marriages
         dTree._sortMarriages(person.marriages, opts);
 
@@ -429,7 +424,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       });
 
       return {
-        root: root,
+        root: d3.hierarchy(root),
         siblings: siblings
       };
     },

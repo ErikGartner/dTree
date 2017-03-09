@@ -1,3 +1,17 @@
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/ErikGartner/dtree/compare/1.3.2...v2.0.0) (2017-03-09)
+
+
+### Bug Fixes
+
+* upgrade to d3 v4 ([d63d003](https://github.com/ErikGartner/dtree/commit/d63d003))
+
+### Features
+
+* Deprecated marriage attribute. Use marriages instead now. #26 ([096b90f](https://github.com/ErikGartner/dtree/commit/096b90f))
+
+
+
 <a name="1.3.2"></a>
 ## [1.3.2](https://github.com/ErikGartner/dtree/compare/1.3.1...v1.3.2) (2016-07-21)
 
