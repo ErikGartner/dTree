@@ -99,12 +99,6 @@ const dTree = {
 
       parent.children.push(node);
 
-      // DEPRECATED: Backwards-compatability for v1.x syntax, remove for 2.0
-      if (person.marriage) {
-        console.log('DEPRECATED: The data attribute "marriage" is deprecated in favor of "marriages" that takes an array. It will be removed in 2.0.');
-        person.marriages = [person.marriage];
-      }
-
       //sort marriages
       dTree._sortMarriages(person.marriages, opts);
 
