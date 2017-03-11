@@ -98,7 +98,7 @@ The options object has the following default values:
 ```
 
 ### Callbacks
-Below follows a short descriptions of the available callback functions that may be passed to dTree. See [builder.js](https://github.com/ErikGartner/dTree/blob/master/src/builder.js) for the default implementations.
+Below follows a short descriptions of the available callback functions that may be passed to dTree. See [dtree.js](https://github.com/ErikGartner/dTree/blob/master/src/dtree.js) for the default implementations.
 
 #### nodeClick
 ```javascript
