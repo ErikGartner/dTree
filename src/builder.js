@@ -130,7 +130,7 @@ class TreeBuilder {
         if (d.data.hidden) {
           return;
         }
-        opts.callbacks.nodeClick(d.name, d.extra, d.id);
+        opts.callbacks.nodeClick(d.data.name, d.data.extra, d.data.id);
       });
   }
 
