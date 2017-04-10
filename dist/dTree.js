@@ -102,7 +102,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           if (d.data.hidden) {
             return;
           }
-          opts.callbacks.nodeClick(d.name, d.extra, d.id);
+          opts.callbacks.nodeClick(d.data.name, d.data.extra, d.data.id);
         });
       }
     }, {
@@ -274,7 +274,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
   var dTree = {
 
-    VERSION: '2.0.0',
+    VERSION: '2.0.1',
 
     init: function init(data) {
       var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];

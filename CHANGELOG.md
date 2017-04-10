@@ -1,3 +1,13 @@
+<a name="2.0.1"></a>
+## [2.0.1](https://github.com/ErikGartner/dtree/compare/2.0.0...v2.0.1) (2017-04-10)
+
+
+### Bug Fixes
+
+* Missing parameters to click callback #50 ([fb00d8f](https://github.com/ErikGartner/dtree/commit/fb00d8f))
+
+
+
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/ErikGartner/dtree/compare/1.3.2...v2.0.0) (2017-03-09)
 
