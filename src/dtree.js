@@ -124,7 +124,8 @@ const dTree = {
           children: [],
           textClass: sp.textClass ? sp.textClass : opts.styles.text,
           class: sp.class ? sp.class : opts.styles.node,
-          extra: sp.extra
+          extra: sp.extra,
+          marriageNode: m
         };
 
         parent.children.push(m, spouse);

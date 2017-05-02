@@ -193,6 +193,15 @@ class TreeBuilder {
       d.source.y = start[0].y;
       d.target.x = end[0].x;
       d.target.y = end[0].y;
+
+      let marriageId = (start[0].data.marriageNode != null ?
+                        start[0].data.marriageNode.id :
+                        end[0].data.marriageNode.id);
+      let marriageNode = allNodes.find(function(n) {
+        return n.data.id == marriageId;
+      });
+      d.source.marriageNode = marriageNode;
+      d.target.marriageNode = marriageNode;
     });
 
   }
@@ -218,10 +227,10 @@ class TreeBuilder {
       x: d.source.x + nodeWidth * 6 / 10,
       y: ny
     }, {
-      x: d.target.x - nodeWidth * 6 / 10,
+      x: d.target.marriageNode.x,
       y: ny
     }, {
-      x: d.target.x - nodeWidth * 6 / 10,
+      x: d.target.marriageNode.x,
       y: d.target.y
     }, {
       x: d.target.x,
@@ -259,7 +268,11 @@ class TreeBuilder {
 
       maxHeight = Math.max(maxHeight, height);
       n.cHeight = height;
-      n.cWidth = width;
+      if (n.data.hidden) {
+        n.cWidth = 0;
+      } else {
+        n.cWidth = width;
+      }
     });
     document.body.removeChild(tmpSvg);
 
