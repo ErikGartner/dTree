@@ -1,3 +1,13 @@
+<a name="2.0.2"></a>
+## [2.0.2](https://github.com/ErikGartner/dtree/compare/2.0.1...v2.0.2) (2017-05-02)
+
+
+### Bug Fixes
+
+* Incorrect marriages line. #53 ([25fd62e](https://github.com/ErikGartner/dtree/commit/25fd62e))
+
+
+
 <a name="2.0.1"></a>
 ## [2.0.1](https://github.com/ErikGartner/dtree/compare/2.0.0...v2.0.1) (2017-04-10)
 

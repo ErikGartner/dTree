@@ -166,6 +166,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           d.source.y = start[0].y;
           d.target.x = end[0].x;
           d.target.y = end[0].y;
+
+          var marriageId = start[0].data.marriageNode != null ? start[0].data.marriageNode.id : end[0].data.marriageNode.id;
+          var marriageNode = allNodes.find(function (n) {
+            return n.data.id == marriageId;
+          });
+          d.source.marriageNode = marriageNode;
+          d.target.marriageNode = marriageNode;
         });
       }
     }, {
@@ -191,10 +198,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           x: d.source.x + nodeWidth * 6 / 10,
           y: ny
         }, {
-          x: d.target.x - nodeWidth * 6 / 10,
+          x: d.target.marriageNode.x,
           y: ny
         }, {
-          x: d.target.x - nodeWidth * 6 / 10,
+          x: d.target.marriageNode.x,
           y: d.target.y
         }, {
           x: d.target.x,
@@ -231,7 +238,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
           maxHeight = Math.max(maxHeight, height);
           n.cHeight = height;
-          n.cWidth = width;
+          if (n.data.hidden) {
+            n.cWidth = 0;
+          } else {
+            n.cWidth = width;
+          }
         });
         document.body.removeChild(tmpSvg);
 
@@ -274,7 +285,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
   var dTree = {
 
-    VERSION: '2.0.1',
+    VERSION: '2.0.2',
 
     init: function init(data) {
       var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
@@ -397,7 +408,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             children: [],
             textClass: sp.textClass ? sp.textClass : opts.styles.text,
             'class': sp['class'] ? sp['class'] : opts.styles.node,
-            extra: sp.extra
+            extra: sp.extra,
+            marriageNode: m
           };
 
           parent.children.push(m, spouse);
