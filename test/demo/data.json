@@ -5,7 +5,10 @@
   "marriages": [{
     "spouse": {
       "name": "Iliana",
-      "class": "woman"
+      "class": "woman",
+      "extra": {
+        "nickname": "Illi"
+      }
     },
     "children": [{
       "name": "James",
