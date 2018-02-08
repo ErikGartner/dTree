@@ -224,8 +224,8 @@ class TreeBuilder {
       ny -= nodeHeight * 8 / 10;
     }
 
-    let linedata = 
-      d.source.x === d.target.x && d.source.y === d.target.y ? 
+    let linedata =
+      d.source.x === d.target.x && d.source.y === d.target.y ?
         [] : // If spouse is hidden
         [{ // regular case
       x: d.source.x,
