@@ -68,6 +68,7 @@ class TreeBuilder {
     let links = treenodes.links();
 
     // Create the link lines.
+    this._linkSiblings(); //  I moved this line before _elbow() for Single parent support
     this.svg.selectAll('.link')
       .data(links)
       .enter()
@@ -82,8 +83,6 @@ class TreeBuilder {
     let nodes = this.svg.selectAll('.node')
       .data(treenodes.descendants())
       .enter();
-
-    this._linkSiblings();
 
     // Draw siblings (marriage)
     this.svg.selectAll('.sibling')
@@ -202,6 +201,14 @@ class TreeBuilder {
       });
       d.source.marriageNode = marriageNode;
       d.target.marriageNode = marriageNode;
+
+      if (_.get(end[0].data, 'hidden', false)) {
+        // Hide horizontal line for hidden spouse
+        d.target.x = start[0].x;
+        d.target.y = start[0].y;
+        marriageNode.x = start[0].x;
+        marriageNode.y = start[0].y;
+      }
     });
 
   }
@@ -217,7 +224,10 @@ class TreeBuilder {
       ny -= nodeHeight * 8 / 10;
     }
 
-    let linedata = [{
+    let linedata = 
+      d.source.x === d.target.x && d.source.y === d.target.y ? 
+        [] : // If spouse is hidden
+        [{ // regular case
       x: d.source.x,
       y: d.source.y
     }, {

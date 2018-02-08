@@ -119,7 +119,7 @@ const dTree = {
         var spouse = {
           name: sp.name,
           id: id++,
-          hidden: false,
+          hidden: _.get(marriage.spouse, 'hidden', false),
           noParent: true,
           children: [],
           textClass: sp.textClass ? sp.textClass : opts.styles.text,
