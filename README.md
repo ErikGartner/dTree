@@ -132,7 +132,7 @@ The textRenderer function returns the formatted text to the nodeRenderer. This w
 ## Development
 To setup and build the library from scratch follow these steps:
 
-1. ```npm install --save-dev```
+1. ```npm install```
 2. ```npm run-script build```
 
 A demo is available by running:
