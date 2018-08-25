@@ -4,7 +4,7 @@
 [![npm](https://img.shields.io/npm/v/d3-dtree.svg)](https://www.npmjs.com/package/d3-dtree) [![Bower](https://img.shields.io/bower/v/d3-dtree.svg)](https://github.com/ErikGartner/dTree)
 
 ## Treehouse
-There exists a playground/open repository for dTree graphs called [Treehouse](https://treehouse.gartner.io). There anyone can host a dTree graph without having to create a website or interact directly with the library. It uses Github gists to store the data displays it in a nice format. Checkout the **demo** graph for dTree: https://treehouse.gartner.io/ErikGartner/58e58be650453b6d49d7
+There exists a playground/open repository for dTree graphs called [Treehouse](https://treehouse.gartner.io). There anyone can host a dTree graph without having to create a website or interact directly with the library. It uses Github gists to store the data and displays it in a nice format. Checkout the **demo** graph for dTree: https://treehouse.gartner.io/ErikGartner/58e58be650453b6d49d7
 
 The demo is also available on [JSFiddle](https://jsfiddle.net/tpde0cer/344/).
 
