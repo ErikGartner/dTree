@@ -131,6 +131,12 @@ class TreeBuilder {
           return;
         }
         opts.callbacks.nodeClick(d.data.name, d.data.extra, d.data.id);
+      })
+      .on('contextmenu', function(d)  {
+        if (d.data.hidden) {
+          return;
+        }
+        opts.callbacks.nodeRightClick(d.data.name, d.data.extra, d.data.id);
       });
   }
 
