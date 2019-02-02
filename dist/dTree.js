@@ -103,6 +103,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             return;
           }
           opts.callbacks.nodeClick(d.data.name, d.data.extra, d.data.id);
+        }).on('contextmenu', function (d) {
+          if (d.data.hidden) {
+            return;
+          }
+          d3.event.preventDefault();
+          opts.callbacks.nodeRightClick(d.data.name, d.data.extra, d.data.id);
         });
       }
     }, {
@@ -297,6 +303,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         height: 600,
         callbacks: {
           nodeClick: function nodeClick(name, extra, id) {},
+          nodeRightClick: function nodeRightClick(name, extra, id) {},
           nodeRenderer: function nodeRenderer(name, x, y, height, width, extra, id, nodeClass, textClass, textRenderer) {
             return TreeBuilder._nodeRenderer(name, x, y, height, width, extra, id, nodeClass, textClass, textRenderer);
           },
