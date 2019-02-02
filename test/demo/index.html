@@ -49,8 +49,11 @@
 						width: 1200,
 						callbacks: {
 							nodeClick: function(name, extra) {
-								console.log(name);
+								alert('Click: ' + name);
 							},
+              nodeRightClick: function(name, extra) {
+                alert('Right-click: ' + name);
+              },
 							textRenderer: function(name, extra, textClass) {
 								if (extra && extra.nickname)
 									name = name + " (" + extra.nickname + ")";
