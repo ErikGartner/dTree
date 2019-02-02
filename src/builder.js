@@ -136,6 +136,7 @@ class TreeBuilder {
         if (d.data.hidden) {
           return;
         }
+        d3.event.preventDefault();
         opts.callbacks.nodeRightClick(d.data.name, d.data.extra, d.data.id);
       });
   }
