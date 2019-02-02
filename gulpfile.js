@@ -35,22 +35,13 @@ gulp.task('clean-tmp', function(cb) {
   del(['tmp'], cb);
 });
 
-// Send a notification when JSCS fails,
-// so that you know your changes didn't build
-function jscsNotify(file) {
-  if (!file.jscs) { return; }
-  return file.jscs.success ? false : 'JSCS failed';
-}
-
 function createLintTask(taskName, files) {
   gulp.task(taskName, function() {
     return gulp.src(files)
       .pipe($.plumber())
       .pipe($.eslint())
       .pipe($.eslint.format())
-      .pipe($.eslint.failOnError())
-      .pipe($.jscs())
-      .pipe($.notify(jscsNotify));
+      .pipe($.eslint.failOnError());
   });
 }
 
@@ -178,7 +169,7 @@ gulp.task('build-in-sequence', function(callback) {
 // watchify is used instead, so these aren't included.
 const jsWatchFiles = ['src/**/*', 'test/**/*'];
 // These are files other than JS files which are to be watched. They are always watched.
-const otherWatchFiles = ['package.json', '**/.eslintrc', '.jscsrc'];
+const otherWatchFiles = ['package.json', '**/.eslintrc'];
 
 // Run the headless unit tests as you make changes.
 gulp.task('watch', function() {
