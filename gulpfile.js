@@ -57,9 +57,6 @@ function createLintTask(taskName, files) {
 // Lint our source code
 createLintTask('lint-src', ['src/**/*.js']);
 
-// Lint our test code
-createLintTask('lint-test', ['test/**/*.js']);
-
 function getPackageJsonVersion () {
   // We parse the json file instead of using require because require caches
   // multiple calls so the version number won't be updated
@@ -115,81 +112,16 @@ function bundle(bundler) {
     .pipe($.livereload());
 }
 
-function getBundler() {
-  // Our browserify bundle is made up of our unit tests, which
-  // should individually load up pieces of our application.
-  // We also include the browserify setup file.
-  var testFiles = glob.sync('./test/unit/**/*');
-  var allFiles = ['./test/setup/browserify.js'].concat(testFiles);
-
-  // Create our bundler, passing in the arguments required for watchify
-  var bundler = browserify(allFiles, watchify.args);
-
-  // Watch the bundler, and re-bundle it whenever files change
-  bundler = watchify(bundler);
-  bundler.on('update', function() {
-    bundle(bundler);
-  });
-
-  // Set up Babelify so that ES6 works in the tests
-  bundler.transform(babelify.configure({
-    sourceMapRelative: __dirname + '/src'
-  }));
-
-  return bundler;
-};
-
-// Build the unit test suite for running tests
-// in the browser
-gulp.task('browserify', function() {
-  return bundle(getBundler());
-});
-
-function test() {
-  return gulp.src(['test/setup/node.js', 'test/unit/**/*.js'], {read: false})
-    .pipe($.mocha({reporter: 'dot', globals: config.mochaGlobals}));
-}
-
-gulp.task('coverage', ['lint-src', 'lint-test'], function(done) {
-  require('babel-core/register');
-  gulp.src(['src/**/*.js'])
-    .pipe($.istanbul({ instrumenter: isparta.Instrumenter }))
-    .pipe($.istanbul.hookRequire())
-    .on('finish', function() {
-      return test()
-        .pipe($.istanbul.writeReports())
-        .on('end', done);
-    });
-});
-
-// Lint and run our tests
-gulp.task('test', ['lint-src', 'lint-test'], function() {
-  require('babel-core/register');
-  return test();
-});
-
-// Ensure that linting occurs before browserify runs. This prevents
-// the build from breaking due to poorly formatted code.
-gulp.task('build-in-sequence', function(callback) {
-  runSequence(['lint-src', 'lint-test'], 'browserify', callback);
-});
-
 // These are JS files that should be watched by Gulp. When running tests in the browser,
 // watchify is used instead, so these aren't included.
-const jsWatchFiles = ['src/**/*', 'test/**/*'];
+const jsWatchFiles = ['src/**/*'];
 // These are files other than JS files which are to be watched. They are always watched.
 const otherWatchFiles = ['package.json', '**/.eslintrc', '.jscsrc'];
 
 // Run the headless unit tests as you make changes.
 gulp.task('watch', function() {
   const watchFiles = jsWatchFiles.concat(otherWatchFiles);
-  gulp.watch(watchFiles, ['test']);
-});
-
-// Set up a livereload environment for our spec runner
-gulp.task('test-browser', ['build-in-sequence'], function() {
-  $.livereload.listen({port: 35729, host: 'localhost', start: true});
-  return gulp.watch(otherWatchFiles, ['build-in-sequence']);
+  gulp.watch(watchFiles, ['build']);
 });
 
 gulp.task('bump', function() {
@@ -297,5 +229,5 @@ gulp.task('demo', ['build'], $.shell.task([
   'node test/demo/demo.js'
 ]))
 
-// An alias of test
-gulp.task('default', ['test']);
+// An alias of build
+gulp.task('default', ['build']);
