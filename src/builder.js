@@ -44,7 +44,8 @@ class TreeBuilder {
 
     // Compute the layout.
     this.tree = d3.tree()
-      .nodeSize([nodeSize[0] * 2, nodeSize[1] * 2.5]);
+      .nodeSize([nodeSize[0] * 2,
+                 opts.callbacks.nodeHeightSeperation(nodeSize[0], nodeSize[1])]);
 
     this.tree.separation(function separation(a, b) {
       if (a.data.hidden || b.data.hidden) {
@@ -245,6 +246,10 @@ class TreeBuilder {
         return d.y;
       });
     return fun(linedata);
+  }
+
+  static _nodeHeightSeperation(nodeWidth, nodeMaxHeight) {
+    return nodeMaxHeight + 25;
   }
 
   static _nodeSize(nodes, width, textRenderer) {

@@ -3,17 +3,25 @@
 
 [![npm](https://img.shields.io/npm/v/d3-dtree.svg)](https://www.npmjs.com/package/d3-dtree) [![Bower](https://img.shields.io/bower/v/d3-dtree.svg)](https://github.com/ErikGartner/dTree)
 
-## Treehouse
-There exists a playground/open repository for dTree graphs called [Treehouse](https://treehouse.gartner.io). There anyone can host a dTree graph without having to create a website or interact directly with the library. It uses Github gists to store the data and displays it in a nice format. Checkout the **demo** graph for dTree: https://treehouse.gartner.io/ErikGartner/58e58be650453b6d49d7
+## Demo
+There exists a playground/open repository for dTree graphs called [Treehouse](https://treehouse.gartner.io), similar to [https://bl.ocks.org/](https://bl.ocks.org/). Treehouse allows anybody to host a dTree graph without having to create a website or interact directly with the library. It uses Github gists to store the data and displays it in a nice format. Checkout the *demo* graph for dTree:
 
-The demo is also available on [JSFiddle](https://jsfiddle.net/zsd4pwr3/).
+https://treehouse.gartner.io/ErikGartner/58e58be650453b6d49d7
+
+The same demo is also available on [JSFiddle](https://jsfiddle.net/zsd4pwr3/).
 
 ## Installation
 There are several ways to use dTree. One way is to simply include the compiled file ```dTree.js``` that then exposes a ```dTree``` variable. dTree is available on both NPM and Bower as *d3-dtree*.
 
-Lastly dTree is also available through the RawGit CDN:
+```bash
+npm install d3-dtree
+bower install d3-dtree
+yarn add d3-dtree
 ```
-https://cdn.rawgit.com/ErikGartner/dTree/2.0.2/dist/dTree.min.js
+
+Lastly dTree is also available through several CDNs such as [jsDelivr](https://www.jsdelivr.com/package/npm/d3-dtree):
+```
+https://cdn.jsdelivr.net/npm/d3-dtree@2.0.2/dist/dTree.min.js
 ```
 
 ## Requirements
@@ -97,7 +105,7 @@ The options object has the following default values:
 ```
 
 ### Callbacks
-Below follows a short descriptions of the available callback functions that may be passed to dTree. See [dtree.js](https://github.com/ErikGartner/dTree/blob/master/src/dtree.js) for the default implementations.
+Below follows a short descriptions of the available callback functions that may be passed to dTree. See [dtree.js](https://github.com/ErikGartner/dTree/blob/master/src/dtree.js) for the *default implementations*.
 
 #### nodeClick
 ```javascript
@@ -110,6 +118,12 @@ The nodeClick function is called by dTree when the node or text is clicked by th
 function(name, x, y, height, width, extra, id, nodeClass, textClass, textRenderer)
 ```
 The nodeRenderer is called once for each node and is expected to return a string containing the node. By default the node is rendered using a div containing the text returned from the default textRendeder. See the JSFiddle above for an example on how to set the callback.
+
+#### nodeHeightSeperation
+```javascript
+function(nodeWidth, nodeMaxHeight)
+```
+The nodeHeightSeperation is called during intial layout calculation. It shall return one number representing the distance between the levels in the graph.
 
 #### nodeSize
 ```javascript
@@ -148,4 +162,4 @@ A good place to start is to make a pull request to solve an open issue. Feel fre
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2015-2018 Erik Gärtner
+Copyright (c) 2015-2019 Erik Gärtner

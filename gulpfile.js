@@ -140,7 +140,7 @@ gulp.task('changelog', function () {
 
 gulp.task('update-cdn', function() {
   gulp.src(['./README.md'])
-    .pipe($.replace(/dTree\/(\d\.\d\.\d)\/dist\/dTree.min.js/g, 'dTree/'+
+    .pipe($.replace(/dTree@(\d\.\d\.\d)\/dist\/dTree.min.js/g, 'dTree@'+
       getPackageJsonVersion() + '/dist/dTree.min.js'))
     .pipe(gulp.dest('./'));
 });
