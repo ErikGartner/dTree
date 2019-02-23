@@ -1,7 +1,7 @@
 # dTree
 *A library for visualizing data trees with multiple parents built on top of [D3](https://github.com/mbostock/d3).*
 
-[![npm](https://img.shields.io/npm/v/d3-dtree.svg)](https://www.npmjs.com/package/d3-dtree) [![Bower](https://img.shields.io/bower/v/d3-dtree.svg)](https://github.com/ErikGartner/dTree) [![](https://data.jsdelivr.com/v1/package/npm/d3-dtree/badge)](https://www.jsdelivr.com/package/npm/d3-dtree)
+[![npm](https://img.shields.io/npm/v/d3-dtree.svg)](https://www.npmjs.com/package/d3-dtree) [![Bower](https://img.shields.io/bower/v/d3-dtree.svg)](https://github.com/ErikGartner/dTree) [![](https://data.jsdelivr.com/v1/package/npm/d3-dtree/badge?style=rounded)](https://www.jsdelivr.com/package/npm/d3-dtree)
 
 ## Demo
 There exists a playground/open repository for dTree graphs called [Treehouse](https://treehouse.gartner.io), similar to [https://bl.ocks.org/](https://bl.ocks.org/). Treehouse allows anybody to host a dTree graph without having to create a website or interact directly with the library. It uses Github gists to store the data and displays it in a nice format. Checkout the *demo* graph for dTree:
