@@ -1,3 +1,21 @@
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/ErikGartner/dtree/compare/2.0.2...v2.1.0) (2019-02-23)
+
+
+### Bug Fixes
+
+* Bug in build script to update CDN link ([2525601](https://github.com/ErikGartner/dtree/commit/2525601))
+* Missing borders in dTree demo ([5926c15](https://github.com/ErikGartner/dtree/commit/5926c15))
+
+### Features
+
+* Add border to SVG in demo ([7876de6](https://github.com/ErikGartner/dtree/commit/7876de6))
+* Add callback for node width separation #27 ([027de86](https://github.com/ErikGartner/dtree/commit/027de86))
+* Remove unused test stub code ([938395a](https://github.com/ErikGartner/dtree/commit/938395a))
+* Update dependencies with Yarn ([6a207c6](https://github.com/ErikGartner/dtree/commit/6a207c6))
+
+
+
 <a name="2.0.2"></a>
 ## [2.0.2](https://github.com/ErikGartner/dtree/compare/2.0.1...v2.0.2) (2017-05-02)
 

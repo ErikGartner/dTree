@@ -46,7 +46,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         var svg = this.svg = d3.select(opts.target).append('svg').attr('width', width).attr('height', height).call(zoom).append('g').attr('transform', 'translate(' + width / 2 + ',' + opts.margin.top + ')');
 
         // Compute the layout.
-        this.tree = d3.tree().nodeSize([nodeSize[0] * 2, nodeSize[1] * 2.5]);
+        this.tree = d3.tree().nodeSize([nodeSize[0] * 2, opts.callbacks.nodeHeightSeperation(nodeSize[0], nodeSize[1])]);
 
         this.tree.separation(function separation(a, b) {
           if (a.data.hidden || b.data.hidden) {
@@ -216,6 +216,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         return fun(linedata);
       }
     }], [{
+      key: '_nodeHeightSeperation',
+      value: function _nodeHeightSeperation(nodeWidth, nodeMaxHeight) {
+        return nodeMaxHeight + 25;
+      }
+    }, {
       key: '_nodeSize',
       value: function _nodeSize(nodes, width, textRenderer) {
         var maxWidth = 0;
@@ -285,7 +290,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
   var dTree = {
 
-    VERSION: '2.0.2',
+    VERSION: '2.1.0',
 
     init: function init(data) {
       var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
@@ -297,6 +302,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         height: 600,
         callbacks: {
           nodeClick: function nodeClick(name, extra, id) {},
+          nodeHeightSeperation: function nodeHeightSeperation(nodeWidth, nodeMaxHeight) {
+            return TreeBuilder._nodeHeightSeperation(nodeWidth, nodeMaxHeight);
+          },
           nodeRenderer: function nodeRenderer(name, x, y, height, width, extra, id, nodeClass, textClass, textRenderer) {
             return TreeBuilder._nodeRenderer(name, x, y, height, width, extra, id, nodeClass, textClass, textRenderer);
           },
