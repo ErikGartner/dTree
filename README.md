@@ -130,14 +130,14 @@ function(name, extra, textClass)
 The textRenderer function returns the formatted text to the nodeRenderer. This way the user may chose to overwrite only what text is shown but may opt to keep the default nodeRenderer.
 
 ## Development
-To setup and build the library from scratch follow these steps:
+dTree uses [Yarn](https://yarnpkg.com/) instead of npm. To setup and build the library from scratch follow these steps:
 
-1. ```npm install```
-2. ```npm run-script build```
+1. ```yarn install```
+2. ```yarn run build```
 
 A demo is available by running:
 ```
-gulp demo
+yarn run demo
 ```
 It hosts a demo on localhost:3000 by serving [test/demo](test/demo) and using the latest compiled local version of the library.
 
