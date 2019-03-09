@@ -4,7 +4,7 @@
 [![npm](https://img.shields.io/npm/v/d3-dtree.svg)](https://www.npmjs.com/package/d3-dtree) [![Bower](https://img.shields.io/bower/v/d3-dtree.svg)](https://github.com/ErikGartner/dTree) [![](https://data.jsdelivr.com/v1/package/npm/d3-dtree/badge?style=rounded)](https://www.jsdelivr.com/package/npm/d3-dtree)
 
 ## The Online Viewer
-There exists an online viewer / open repository for dTree graphs called [Treehouse](https://treehouse.gartner.io), similar to [https://bl.ocks.org/](https://bl.ocks.org/) for D3. Treehouse allows anybody to host a dTree graph without having to create a website or interact directly with the library. It uses Github gists to store the data and displays it in a nice format. Checkout the *demo* graph for dTree:
+There exists an online viewer for dTree graphs called [Treehouse](https://treehouse.gartner.io), similar to [https://bl.ocks.org/](https://bl.ocks.org/) for D3. Treehouse allows anybody to host a dTree graph without having to create a website or interact directly with the library. It fetches data from Github's gists and displays it in a nice format. All graphs are unlisted so without your Gist ID nobody else can view them. Checkout the *demo* graph for dTree:
 
 https://treehouse.gartner.io/ErikGartner/58e58be650453b6d49d7
 
