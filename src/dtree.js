@@ -13,6 +13,7 @@ const dTree = {
       height: 600,
       callbacks: {
         nodeClick: function(name, extra, id) {},
+        nodeRightClick: function(name, extra, id) {},
         nodeHeightSeperation: function(nodeWidth, nodeMaxHeight) {
           return TreeBuilder._nodeHeightSeperation(nodeWidth, nodeMaxHeight);
         },
