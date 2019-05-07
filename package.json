@@ -50,7 +50,6 @@
     "gulp-git": "^2.9.0",
     "gulp-github-release": "^1.1.0",
     "gulp-istanbul": "^0.10.0",
-    "gulp-jscs": "^2.0.0",
     "gulp-livereload": "^3.4.0",
     "gulp-load-plugins": "^0.10.0",
     "gulp-notify": "^2.1.0",

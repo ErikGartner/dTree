@@ -109,9 +109,15 @@ Below follows a short descriptions of the available callback functions that may 
 
 #### nodeClick
 ```javascript
-function(name, x, y, height, width, extra, id, nodeClass, textClass, textRenderer)
+function(name, extra, id)
 ```
 The nodeClick function is called by dTree when the node or text is clicked by the user. It shouldn't return any value.
+
+#### nodeRightClick
+```javascript
+function(name, extra, id)
+```
+The nodeRightClick function is called by dTree when the node or text is right-clicked by the user. It shouldn't return any value.
 
 #### nodeRenderer
 ```javascript
