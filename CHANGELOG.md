@@ -1,3 +1,9 @@
+<a name="2.2.1"></a>
+## [2.2.1](https://github.com/ErikGartner/dtree/compare/2.1.0...v2.2.1) (2019-05-07)
+
+
+
+
 <a name="2.1.0"></a>
 # [2.1.0](https://github.com/ErikGartner/dtree/compare/2.0.2...v2.1.0) (2019-02-23)
 
