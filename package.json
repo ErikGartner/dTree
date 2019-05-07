@@ -1,6 +1,6 @@
 {
   "name": "d3-dtree",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "A library for visualizing data trees built on top of D3.",
   "main": "dist/dTree.js",
   "scripts": {
