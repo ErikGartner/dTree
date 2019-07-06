@@ -103,7 +103,7 @@ class TreeBuilder {
         return d.x - d.cWidth / 2 + 'px';
       })
       .attr('y', function(d) {
-        return d.y - d.cHeight / 2 + 'px';
+        return Math.round(d.y - d.cHeight / 2) + 'px';
       })
       .attr('width', function(d) {
         return d.cWidth + 'px';
