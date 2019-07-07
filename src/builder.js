@@ -100,7 +100,7 @@ class TreeBuilder {
         return d.data.hidden ? false : true;
       })
       .attr('x', function(d) {
-        return d.x - d.cWidth / 2 + 'px';
+        return Math.round(d.x - d.cWidth / 2) + 'px';
       })
       .attr('y', function(d) {
         return Math.round(d.y - d.cHeight / 2) + 'px';
@@ -163,7 +163,7 @@ class TreeBuilder {
     if (d.target.data.noParent) {
       return 'M0,0L0,0';
     }
-    let ny = d.target.y + (d.source.y - d.target.y) * 0.50;
+    let ny = Math.round(d.target.y + (d.source.y - d.target.y) * 0.50);
 
     let linedata = [{
       x: d.target.x,
@@ -216,23 +216,23 @@ class TreeBuilder {
 
   _siblingLine(d, i) {
 
-    let ny = d.target.y + (d.source.y - d.target.y) * 0.50;
+    let ny = Math.round(d.target.y + (d.source.y - d.target.y) * 0.50);
     let nodeWidth = this.nodeSize[0];
     let nodeHeight = this.nodeSize[1];
 
     // Not first marriage
     if (d.number > 0) {
-      ny -= nodeHeight * 8 / 10;
+      ny -= Math.round(nodeHeight * 8 / 10);
     }
 
     let linedata = [{
       x: d.source.x,
       y: d.source.y
     }, {
-      x: d.source.x + nodeWidth * 6 / 10,
+      x: Math.round(d.source.x + nodeWidth * 6 / 10),
       y: d.source.y
     }, {
-      x: d.source.x + nodeWidth * 6 / 10,
+      x: Math.round(d.source.x + nodeWidth * 6 / 10),
       y: ny
     }, {
       x: d.target.marriageNode.x,
