@@ -87,9 +87,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         nodes.append('foreignObject').filter(function (d) {
           return d.data.hidden ? false : true;
         }).attr('x', function (d) {
-          return d.x - d.cWidth / 2 + 'px';
+          return Math.round(d.x - d.cWidth / 2) + 'px';
         }).attr('y', function (d) {
-          return d.y - d.cHeight / 2 + 'px';
+          return Math.round(d.y - d.cHeight / 2) + 'px';
         }).attr('width', function (d) {
           return d.cWidth + 'px';
         }).attr('height', function (d) {
@@ -135,7 +135,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         if (d.target.data.noParent) {
           return 'M0,0L0,0';
         }
-        var ny = d.target.y + (d.source.y - d.target.y) * 0.50;
+        var ny = Math.round(d.target.y + (d.source.y - d.target.y) * 0.50);
 
         var linedata = [{
           x: d.target.x,
@@ -185,23 +185,23 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       key: '_siblingLine',
       value: function _siblingLine(d, i) {
 
-        var ny = d.target.y + (d.source.y - d.target.y) * 0.50;
+        var ny = Math.round(d.target.y + (d.source.y - d.target.y) * 0.50);
         var nodeWidth = this.nodeSize[0];
         var nodeHeight = this.nodeSize[1];
 
         // Not first marriage
         if (d.number > 0) {
-          ny -= nodeHeight * 8 / 10;
+          ny -= Math.round(nodeHeight * 8 / 10);
         }
 
         var linedata = [{
           x: d.source.x,
           y: d.source.y
         }, {
-          x: d.source.x + nodeWidth * 6 / 10,
+          x: Math.round(d.source.x + nodeWidth * 6 / 10),
           y: d.source.y
         }, {
-          x: d.source.x + nodeWidth * 6 / 10,
+          x: Math.round(d.source.x + nodeWidth * 6 / 10),
           y: ny
         }, {
           x: d.target.marriageNode.x,
@@ -296,7 +296,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
   var dTree = {
 
-    VERSION: '2.2.1',
+    VERSION: '2.2.2',
 
     init: function init(data) {
       var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];

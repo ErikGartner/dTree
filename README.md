@@ -21,7 +21,7 @@ yarn add d3-dtree
 
 Lastly dTree is also available through several CDNs such as [jsDelivr](https://www.jsdelivr.com/package/npm/d3-dtree):
 ```
-https://cdn.jsdelivr.net/npm/d3-dtree@2.2.1/dist/dTree.min.js
+https://cdn.jsdelivr.net/npm/d3-dtree@2.2.2/dist/dTree.min.js
 ```
 
 ## Requirements

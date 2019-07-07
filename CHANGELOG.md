@@ -1,3 +1,14 @@
+<a name="2.2.2"></a>
+## [2.2.2](https://github.com/ErikGartner/dtree/compare/2.2.1...v2.2.2) (2019-07-07)
+
+
+### Bug Fixes
+
+* Lower rectangle border thinner than the upper one in Firefox ([748a0c4](https://github.com/ErikGartner/dtree/commit/748a0c4))
+* Rounding issues #92 ([9b70e04](https://github.com/ErikGartner/dtree/commit/9b70e04))
+
+
+
 <a name="2.2.1"></a>
 ## [2.2.1](https://github.com/ErikGartner/dtree/compare/2.1.0...v2.2.1) (2019-05-07)
 
