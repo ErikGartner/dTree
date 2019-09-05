@@ -22,6 +22,7 @@ const conventionalGithubReleaser = require('conventional-github-releaser');
 const manifest = require('./package.json');
 const config = manifest.babelBoilerplateOptions;
 const mainFile = manifest.main;
+const demoFolder = manifest.demo;
 const destinationFolder = path.dirname(mainFile);
 const exportFileName = path.basename(mainFile, path.extname(mainFile));
 
@@ -97,6 +98,7 @@ gulp.task('build', ['lint-src', 'clean'], function(done) {
       .pipe($.uglify())
       .pipe($.sourcemaps.write('./'))
       .pipe(gulp.dest(destinationFolder))
+      .pipe(gulp.dest(demoFolder, {overwrite: true}))
       .on('end', done);
   })
   .catch(done);
