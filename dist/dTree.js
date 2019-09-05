@@ -46,7 +46,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         var svg = this.svg = d3.select(opts.target).append('svg').attr('width', width).attr('height', height).call(zoom).append('g').attr('transform', 'translate(' + width / 2 + ',' + opts.margin.top + ')');
 
         // Compute the layout.
-        this.tree = d3.tree().nodeSize([nodeSize[0] * 2, nodeSize[1] * 2.5]);
+        this.tree = d3.tree().nodeSize([nodeSize[0] * 2, opts.callbacks.nodeHeightSeperation(nodeSize[0], nodeSize[1])]);
 
         this.tree.separation(function separation(a, b) {
           if (a.data.hidden || b.data.hidden) {
@@ -87,9 +87,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         nodes.append('foreignObject').filter(function (d) {
           return d.data.hidden ? false : true;
         }).attr('x', function (d) {
-          return d.x - d.cWidth / 2 + 'px';
+          return Math.round(d.x - d.cWidth / 2) + 'px';
         }).attr('y', function (d) {
-          return d.y - d.cHeight / 2 + 'px';
+          return Math.round(d.y - d.cHeight / 2) + 'px';
         }).attr('width', function (d) {
           return d.cWidth + 'px';
         }).attr('height', function (d) {
@@ -103,6 +103,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             return;
           }
           opts.callbacks.nodeClick(d.data.name, d.data.extra, d.data.id);
+        }).on('contextmenu', function (d) {
+          if (d.data.hidden) {
+            return;
+          }
+          d3.event.preventDefault();
+          opts.callbacks.nodeRightClick(d.data.name, d.data.extra, d.data.id);
         });
       }
     }, {
@@ -129,7 +135,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         if (d.target.data.noParent) {
           return 'M0,0L0,0';
         }
-        var ny = d.target.y + (d.source.y - d.target.y) * 0.50;
+        var ny = Math.round(d.target.y + (d.source.y - d.target.y) * 0.50);
 
         var linedata = [{
           x: d.target.x,
@@ -179,23 +185,23 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       key: '_siblingLine',
       value: function _siblingLine(d, i) {
 
-        var ny = d.target.y + (d.source.y - d.target.y) * 0.50;
+        var ny = Math.round(d.target.y + (d.source.y - d.target.y) * 0.50);
         var nodeWidth = this.nodeSize[0];
         var nodeHeight = this.nodeSize[1];
 
         // Not first marriage
         if (d.number > 0) {
-          ny -= nodeHeight * 8 / 10;
+          ny -= Math.round(nodeHeight * 8 / 10);
         }
 
         var linedata = [{
           x: d.source.x,
           y: d.source.y
         }, {
-          x: d.source.x + nodeWidth * 6 / 10,
+          x: Math.round(d.source.x + nodeWidth * 6 / 10),
           y: d.source.y
         }, {
-          x: d.source.x + nodeWidth * 6 / 10,
+          x: Math.round(d.source.x + nodeWidth * 6 / 10),
           y: ny
         }, {
           x: d.target.marriageNode.x,
@@ -216,6 +222,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         return fun(linedata);
       }
     }], [{
+      key: '_nodeHeightSeperation',
+      value: function _nodeHeightSeperation(nodeWidth, nodeMaxHeight) {
+        return nodeMaxHeight + 25;
+      }
+    }, {
       key: '_nodeSize',
       value: function _nodeSize(nodes, width, textRenderer) {
         var maxWidth = 0;
@@ -285,7 +296,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
   var dTree = {
 
-    VERSION: '2.0.2',
+    VERSION: '2.2.2',
 
     init: function init(data) {
       var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
@@ -297,6 +308,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         height: 600,
         callbacks: {
           nodeClick: function nodeClick(name, extra, id) {},
+          nodeRightClick: function nodeRightClick(name, extra, id) {},
+          nodeHeightSeperation: function nodeHeightSeperation(nodeWidth, nodeMaxHeight) {
+            return TreeBuilder._nodeHeightSeperation(nodeWidth, nodeMaxHeight);
+          },
           nodeRenderer: function nodeRenderer(name, x, y, height, width, extra, id, nodeClass, textClass, textRenderer) {
             return TreeBuilder._nodeRenderer(name, x, y, height, width, extra, id, nodeClass, textClass, textRenderer);
           },

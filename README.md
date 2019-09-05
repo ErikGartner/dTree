@@ -1,19 +1,27 @@
 # dTree
 *A library for visualizing data trees with multiple parents built on top of [D3](https://github.com/mbostock/d3).*
 
-[![npm](https://img.shields.io/npm/v/d3-dtree.svg)](https://www.npmjs.com/package/d3-dtree) [![Bower](https://img.shields.io/bower/v/d3-dtree.svg)](https://github.com/ErikGartner/dTree)
+[![npm](https://img.shields.io/npm/v/d3-dtree.svg)](https://www.npmjs.com/package/d3-dtree) [![Bower](https://img.shields.io/bower/v/d3-dtree.svg)](https://github.com/ErikGartner/dTree) [![](https://data.jsdelivr.com/v1/package/npm/d3-dtree/badge?style=rounded)](https://www.jsdelivr.com/package/npm/d3-dtree)
 
-## Treehouse
-There exists a playground/open repository for dTree graphs called [Treehouse](https://treehouse.gartner.io). There anyone can host a dTree graph without having to create a website or interact directly with the library. It uses Github gists to store the data displays it in a nice format. Checkout the **demo** graph for dTree: https://treehouse.gartner.io/ErikGartner/58e58be650453b6d49d7
+## The Online Viewer
+There exists an online viewer for dTree graphs called [Treehouse](https://treehouse.gartner.io), similar to [https://bl.ocks.org/](https://bl.ocks.org/) for D3. Treehouse allows anybody to host a dTree graph without having to create a website or interact directly with the library. It fetches data from Github's gists and displays it in a nice format. All graphs are unlisted so without your Gist ID nobody else can view them. Checkout the *demo* graph for dTree:
 
-The demo is also available on [JSFiddle](https://jsfiddle.net/tpde0cer/226/).
+https://treehouse.gartner.io/ErikGartner/58e58be650453b6d49d7
+
+The same demo is also available on [JSFiddle](https://jsfiddle.net/rha8sg79/).
 
 ## Installation
 There are several ways to use dTree. One way is to simply include the compiled file ```dTree.js``` that then exposes a ```dTree``` variable. dTree is available on both NPM and Bower as *d3-dtree*.
 
-Lastly dTree is also available through the RawGit CDN:
+```bash
+npm install d3-dtree
+bower install d3-dtree
+yarn add d3-dtree
 ```
-https://cdn.rawgit.com/ErikGartner/dTree/2.0.2/dist/dTree.min.js
+
+Lastly dTree is also available through several CDNs such as [jsDelivr](https://www.jsdelivr.com/package/npm/d3-dtree):
+```
+https://cdn.jsdelivr.net/npm/d3-dtree@2.2.2/dist/dTree.min.js
 ```
 
 ## Requirements
@@ -97,19 +105,31 @@ The options object has the following default values:
 ```
 
 ### Callbacks
-Below follows a short descriptions of the available callback functions that may be passed to dTree. See [dtree.js](https://github.com/ErikGartner/dTree/blob/master/src/dtree.js) for the default implementations.
+Below follows a short descriptions of the available callback functions that may be passed to dTree. See [dtree.js](https://github.com/ErikGartner/dTree/blob/master/src/dtree.js) for the *default implementations*.
 
 #### nodeClick
 ```javascript
-function(name, x, y, height, width, extra, id, nodeClass, textClass, textRenderer)
+function(name, extra, id)
 ```
 The nodeClick function is called by dTree when the node or text is clicked by the user. It shouldn't return any value.
+
+#### nodeRightClick
+```javascript
+function(name, extra, id)
+```
+The nodeRightClick function is called by dTree when the node or text is right-clicked by the user. It shouldn't return any value.
 
 #### nodeRenderer
 ```javascript
 function(name, x, y, height, width, extra, id, nodeClass, textClass, textRenderer)
 ```
-The nodeRenderer is called once for each node and is expected to return a string containing the node. By default the node is rendered using a div containing the text returned from the default textRendeder.
+The nodeRenderer is called once for each node and is expected to return a string containing the node. By default the node is rendered using a div containing the text returned from the default textRendeder. See the JSFiddle above for an example on how to set the callback.
+
+#### nodeHeightSeperation
+```javascript
+function(nodeWidth, nodeMaxHeight)
+```
+The nodeHeightSeperation is called during intial layout calculation. It shall return one number representing the distance between the levels in the graph.
 
 #### nodeSize
 ```javascript
@@ -130,16 +150,22 @@ function(name, extra, textClass)
 The textRenderer function returns the formatted text to the nodeRenderer. This way the user may chose to overwrite only what text is shown but may opt to keep the default nodeRenderer.
 
 ## Development
+dTree has the following development environment:
+
+- node v11.x
+- gulp 3.x
+- [Yarn](https://yarnpkg.com/) instead of npm.
+
 To setup and build the library from scratch follow these steps:
 
-1. ```npm install --save-dev```
-2. ```npm run-script build```
+1. ```yarn install```
+2. ```yarn run build```
 
 A demo is available by running:
 ```
-gulp demo
+yarn run demo
 ```
-It hosts a demo on localhost:3000 by serving [test/demo](test/demo) and using the latest compiled local version of the library.
+It hosts a demo on localhost:3000/ by serving [test/demo](test/demo) and using the latest compiled local version of the library.
 
 ## Contributing
 Contributions are very welcomed! Checkout the [CONTRIBUTING](CONTRIBUTING.md) document for style information.
@@ -148,4 +174,4 @@ A good place to start is to make a pull request to solve an open issue. Feel fre
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2015-2017 Erik Gärtner
+Copyright (c) 2015-2019 Erik Gärtner

@@ -13,6 +13,10 @@ const dTree = {
       height: 600,
       callbacks: {
         nodeClick: function(name, extra, id) {},
+        nodeRightClick: function(name, extra, id) {},
+        nodeHeightSeperation: function(nodeWidth, nodeMaxHeight) {
+          return TreeBuilder._nodeHeightSeperation(nodeWidth, nodeMaxHeight);
+        },
         nodeRenderer: function(name, x, y, height, width, extra, id, nodeClass, textClass, textRenderer) {
           return TreeBuilder._nodeRenderer(name, x, y, height, width, extra,
             id,nodeClass, textClass, textRenderer);

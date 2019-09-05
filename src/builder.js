@@ -44,7 +44,8 @@ class TreeBuilder {
 
     // Compute the layout.
     this.tree = d3.tree()
-      .nodeSize([nodeSize[0] * 2, nodeSize[1] * 2.5]);
+      .nodeSize([nodeSize[0] * 2,
+                 opts.callbacks.nodeHeightSeperation(nodeSize[0], nodeSize[1])]);
 
     this.tree.separation(function separation(a, b) {
       if (a.data.hidden || b.data.hidden) {
@@ -99,10 +100,10 @@ class TreeBuilder {
         return d.data.hidden ? false : true;
       })
       .attr('x', function(d) {
-        return d.x - d.cWidth / 2 + 'px';
+        return Math.round(d.x - d.cWidth / 2) + 'px';
       })
       .attr('y', function(d) {
-        return d.y - d.cHeight / 2 + 'px';
+        return Math.round(d.y - d.cHeight / 2) + 'px';
       })
       .attr('width', function(d) {
         return d.cWidth + 'px';
@@ -131,6 +132,13 @@ class TreeBuilder {
           return;
         }
         opts.callbacks.nodeClick(d.data.name, d.data.extra, d.data.id);
+      })
+      .on('contextmenu', function(d)  {
+        if (d.data.hidden) {
+          return;
+        }
+        d3.event.preventDefault();
+        opts.callbacks.nodeRightClick(d.data.name, d.data.extra, d.data.id);
       });
   }
 
@@ -155,7 +163,7 @@ class TreeBuilder {
     if (d.target.data.noParent) {
       return 'M0,0L0,0';
     }
-    let ny = d.target.y + (d.source.y - d.target.y) * 0.50;
+    let ny = Math.round(d.target.y + (d.source.y - d.target.y) * 0.50);
 
     let linedata = [{
       x: d.target.x,
@@ -208,23 +216,23 @@ class TreeBuilder {
 
   _siblingLine(d, i) {
 
-    let ny = d.target.y + (d.source.y - d.target.y) * 0.50;
+    let ny = Math.round(d.target.y + (d.source.y - d.target.y) * 0.50);
     let nodeWidth = this.nodeSize[0];
     let nodeHeight = this.nodeSize[1];
 
     // Not first marriage
     if (d.number > 0) {
-      ny -= nodeHeight * 8 / 10;
+      ny -= Math.round(nodeHeight * 8 / 10);
     }
 
     let linedata = [{
       x: d.source.x,
       y: d.source.y
     }, {
-      x: d.source.x + nodeWidth * 6 / 10,
+      x: Math.round(d.source.x + nodeWidth * 6 / 10),
       y: d.source.y
     }, {
-      x: d.source.x + nodeWidth * 6 / 10,
+      x: Math.round(d.source.x + nodeWidth * 6 / 10),
       y: ny
     }, {
       x: d.target.marriageNode.x,
@@ -245,6 +253,10 @@ class TreeBuilder {
         return d.y;
       });
     return fun(linedata);
+  }
+
+  static _nodeHeightSeperation(nodeWidth, nodeMaxHeight) {
+    return nodeMaxHeight + 25;
   }
 
   static _nodeSize(nodes, width, textRenderer) {
