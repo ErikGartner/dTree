@@ -131,14 +131,14 @@ class TreeBuilder {
         if (d.data.hidden) {
           return;
         }
-        opts.callbacks.nodeClick(d.data.name, d.data.extra, d.data.id);
+        opts.callbacks.nodeClick(d.data.name, d.data.extra, d.data.id, d3.mouse(this));
       })
       .on('contextmenu', function(d)  {
         if (d.data.hidden) {
           return;
         }
         d3.event.preventDefault();
-        opts.callbacks.nodeRightClick(d.data.name, d.data.extra, d.data.id);
+        opts.callbacks.nodeRightClick(d.data.name, d.data.extra, d.data.id, d3.mouse(this));
       });
   }
 
