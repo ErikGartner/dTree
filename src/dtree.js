@@ -48,6 +48,37 @@ const dTree = {
     var treeBuilder = new TreeBuilder(data.root, data.siblings, opts);
     treeBuilder.create();
 
+    function _zoomTo (x, y, zoom = 1, duration = 500) {
+      treeBuilder.svg
+        .transition()
+        .duration(duration)
+        .call(
+          treeBuilder.zoom.transform,
+          d3.zoomIdentity
+            .translate(opts.width / 2, opts.height / 2)
+            .scale(zoom)
+            .translate(-x, -y)
+        )
+    }
+
+    return {
+      resetZoom: function (duration = 500) {
+        treeBuilder.svg
+          .transition()
+          .duration(duration)
+          .call(
+            treeBuilder.zoom.transform,
+            d3.zoomIdentity.translate(opts.width / 2, opts.margin.top).scale(1)
+          )
+      },
+      zoomTo: _zoomTo,
+      zoomToNode: function (nodeId, zoom = 2, duration = 500) {
+        const node = _.find(treeBuilder.allNodes, {data: {id: nodeId}})
+        if (node) {
+          _zoomTo(node.x, node.y, zoom, duration)
+        }
+      }
+    }
   },
 
   _preprocess: function(data, opts) {

@@ -27,20 +27,24 @@ class TreeBuilder {
     let width = opts.width + opts.margin.left + opts.margin.right;
     let height = opts.height + opts.margin.top + opts.margin.bottom;
 
-    let zoom = d3.zoom()
+    // create zoom handler
+    const zoom = this.zoom = d3.zoom()
       .scaleExtent([0.1, 10])
-      .on('zoom', function() {
-        svg.attr('transform', d3.event.transform.translate(width / 2, opts.margin.top));
-      });
+      .on('zoom', function () {
+        g.attr('transform', d3.event.transform)
+      })
 
-    //make an SVG
-    let svg = this.svg = d3.select(opts.target)
+    // make a svg
+    const svg = this.svg = d3.select(opts.target)
       .append('svg')
-      .attr('width', width)
-      .attr('height', height)
+      .attr('viewBox', [0, 0, width, height])
       .call(zoom)
-      .append('g')
-      .attr('transform', 'translate(' + width / 2 + ',' + opts.margin.top + ')');
+
+    // create svg group that holds all nodes
+    const g = this.g = svg.append('g')
+
+    // set zoom identity
+    svg.call(zoom.transform, d3.zoomIdentity.translate(width / 2, opts.margin.top).scale(1))
 
     // Compute the layout.
     this.tree = d3.tree()
@@ -69,7 +73,7 @@ class TreeBuilder {
     let links = treenodes.links();
 
     // Create the link lines.
-    this.svg.selectAll('.link')
+    this.g.selectAll('.link')
       .data(links)
       .enter()
       // filter links with no parents to prevent empty nodes
@@ -80,14 +84,14 @@ class TreeBuilder {
       .attr('class', opts.styles.linage)
       .attr('d', this._elbow);
 
-    let nodes = this.svg.selectAll('.node')
+    let nodes = this.g.selectAll('.node')
       .data(treenodes.descendants())
       .enter();
 
     this._linkSiblings();
 
     // Draw siblings (marriage)
-    this.svg.selectAll('.sibling')
+    this.g.selectAll('.sibling')
       .data(this.siblings)
       .enter()
       .append('path')
@@ -127,8 +131,14 @@ class TreeBuilder {
           d.data.textClass,
           opts.callbacks.textRenderer);
       })
+      .on('dblclick', function () {
+        // do not propagate a double click on a node
+        // to prevent the zoom from being triggered
+        d3.event.stopPropagation()
+      })
       .on('click', function(d)  {
-        if (d.data.hidden) {
+        // ignore double-clicks and clicks on hidden nodes
+        if (d3.event.detail === 2 || d.data.hidden) {
           return;
         }
         opts.callbacks.nodeClick(d.data.name, d.data.extra, d.data.id);
