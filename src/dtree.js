@@ -15,6 +15,8 @@ const dTree = {
       callbacks: {
         nodeClick: function(name, extra, id) {},
         nodeRightClick: function(name, extra, id) {},
+        marriageClick: function(extra, id) {},
+        marriageRightClick: function(extra, id) {},
         nodeHeightSeperation: function(nodeWidth, nodeMaxHeight) {
           return TreeBuilder._nodeHeightSeperation(nodeWidth, nodeMaxHeight);
         },

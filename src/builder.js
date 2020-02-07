@@ -157,14 +157,22 @@ class TreeBuilder {
         if (d.data.hidden) {
           return;
         }
-        opts.callbacks.nodeClick(d.data.name, d.data.extra, d.data.id);
+        if (d.data.isMarriage) {
+          opts.callbacks.marriageClick(d.data.extra, d.data.id)
+        } else {
+          opts.callbacks.nodeClick(d.data.name, d.data.extra, d.data.id)
+        }
       })
       .on('contextmenu', function(d)  {
         if (d.data.hidden) {
           return;
         }
         d3.event.preventDefault();
-        opts.callbacks.nodeRightClick(d.data.name, d.data.extra, d.data.id);
+        if (d.data.isMarriage) {
+          opts.callbacks.marriageRightClick(d.data.extra, d.data.id)
+        } else {
+          opts.callbacks.nodeRightClick(d.data.name, d.data.extra, d.data.id)
+        }
       });
   }
 
