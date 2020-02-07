@@ -77,6 +77,27 @@ const dTree = {
         if (node) {
           _zoomTo(node.x, node.y, zoom, duration)
         }
+      },
+      zoomToFit: function (duration = 500) {
+        const groupBounds = treeBuilder.g.node().getBBox()
+        const width = groupBounds.width
+        const height = groupBounds.height
+        const fullWidth = treeBuilder.svg.node().clientWidth
+        const fullHeight = treeBuilder.svg.node().clientHeight
+        const scale = 0.95 / Math.max(width / fullWidth, height / fullHeight)
+
+        treeBuilder.svg
+          .transition()
+          .duration(duration)
+          .call(
+            treeBuilder.zoom.transform,
+            d3.zoomIdentity
+              .translate(
+                fullWidth / 2 - scale * (groupBounds.x + width / 2),
+                fullHeight / 2 - scale * (groupBounds.y + height / 2)
+              )
+              .scale(scale)
+          )
       }
     }
   },
