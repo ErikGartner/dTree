@@ -10,12 +10,24 @@ class TreeBuilder {
     // flatten nodes
     this.allNodes = this._flatten(this.root);
 
-    // Calculate node size
-    let visibleNodes = _.filter(this.allNodes, function(n) {
-      return !n.hidden;
-    });
-    this.nodeSize = opts.callbacks.nodeSize(visibleNodes,
-      opts.nodeWidth, opts.callbacks.textRenderer);
+    // calculate node sizes
+    this.nodeSize = opts.callbacks.nodeSize(
+      // filter hidden and marriage nodes
+      _.filter(
+        this.allNodes,
+        node => !(node.hidden || _.get(node, 'data.isMarriage'))
+      ),
+      opts.nodeWidth,
+      opts.callbacks.textRenderer
+    )
+    this.marriageSize = opts.callbacks.marriageSize(
+      // filter hidden and non marriage nodes
+      _.filter(
+        this.allNodes,
+        node => !node.hidden && _.get(node, 'data.isMarriage')
+      ),
+      this.opts.marriageNodeSize
+    )
   }
 
   create() {
@@ -64,6 +76,7 @@ class TreeBuilder {
     let opts = this.opts;
     let allNodes = this.allNodes;
     let nodeSize = this.nodeSize;
+    let marriageSize = this.marriageSize;
 
     let treenodes = this.tree(source);
     let links = treenodes.links();
@@ -115,17 +128,30 @@ class TreeBuilder {
         return d.id;
       })
       .html(function(d) {
-        return opts.callbacks.nodeRenderer(
-          d.data.name,
-          d.x,
-          d.y,
-          nodeSize[0],
-          nodeSize[1],
-          d.data.extra,
-          d.data.id,
-          d.data.class,
-          d.data.textClass,
-          opts.callbacks.textRenderer);
+        if (d.data.isMarriage) {
+          return opts.callbacks.marriageRenderer(
+            d.x,
+            d.y,
+            marriageSize[0],
+            marriageSize[1],
+            d.data.extra,
+            d.data.id,
+            d.data.class
+          )
+        } else {
+          return opts.callbacks.nodeRenderer(
+            d.data.name,
+            d.x,
+            d.y,
+            nodeSize[0],
+            nodeSize[1],
+            d.data.extra,
+            d.data.id,
+            d.data.class,
+            d.data.textClass,
+            opts.callbacks.textRenderer
+          )
+        }
       })
       .on('click', function(d)  {
         if (d.data.hidden) {
@@ -291,6 +317,17 @@ class TreeBuilder {
     return [width, maxHeight];
   }
 
+  static _marriageSize (nodes, size) {
+    _.map(nodes, function (n) {
+      if (!n.data.hidden) {
+        n.cHeight = size
+        n.cWidth = size
+      }
+    })
+
+    return [size, size]
+  }
+
   static _nodeRenderer(name, x, y, height, width, extra, id, nodeClass, textClass, textRenderer) {
     let node = '';
     node += '<div ';
@@ -310,6 +347,10 @@ class TreeBuilder {
     node += name;
     node += '</p>\n';
     return node;
+  }
+
+  static _marriageRenderer (x, y, height, width, extra, id, nodeClass) {
+    return `<div style="height:100%" class="${nodeClass}" id="node${id}"></div>`
   }
 
   static _debug(msg) {
