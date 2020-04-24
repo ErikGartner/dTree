@@ -20,11 +20,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       // flatten nodes
       this.allNodes = this._flatten(this.root);
 
-      // Calculate node size
-      var visibleNodes = _.filter(this.allNodes, function (n) {
-        return !n.hidden;
-      });
-      this.nodeSize = opts.callbacks.nodeSize(visibleNodes, opts.nodeWidth, opts.callbacks.textRenderer);
+      // calculate node sizes
+      this.nodeSize = opts.callbacks.nodeSize(
+      // filter hidden and marriage nodes
+      _.filter(this.allNodes, function (node) {
+        return !(node.hidden || _.get(node, 'data.isMarriage'));
+      }), opts.nodeWidth, opts.callbacks.textRenderer);
+      this.marriageSize = opts.callbacks.marriageSize(
+      // filter hidden and non marriage nodes
+      _.filter(this.allNodes, function (node) {
+        return !node.hidden && _.get(node, 'data.isMarriage');
+      }), this.opts.marriageNodeSize);
     }
 
     _createClass(TreeBuilder, [{
@@ -38,12 +44,19 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         var width = opts.width + opts.margin.left + opts.margin.right;
         var height = opts.height + opts.margin.top + opts.margin.bottom;
 
-        var zoom = d3.zoom().scaleExtent([0.1, 10]).on('zoom', function () {
-          svg.attr('transform', d3.event.transform.translate(width / 2, opts.margin.top));
+        // create zoom handler
+        var zoom = this.zoom = d3.zoom().scaleExtent([0.1, 10]).on('zoom', function () {
+          g.attr('transform', d3.event.transform);
         });
 
-        //make an SVG
-        var svg = this.svg = d3.select(opts.target).append('svg').attr('width', width).attr('height', height).call(zoom).append('g').attr('transform', 'translate(' + width / 2 + ',' + opts.margin.top + ')');
+        // make a svg
+        var svg = this.svg = d3.select(opts.target).append('svg').attr('viewBox', [0, 0, width, height]).call(zoom);
+
+        // create svg group that holds all nodes
+        var g = this.g = svg.append('g');
+
+        // set zoom identity
+        svg.call(zoom.transform, d3.zoomIdentity.translate(width / 2, opts.margin.top).scale(1));
 
         // Compute the layout.
         this.tree = d3.tree().nodeSize([nodeSize[0] * 2, opts.callbacks.nodeHeightSeperation(nodeSize[0], nodeSize[1])]);
@@ -65,23 +78,24 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         var opts = this.opts;
         var allNodes = this.allNodes;
         var nodeSize = this.nodeSize;
+        var marriageSize = this.marriageSize;
 
         var treenodes = this.tree(source);
         var links = treenodes.links();
 
         // Create the link lines.
-        this.svg.selectAll('.link').data(links).enter()
+        this.g.selectAll('.link').data(links).enter()
         // filter links with no parents to prevent empty nodes
         .filter(function (l) {
           return !l.target.data.noParent;
         }).append('path').attr('class', opts.styles.linage).attr('d', this._elbow);
 
-        var nodes = this.svg.selectAll('.node').data(treenodes.descendants()).enter();
+        var nodes = this.g.selectAll('.node').data(treenodes.descendants()).enter();
 
         this._linkSiblings();
 
         // Draw siblings (marriage)
-        this.svg.selectAll('.sibling').data(this.siblings).enter().append('path').attr('class', opts.styles.marriage).attr('d', _.bind(this._siblingLine, this));
+        this.g.selectAll('.sibling').data(this.siblings).enter().append('path').attr('class', opts.styles.marriage).attr('d', _.bind(this._siblingLine, this));
 
         // Create the node rectangles.
         nodes.append('foreignObject').filter(function (d) {
@@ -97,18 +111,35 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }).attr('id', function (d) {
           return d.id;
         }).html(function (d) {
-          return opts.callbacks.nodeRenderer(d.data.name, d.x, d.y, nodeSize[0], nodeSize[1], d.data.extra, d.data.id, d.data['class'], d.data.textClass, opts.callbacks.textRenderer);
+          if (d.data.isMarriage) {
+            return opts.callbacks.marriageRenderer(d.x, d.y, marriageSize[0], marriageSize[1], d.data.extra, d.data.id, d.data['class']);
+          } else {
+            return opts.callbacks.nodeRenderer(d.data.name, d.x, d.y, nodeSize[0], nodeSize[1], d.data.extra, d.data.id, d.data['class'], d.data.textClass, opts.callbacks.textRenderer);
+          }
+        }).on('dblclick', function () {
+          // do not propagate a double click on a node
+          // to prevent the zoom from being triggered
+          d3.event.stopPropagation();
         }).on('click', function (d) {
-          if (d.data.hidden) {
+          // ignore double-clicks and clicks on hidden nodes
+          if (d3.event.detail === 2 || d.data.hidden) {
             return;
           }
-          opts.callbacks.nodeClick(d.data.name, d.data.extra, d.data.id);
+          if (d.data.isMarriage) {
+            opts.callbacks.marriageClick(d.data.extra, d.data.id);
+          } else {
+            opts.callbacks.nodeClick(d.data.name, d.data.extra, d.data.id);
+          }
         }).on('contextmenu', function (d) {
           if (d.data.hidden) {
             return;
           }
           d3.event.preventDefault();
-          opts.callbacks.nodeRightClick(d.data.name, d.data.extra, d.data.id);
+          if (d.data.isMarriage) {
+            opts.callbacks.marriageRightClick(d.data.extra, d.data.id);
+          } else {
+            opts.callbacks.nodeRightClick(d.data.name, d.data.extra, d.data.id);
+          }
         });
       }
     }, {
@@ -260,6 +291,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         return [width, maxHeight];
       }
     }, {
+      key: '_marriageSize',
+      value: function _marriageSize(nodes, size) {
+        _.map(nodes, function (n) {
+          if (!n.data.hidden) {
+            n.cHeight = size;
+            n.cWidth = size;
+          }
+        });
+
+        return [size, size];
+      }
+    }, {
       key: '_nodeRenderer',
       value: function _nodeRenderer(name, x, y, height, width, extra, id, nodeClass, textClass, textRenderer) {
         var node = '';
@@ -283,6 +326,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         return node;
       }
     }, {
+      key: '_marriageRenderer',
+      value: function _marriageRenderer(x, y, height, width, extra, id, nodeClass) {
+        return '<div style="height:100%" class="' + nodeClass + '" id="node' + id + '"></div>';
+      }
+    }, {
       key: '_debug',
       value: function _debug(msg) {
         if (TreeBuilder.DEBUG_LEVEL > 0) {
@@ -296,7 +344,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
   var dTree = {
 
-    VERSION: '2.2.2',
+    VERSION: '2.3.0',
 
     init: function init(data) {
       var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
@@ -306,9 +354,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         debug: false,
         width: 600,
         height: 600,
+        hideMarriageNodes: true,
         callbacks: {
           nodeClick: function nodeClick(name, extra, id) {},
           nodeRightClick: function nodeRightClick(name, extra, id) {},
+          marriageClick: function marriageClick(extra, id) {},
+          marriageRightClick: function marriageRightClick(extra, id) {},
           nodeHeightSeperation: function nodeHeightSeperation(nodeWidth, nodeMaxHeight) {
             return TreeBuilder._nodeHeightSeperation(nodeWidth, nodeMaxHeight);
           },
@@ -323,6 +374,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           },
           textRenderer: function textRenderer(name, extra, textClass) {
             return TreeBuilder._textRenderer(name, extra, textClass);
+          },
+          marriageRenderer: function marriageRenderer(x, y, height, width, extra, id, nodeClass) {
+            return TreeBuilder._marriageRenderer(x, y, height, width, extra, id, nodeClass);
+          },
+          marriageSize: function marriageSize(nodes, size) {
+            return TreeBuilder._marriageSize(nodes, size);
           }
         },
         margin: {
@@ -332,8 +389,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           left: 0
         },
         nodeWidth: 100,
+        marriageNodeSize: 10,
         styles: {
           node: 'node',
+          marriageNode: 'marriageNode',
           linage: 'linage',
           marriage: 'marriage',
           text: 'nodeText'
@@ -343,6 +402,43 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       var data = this._preprocess(data, opts);
       var treeBuilder = new TreeBuilder(data.root, data.siblings, opts);
       treeBuilder.create();
+
+      function _zoomTo(x, y) {
+        var zoom = arguments.length <= 2 || arguments[2] === undefined ? 1 : arguments[2];
+        var duration = arguments.length <= 3 || arguments[3] === undefined ? 500 : arguments[3];
+
+        treeBuilder.svg.transition().duration(duration).call(treeBuilder.zoom.transform, d3.zoomIdentity.translate(opts.width / 2, opts.height / 2).scale(zoom).translate(-x, -y));
+      }
+
+      return {
+        resetZoom: function resetZoom() {
+          var duration = arguments.length <= 0 || arguments[0] === undefined ? 500 : arguments[0];
+
+          treeBuilder.svg.transition().duration(duration).call(treeBuilder.zoom.transform, d3.zoomIdentity.translate(opts.width / 2, opts.margin.top).scale(1));
+        },
+        zoomTo: _zoomTo,
+        zoomToNode: function zoomToNode(nodeId) {
+          var zoom = arguments.length <= 1 || arguments[1] === undefined ? 2 : arguments[1];
+          var duration = arguments.length <= 2 || arguments[2] === undefined ? 500 : arguments[2];
+
+          var node = _.find(treeBuilder.allNodes, { data: { id: nodeId } });
+          if (node) {
+            _zoomTo(node.x, node.y, zoom, duration);
+          }
+        },
+        zoomToFit: function zoomToFit() {
+          var duration = arguments.length <= 0 || arguments[0] === undefined ? 500 : arguments[0];
+
+          var groupBounds = treeBuilder.g.node().getBBox();
+          var width = groupBounds.width;
+          var height = groupBounds.height;
+          var fullWidth = treeBuilder.svg.node().clientWidth;
+          var fullHeight = treeBuilder.svg.node().clientHeight;
+          var scale = 0.95 / Math.max(width / fullWidth, height / fullHeight);
+
+          treeBuilder.svg.transition().duration(duration).call(treeBuilder.zoom.transform, d3.zoomIdentity.translate(fullWidth / 2 - scale * (groupBounds.x + width / 2), fullHeight / 2 - scale * (groupBounds.y + height / 2)).scale(scale));
+        }
+      };
     },
 
     _preprocess: function _preprocess(data, opts) {
@@ -403,14 +499,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         // go through marriage
         _.forEach(person.marriages, function (marriage, index) {
-
           var m = {
             name: '',
             id: id++,
-            hidden: true,
+            hidden: opts.hideMarriageNodes,
             noParent: true,
             children: [],
-            extra: marriage.extra
+            isMarriage: true,
+            extra: marriage.extra,
+            'class': marriage['class'] ? marriage['class'] : opts.styles.marriageNode
           };
 
           var sp = marriage.spouse;

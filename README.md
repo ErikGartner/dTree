@@ -23,7 +23,7 @@ yarn add d3-dtree
 
 Lastly dTree is also available through several CDNs such as [jsDelivr](https://www.jsdelivr.com/package/npm/d3-dtree):
 ```
-https://cdn.jsdelivr.net/npm/d3-dtree@2.2.2/dist/dTree.min.js
+https://cdn.jsdelivr.net/npm/d3-dtree@2.3.0/dist/dTree.min.js
 ```
 
 ## Requirements
@@ -35,7 +35,7 @@ To use the library the follow dependencies must be loaded:
 ## Usage
 To create a graph from data use the following command:
 ```javascript
-dTree.init(data, options);
+tree = dTree.init(data, options);
 ```
 
 The data object should have the following structure:
@@ -75,6 +75,10 @@ The following CSS sets some good defaults:
 .nodeText{
     font: 10px sans-serif;
 }
+.marriageNode {
+    background-color: black;
+    border-radius: 50%;
+}
 ```
 
 The options object has the following default values:
@@ -84,6 +88,8 @@ The options object has the following default values:
   debug: false,
   width: 600,
   height: 600,
+  hideMarriageNodes: true,
+  marriageNodeSize: 10,
   callbacks: {
     /*
       Callbacks should only be overwritten on a need to basis.
@@ -105,6 +111,14 @@ The options object has the following default values:
   }
 }
 ```
+
+### Zooming
+The returned object, `tree = dTree.init(data, options)`,  contains functions to control the viewport.
+
+- `tree.resetZoom(duration = 500)` - Reset zoom and position to initial state
+- `zoomTo(x, y, zoom = 1, duration = 500)` - Zoom to a specific position
+- `zoomToNode(nodeId, zoom = 2, duration = 500)` - Zoom to a specific node
+- `zoomToFit(duration = 500)` - Zoom to fit the entire tree into the viewport
 
 ### Callbacks
 Below follows a short descriptions of the available callback functions that may be passed to dTree. See [dtree.js](https://github.com/ErikGartner/dTree/blob/master/src/dtree.js) for the *default implementations*.
@@ -151,10 +165,35 @@ function(name, extra, textClass)
 ```
 The textRenderer function returns the formatted text to the nodeRenderer. This way the user may chose to overwrite only what text is shown but may opt to keep the default nodeRenderer.
 
+#### marriageClick
+```javascript
+function(extra, id)
+```
+Same as `nodeClick` but for the marriage nodes (connector).
+
+#### marriageRightClick
+```javascript
+function(extra, id)
+```
+Same as `nodeRightClick` but for the marriage nodes (connector).
+
+#### marriageRenderer
+```javascript
+function(x, y, height, width, extra, id, nodeClass)
+```
+Same as `nodeRenderer` but for the marriage nodes (connector).
+
+#### marriageSize
+```javascript
+function(nodes, size)
+```
+Same as `nodeSize` but for the marriage nodes (connector).
+
+
 ## Development
 dTree has the following development environment:
 
-- node v11.x
+- node v11.x (use Docker [image](https://hub.docker.com/_/node/) `node:11`)
 - gulp 3.x
 - [Yarn](https://yarnpkg.com/) instead of npm.
 

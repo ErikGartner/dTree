@@ -1,3 +1,15 @@
+<a name="2.3.0"></a>
+# [2.3.0](https://github.com/ErikGartner/dtree/compare/2.2.2...v2.3.0) (2020-04-24)
+
+
+### Features
+
+* **#20:** add feature to zoom/pan to position/node ([eb1bb87](https://github.com/ErikGartner/dtree/commit/eb1bb87))
+* **#20:** add zoomToFit() function ([f57859c](https://github.com/ErikGartner/dtree/commit/f57859c))
+* **#65:** add custom click event for marriage nodes ([b4111d6](https://github.com/ErikGartner/dtree/commit/b4111d6))
+* **#65:** add custom renderer for marriages ([112a375](https://github.com/ErikGartner/dtree/commit/112a375))
+
+
 <a name="2.2.2"></a>
 ## [2.2.2](https://github.com/ErikGartner/dtree/compare/2.2.1...v2.2.2) (2019-07-07)
 
@@ -411,6 +423,3 @@
 * Update devDeps ([c653f93](https://github.com/ErikGartner/dtree/commit/c653f93))
 * Update options and align text ([9346c2d](https://github.com/ErikGartner/dtree/commit/9346c2d))
 * Use class in data ([085ed25](https://github.com/ErikGartner/dtree/commit/085ed25))
-
-
-

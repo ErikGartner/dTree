@@ -14,6 +14,10 @@
 	    fill: none;
 	    stroke: black;
 	}
+	.marriageNode {
+			background-color: black;
+			border-radius: 50%;
+	}
 	.man {
 	    background-color: lightblue;
 			border-style: solid;
@@ -52,6 +56,8 @@
 					{
 						target: "#graph",
 						debug: true,
+						hideMarriageNodes: false,
+						marriageNodeSize: 5,
 						height: 800,
 						width: 1200,
 						callbacks: {
@@ -65,7 +71,13 @@
 								if (extra && extra.nickname)
 									name = name + " (" + extra.nickname + ")";
 								return "<p align='center' class='" + textClass + "'>" + name + "</p>";
-							}
+							},
+							marriageClick: function(extra, id) {
+								alert('Clicked marriage node' + id);
+							},
+							marriageRightClick: function(extra, id) {
+								alert('Right-clicked marriage node' + id);
+							},
 						}
 					});
     	});
