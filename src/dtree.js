@@ -48,6 +48,58 @@ const dTree = {
     var treeBuilder = new TreeBuilder(data.root, data.siblings, opts);
     treeBuilder.create();
 
+    function _zoomTo (x, y, zoom = 1, duration = 500) {
+      treeBuilder.svg
+        .transition()
+        .duration(duration)
+        .call(
+          treeBuilder.zoom.transform,
+          d3.zoomIdentity
+            .translate(opts.width / 2, opts.height / 2)
+            .scale(zoom)
+            .translate(-x, -y)
+        )
+    }
+
+    return {
+      resetZoom: function (duration = 500) {
+        treeBuilder.svg
+          .transition()
+          .duration(duration)
+          .call(
+            treeBuilder.zoom.transform,
+            d3.zoomIdentity.translate(opts.width / 2, opts.margin.top).scale(1)
+          )
+      },
+      zoomTo: _zoomTo,
+      zoomToNode: function (nodeId, zoom = 2, duration = 500) {
+        const node = _.find(treeBuilder.allNodes, {data: {id: nodeId}})
+        if (node) {
+          _zoomTo(node.x, node.y, zoom, duration)
+        }
+      },
+      zoomToFit: function (duration = 500) {
+        const groupBounds = treeBuilder.g.node().getBBox()
+        const width = groupBounds.width
+        const height = groupBounds.height
+        const fullWidth = treeBuilder.svg.node().clientWidth
+        const fullHeight = treeBuilder.svg.node().clientHeight
+        const scale = 0.95 / Math.max(width / fullWidth, height / fullHeight)
+
+        treeBuilder.svg
+          .transition()
+          .duration(duration)
+          .call(
+            treeBuilder.zoom.transform,
+            d3.zoomIdentity
+              .translate(
+                fullWidth / 2 - scale * (groupBounds.x + width / 2),
+                fullHeight / 2 - scale * (groupBounds.y + height / 2)
+              )
+              .scale(scale)
+          )
+      }
+    }
   },
 
   _preprocess: function(data, opts) {
