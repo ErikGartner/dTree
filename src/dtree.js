@@ -230,7 +230,7 @@ const dTree = {
   _sortPersons: function(persons, opts) {
     if (persons != undefined) {
       persons.sort(function(a, b) {
-        return opts.callbacks.nodeSorter(a.name, a.extra, b.name, b.extra);
+        return opts.callbacks.nodeSorter.call(this, a.name, a.extra, b.name, b.extra);
       });
     }
     return persons;
@@ -241,7 +241,7 @@ const dTree = {
       marriages.sort(function(marriageA, marriageB) {
         var a = marriageA.spouse;
         var b = marriageB.spouse;
-        return opts.callbacks.nodeSorter(a.name, a.extra, b.name, b.extra);
+        return opts.callbacks.nodeSorter.call(this, a.name, a.extra, b.name, b.extra);
       });
     }
     return marriages;

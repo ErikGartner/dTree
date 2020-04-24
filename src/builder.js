@@ -11,7 +11,7 @@ class TreeBuilder {
     this.allNodes = this._flatten(this.root);
 
     // calculate node sizes
-    this.nodeSize = opts.callbacks.nodeSize(
+    this.nodeSize = opts.callbacks.nodeSize.call(this,
       // filter hidden and marriage nodes
       _.filter(
         this.allNodes,
@@ -20,7 +20,7 @@ class TreeBuilder {
       opts.nodeWidth,
       opts.callbacks.textRenderer
     )
-    this.marriageSize = opts.callbacks.marriageSize(
+    this.marriageSize = opts.callbacks.marriageSize.call(this,
       // filter hidden and non marriage nodes
       _.filter(
         this.allNodes,
@@ -61,7 +61,7 @@ class TreeBuilder {
     // Compute the layout.
     this.tree = d3.tree()
       .nodeSize([nodeSize[0] * 2,
-                 opts.callbacks.nodeHeightSeperation(nodeSize[0], nodeSize[1])]);
+                 opts.callbacks.nodeHeightSeperation.call(this, nodeSize[0], nodeSize[1])]);
 
     this.tree.separation(function separation(a, b) {
       if (a.data.hidden || b.data.hidden) {
@@ -133,7 +133,7 @@ class TreeBuilder {
       })
       .html(function(d) {
         if (d.data.isMarriage) {
-          return opts.callbacks.marriageRenderer(
+          return opts.callbacks.marriageRenderer.call(this,
             d.x,
             d.y,
             marriageSize[0],
@@ -143,7 +143,7 @@ class TreeBuilder {
             d.data.class
           )
         } else {
-          return opts.callbacks.nodeRenderer(
+          return opts.callbacks.nodeRenderer.call(this,
             d.data.name,
             d.x,
             d.y,
@@ -168,9 +168,9 @@ class TreeBuilder {
           return;
         }
         if (d.data.isMarriage) {
-          opts.callbacks.marriageClick(d.data.extra, d.data.id)
+          opts.callbacks.marriageClick.call(this, d.data.extra, d.data.id)
         } else {
-          opts.callbacks.nodeClick(d.data.name, d.data.extra, d.data.id)
+          opts.callbacks.nodeClick.call(this, d.data.name, d.data.extra, d.data.id)
         }
       })
       .on('contextmenu', function(d)  {
@@ -179,9 +179,9 @@ class TreeBuilder {
         }
         d3.event.preventDefault();
         if (d.data.isMarriage) {
-          opts.callbacks.marriageRightClick(d.data.extra, d.data.id)
+          opts.callbacks.marriageRightClick.call(this, d.data.extra, d.data.id)
         } else {
-          opts.callbacks.nodeRightClick(d.data.name, d.data.extra, d.data.id)
+          opts.callbacks.nodeRightClick.call(this, d.data.name, d.data.extra, d.data.id)
         }
       });
   }
