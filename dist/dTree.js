@@ -21,12 +21,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       this.allNodes = this._flatten(this.root);
 
       // calculate node sizes
-      this.nodeSize = opts.callbacks.nodeSize(
+      this.nodeSize = opts.callbacks.nodeSize.call(this,
       // filter hidden and marriage nodes
       _.filter(this.allNodes, function (node) {
         return !(node.hidden || _.get(node, 'data.isMarriage'));
       }), opts.nodeWidth, opts.callbacks.textRenderer);
-      this.marriageSize = opts.callbacks.marriageSize(
+      this.marriageSize = opts.callbacks.marriageSize.call(this,
       // filter hidden and non marriage nodes
       _.filter(this.allNodes, function (node) {
         return !node.hidden && _.get(node, 'data.isMarriage');
@@ -59,7 +59,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         svg.call(zoom.transform, d3.zoomIdentity.translate(width / 2, opts.margin.top).scale(1));
 
         // Compute the layout.
-        this.tree = d3.tree().nodeSize([nodeSize[0] * 2, opts.callbacks.nodeHeightSeperation(nodeSize[0], nodeSize[1])]);
+        this.tree = d3.tree().nodeSize([nodeSize[0] * 2, opts.callbacks.nodeHeightSeperation.call(this, nodeSize[0], nodeSize[1])]);
 
         this.tree.separation(function separation(a, b) {
           if (a.data.hidden || b.data.hidden) {
@@ -112,9 +112,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           return d.id;
         }).html(function (d) {
           if (d.data.isMarriage) {
-            return opts.callbacks.marriageRenderer(d.x, d.y, marriageSize[0], marriageSize[1], d.data.extra, d.data.id, d.data['class']);
+            return opts.callbacks.marriageRenderer.call(this, d.x, d.y, marriageSize[0], marriageSize[1], d.data.extra, d.data.id, d.data['class']);
           } else {
-            return opts.callbacks.nodeRenderer(d.data.name, d.x, d.y, nodeSize[0], nodeSize[1], d.data.extra, d.data.id, d.data['class'], d.data.textClass, opts.callbacks.textRenderer);
+            return opts.callbacks.nodeRenderer.call(this, d.data.name, d.x, d.y, nodeSize[0], nodeSize[1], d.data.extra, d.data.id, d.data['class'], d.data.textClass, opts.callbacks.textRenderer);
           }
         }).on('dblclick', function () {
           // do not propagate a double click on a node
@@ -126,9 +126,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             return;
           }
           if (d.data.isMarriage) {
-            opts.callbacks.marriageClick(d.data.extra, d.data.id);
+            opts.callbacks.marriageClick.call(this, d.data.extra, d.data.id);
           } else {
-            opts.callbacks.nodeClick(d.data.name, d.data.extra, d.data.id);
+            opts.callbacks.nodeClick.call(this, d.data.name, d.data.extra, d.data.id);
           }
         }).on('contextmenu', function (d) {
           if (d.data.hidden) {
@@ -136,9 +136,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           }
           d3.event.preventDefault();
           if (d.data.isMarriage) {
-            opts.callbacks.marriageRightClick(d.data.extra, d.data.id);
+            opts.callbacks.marriageRightClick.call(this, d.data.extra, d.data.id);
           } else {
-            opts.callbacks.nodeRightClick(d.data.name, d.data.extra, d.data.id);
+            opts.callbacks.nodeRightClick.call(this, d.data.name, d.data.extra, d.data.id);
           }
         });
       }
@@ -344,7 +344,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
   var dTree = {
 
-    VERSION: '2.3.0',
+    VERSION: '2.4.0',
 
     init: function init(data) {
       var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
@@ -556,7 +556,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     _sortPersons: function _sortPersons(persons, opts) {
       if (persons != undefined) {
         persons.sort(function (a, b) {
-          return opts.callbacks.nodeSorter(a.name, a.extra, b.name, b.extra);
+          return opts.callbacks.nodeSorter.call(this, a.name, a.extra, b.name, b.extra);
         });
       }
       return persons;
@@ -567,7 +567,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         marriages.sort(function (marriageA, marriageB) {
           var a = marriageA.spouse;
           var b = marriageB.spouse;
-          return opts.callbacks.nodeSorter(a.name, a.extra, b.name, b.extra);
+          return opts.callbacks.nodeSorter.call(this, a.name, a.extra, b.name, b.extra);
         });
       }
       return marriages;

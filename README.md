@@ -23,7 +23,7 @@ yarn add d3-dtree
 
 Lastly dTree is also available through several CDNs such as [jsDelivr](https://www.jsdelivr.com/package/npm/d3-dtree):
 ```
-https://cdn.jsdelivr.net/npm/d3-dtree@2.3.0/dist/dTree.min.js
+https://cdn.jsdelivr.net/npm/d3-dtree@2.4.0/dist/dTree.min.js
 ```
 
 ## Requirements
@@ -121,7 +121,7 @@ The returned object, `tree = dTree.init(data, options)`,  contains functions to 
 - `zoomToFit(duration = 500)` - Zoom to fit the entire tree into the viewport
 
 ### Callbacks
-Below follows a short descriptions of the available callback functions that may be passed to dTree. See [dtree.js](https://github.com/ErikGartner/dTree/blob/master/src/dtree.js) for the *default implementations*.
+Below follows a short descriptions of the available callback functions that may be passed to dTree. See [dtree.js](https://github.com/ErikGartner/dTree/blob/master/src/dtree.js) for the *default implementations*. Information about e.g. mouse cursor position can retrieved by interacting with the `this` object, i.e. `d3.mouse(this)`.
 
 #### nodeClick
 ```javascript
