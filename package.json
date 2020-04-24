@@ -3,6 +3,7 @@
   "version": "2.4.0",
   "description": "A library for visualizing data trees built on top of D3.",
   "main": "dist/dTree.js",
+  "demo": "test/demo/",
   "scripts": {
     "build": "gulp build",
     "coverage": "gulp coverage",
