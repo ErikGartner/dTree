@@ -11,9 +11,12 @@ const dTree = {
       debug: false,
       width: 600,
       height: 600,
+      hideMarriageNodes: true,
       callbacks: {
         nodeClick: function(name, extra, id) {},
         nodeRightClick: function(name, extra, id) {},
+        marriageClick: function(extra, id) {},
+        marriageRightClick: function(extra, id) {},
         nodeHeightSeperation: function(nodeWidth, nodeMaxHeight) {
           return TreeBuilder._nodeHeightSeperation(nodeWidth, nodeMaxHeight);
         },
@@ -28,6 +31,12 @@ const dTree = {
         textRenderer: function(name, extra, textClass) {
           return TreeBuilder._textRenderer(name, extra, textClass);
         },
+        marriageRenderer: function (x, y, height, width, extra, id, nodeClass) {
+          return TreeBuilder._marriageRenderer(x, y, height, width, extra, id, nodeClass)
+        },
+        marriageSize: function (nodes, size) {
+          return TreeBuilder._marriageSize(nodes, size)
+        },
       },
       margin: {
         top: 0,
@@ -36,8 +45,10 @@ const dTree = {
         left: 0
       },
       nodeWidth: 100,
+      marriageNodeSize: 10,
       styles: {
         node: 'node',
+        marriageNode: 'marriageNode',
         linage: 'linage',
         marriage: 'marriage',
         text: 'nodeText'
@@ -160,15 +171,16 @@ const dTree = {
 
       // go through marriage
       _.forEach(person.marriages, function(marriage, index) {
-
         var m = {
           name: '',
           id: id++,
-          hidden: true,
+          hidden: opts.hideMarriageNodes,
           noParent: true,
           children: [],
-          extra: marriage.extra
-        };
+          isMarriage: true,
+          extra: marriage.extra,
+          class: marriage.class ? marriage.class : opts.styles.marriageNode
+        }
 
         var sp = marriage.spouse;
 
