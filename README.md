@@ -215,4 +215,4 @@ A good place to start is to make a pull request to solve an open issue. Feel fre
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2015-2019 Erik Gärtner
+Copyright (c) 2015-2020 Erik Gärtner
