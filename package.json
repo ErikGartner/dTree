@@ -52,7 +52,7 @@
     "gulp-github-release": "^1.1.0",
     "gulp-istanbul": "^0.10.0",
     "gulp-livereload": "^3.4.0",
-    "gulp-load-plugins": "^0.10.0",
+    "gulp-load-plugins": "^2.0.8",
     "gulp-notify": "^2.1.0",
     "gulp-plumber": "^1.0.1",
     "gulp-preprocess": "^2.0.0",
