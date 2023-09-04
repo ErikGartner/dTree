@@ -39,7 +39,7 @@
     "connect": "^3.4.0",
     "conventional-changelog": "^0.5.3",
     "conventional-github-releaser": "^0.5.1",
-    "del": "^1.1.1",
+    "del": "^7.1.0",
     "glob": "^5.0.14",
     "gulp": "^3.8.10",
     "gulp-babel": "^5.0.0",
