@@ -46,7 +46,7 @@
     "gulp-bump": "^1.0.0",
     "gulp-conventional-changelog": "^0.7.0",
     "gulp-eslint": "^1.0.0",
-    "gulp-file": "^0.2.0",
+    "gulp-file": "^0.4.0",
     "gulp-filter": "^3.0.0",
     "gulp-git": "^2.9.0",
     "gulp-github-release": "^1.1.0",
