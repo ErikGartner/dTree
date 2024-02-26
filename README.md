@@ -189,6 +189,8 @@ function(nodes, size)
 ```
 Same as `nodeSize` but for the marriage nodes (connector).
 
+## Built with dTree
+- [🌳 dTree-Seed](https://github.com/JMHeartley/dTree-Seed) - Library to painlessly structure data for dTree, courtesy of [Justin Heartley](https://github.com/JMHeartley)!
 
 ## Development
 dTree has the following development environment:
@@ -215,4 +217,4 @@ A good place to start is to make a pull request to solve an open issue. Feel fre
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2015-2020 Erik Gärtner
+Copyright (c) 2015-2024 Erik Gärtner
